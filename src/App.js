@@ -1,6 +1,7 @@
 
 
 
+
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 
@@ -12,6 +13,19 @@ import Payment from "./Pages/Profile/Payment";
 import Confirmation from "./Pages/Confirmation";
 import BookAppointment from "./Pages/Profile/BookAppointment"
 import { steps } from "./Services/AuthApi";
+
+import './App.css';
+import Buttons from './Pages/Buttons';
+import LayersClinic from './Pages/LayersClinic';
+
+
+import AccountSettings from './Pages/AccountSetting';
+import Bookings from './Pages/Bookings';
+import MyBilling from './Pages/Profile/MyBilling';
+import Profile from './Pages/Profile/Profile';
+import SettingsPage from './Pages/Profile/Settingss';
+// import PageRoutes from './Routes/PageRoutes';
+
 
 
 
@@ -38,16 +52,30 @@ function App() {
 
   return (
 
+    <div>
+      <LayersClinic />
+      <Buttons />
+
+
+    <div>
+      <Dashboard/>
+
+
+    <div>
+      <Profile/>
+      <MyBilling/>
+      <Bookings/>
+      <SettingsPage/>
+      <AccountSettings/>
+      {/* <PageRoutes/> */}
     
 
-      <Box sx={{ p: 2 }}>
-          <BookAppointment/>
-        <LayerClinicNav activeStep={activeStep} setActiveStep={setActiveStep} steps={steps} />
+      
 
+    </div>
+       
+   
 
-        <Box sx={{ mt: 3 }}>{renderPage()}</Box>
-      </Box>
-    
   );
 }
 
