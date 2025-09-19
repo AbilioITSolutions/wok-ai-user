@@ -1,22 +1,25 @@
 import './App.css';
+import AccountSettings from './Pages/AccountSetting';
+import Bookings from './Pages/Bookings';
+import MyBilling from './Pages/Profile/MyBilling';
+import Profile from './Pages/Profile/Profile';
+import SettingsPage from './Pages/Profile/Settingss';
+// import PageRoutes from './Routes/PageRoutes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Profile/>
+      <MyBilling/>
+      <Bookings/>
+      <SettingsPage/>
+      <AccountSettings/>
+      {/* <PageRoutes/> */}
+    
+      
     </div>
+       
+   
   );
 }
 
