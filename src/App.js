@@ -1,21 +1,18 @@
-import './App.css';
 
+import './App.css';
+import NavBar from './Components/NavBar';
+import Cards from './Common/Cards';
+import Footer from './Common/Footer';
+import Login from './Pages/Login';
+import Register from './Pages/Register'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+     {/* <NavBar/> */}
+     <Cards/>
+     {/* <Footer/> 
+      <Login/>
+     <Register/> */}
     </div>
   );
 }
