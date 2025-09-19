@@ -54,9 +54,20 @@ function App() {
 
     <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
       <Home />
+ 
+
+
+
+    
       <LayersClinic />
       <Buttons />
+
+
+   
       {/* <Dashboard/> */}
+
+
+    
       <Profile/>
       <MyBilling/>
       <Bookings/>
