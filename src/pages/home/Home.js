@@ -1,6 +1,6 @@
 // Home.js
 import React from 'react'
-import Navbar from '../../components/Navbar'
+import Navbar from '../../Components/Navbar'
 import { Box } from '@mui/material'
 import Hero from './sections/Hero'
 import SpecialistSearch from './sections/SpecialistSearch'
@@ -9,11 +9,11 @@ import ServicesSection from './sections/ServicesSection'
 import StoriesSection from './sections/StoriesSection'
 import PartnersSection from './sections/PartnersSection'
 import ContactSection from './sections/ContactSection'
-import Footer from '../../components/Footer'
+import Footer from '../../Components/Footer'
 
 const Home = () => {
     return (
-        <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
+        <Box >
             <Navbar />
             <Hero />
             <SpecialistSearch />
@@ -22,7 +22,7 @@ const Home = () => {
             <StoriesSection />
             <PartnersSection />
             <ContactSection />
-            <Footer />
+         <Footer />
         </Box>
     )
 }
