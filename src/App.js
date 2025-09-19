@@ -1,4 +1,19 @@
 
+
+
+
+import React, { useState } from "react";
+import { Box } from "@mui/material";
+
+import LayerClinicNav from "./Pages/LayerClinicNav";
+import SelectADoctor from "./Pages/Profile/SelectADoctor";
+import ScheduleTime from "./Pages/Profile/ScheduleTime";
+import PatientInfo from "./Pages/Profile/PatientInfo";
+import Payment from "./Pages/Profile/Payment";
+import Confirmation from "./Pages/Confirmation";
+import BookAppointment from "./Pages/Profile/BookAppointment"
+import { steps } from "./Services/AuthApi";
+
 import './App.css';
 import Buttons from './Pages/Buttons';
 import LayersClinic from './Pages/LayersClinic';
@@ -10,6 +25,7 @@ import MyBilling from './Pages/Profile/MyBilling';
 import Profile from './Pages/Profile/Profile';
 import SettingsPage from './Pages/Profile/Settingss';
 // import PageRoutes from './Routes/PageRoutes';
+
 
 
 
