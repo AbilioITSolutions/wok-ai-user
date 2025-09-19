@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Container, Typography, TextField, Button } from "@mui/material";
-import img from '../ASSETS/doctorlogo.png';
+import img from '../Assets/doctorlogo.png';
 import LockIcon from '@mui/icons-material/Lock';
 
 
