@@ -27,7 +27,7 @@ import Profile from './Pages/Profile/Profile';
 import SettingsPage from './Pages/Profile/Settingss';
 // import PageRoutes from './Routes/PageRoutes';
 
-
+import Home from "./Pages/home/Home"
 
 
 
@@ -60,16 +60,16 @@ function App() {
 
 
 
-    <div>
+    
       <LayersClinic />
       <Buttons />
 
 
-    <div>
-      <Dashboard/>
+   
+      {/* <Dashboard/> */}
 
 
-    <div>
+    
       <Profile/>
       <MyBilling/>
       <Bookings/>
@@ -80,8 +80,8 @@ function App() {
 
       
 
-    </div>
-<Box/>
+    
+</Box>
        
    
 
