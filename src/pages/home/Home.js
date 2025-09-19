@@ -1,6 +1,6 @@
 // Home.js
 import React from 'react'
-import Navbar from '../../Components/Navbar'
+import Navbar from '../../Components/FloatingNavBar'
 import { Box } from '@mui/material'
 import Hero from './sections/Hero'
 import SpecialistSearch from './sections/SpecialistSearch'
