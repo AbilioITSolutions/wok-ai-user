@@ -3,6 +3,7 @@
 
 
 
+
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 
@@ -19,17 +20,14 @@ import './App.css';
 import Buttons from './Pages/Buttons';
 import LayersClinic from './Pages/LayersClinic';
 
-
+import Home from './Pages/home/Home'
 import AccountSettings from './Pages/AccountSetting';
 import Bookings from './Pages/Bookings';
 import MyBilling from './Pages/Profile/MyBilling';
 import Profile from './Pages/Profile/Profile';
 import SettingsPage from './Pages/Profile/Settingss';
+// import Footer from "./components/Footer";
 // import PageRoutes from './Routes/PageRoutes';
-
-import Home from "./Pages/home/Home"
-
-
 
 function App() {
   const [activeStep, setActiveStep] = useState(0);
@@ -75,12 +73,13 @@ function App() {
       <Bookings/>
       <SettingsPage/>
       <AccountSettings/>
-      {/* <PageRoutes/> */}
+      {/* <PageRoutes/> */}\
+     
     
 
       
 
-    
+   
 </Box>
        
    
