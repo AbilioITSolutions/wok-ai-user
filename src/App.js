@@ -1,11 +1,13 @@
 
 import './App.css';
+
 import AccountSettings from './Pages/AccountSetting';
 import Bookings from './Pages/Bookings';
 import MyBilling from './Pages/Profile/MyBilling';
 import Profile from './Pages/Profile/Profile';
 import SettingsPage from './Pages/Profile/Settingss';
 // import PageRoutes from './Routes/PageRoutes';
+
 
 
 function App() {
@@ -32,6 +34,10 @@ function App() {
   return (
 
     <div>
+      <Dashboard/>
+
+
+    <div>
       <Profile/>
       <MyBilling/>
       <Bookings/>
@@ -39,6 +45,7 @@ function App() {
       <AccountSettings/>
       {/* <PageRoutes/> */}
     
+
       
     </div>
        
