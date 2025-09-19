@@ -2,6 +2,7 @@
 
 
 
+
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 
@@ -29,6 +30,7 @@ import SettingsPage from './Pages/Profile/Settingss';
 
 
 
+
 function App() {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -52,6 +54,12 @@ function App() {
 
   return (
 
+    <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
+      <Home />
+ 
+
+
+
     <div>
       <LayersClinic />
       <Buttons />
@@ -73,6 +81,7 @@ function App() {
       
 
     </div>
+<Box/>
        
    
 
@@ -80,4 +89,5 @@ function App() {
 }
 
 export default App;
+
 
