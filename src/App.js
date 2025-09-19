@@ -1,13 +1,13 @@
-import logo from './logo.svg';
+import { Box } from '@mui/material';
 import './App.css';
+import Home from './pages/home/Home';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-    
-      </header>
-    </div>
+    <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
+      <Home />
+    </Box>
+
   );
 }
 
