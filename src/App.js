@@ -1,5 +1,8 @@
 
 import './App.css';
+import Buttons from './Pages/Buttons';
+import LayersClinic from './Pages/LayersClinic';
+
 
 import AccountSettings from './Pages/AccountSetting';
 import Bookings from './Pages/Bookings';
@@ -34,6 +37,11 @@ function App() {
   return (
 
     <div>
+      <LayersClinic />
+      <Buttons />
+
+
+    <div>
       <Dashboard/>
 
 
@@ -47,6 +55,7 @@ function App() {
     
 
       
+
     </div>
        
    
