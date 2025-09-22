@@ -13,8 +13,8 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import serviceIcon from './sectionsassets/hair-icon.png';
-import headerBg from './sectionsassets/header-bg.png';
+import serviceIcon from './Sectionsassets/hair-icon.png';
+import headerBg from './Sectionsassets/header-bg.png';
 
 const services = [
     { title: 'Follicular Unit Transplantation' },

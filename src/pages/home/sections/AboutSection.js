@@ -8,14 +8,14 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import bgImage from './sectionsassets/background.jpg';
-import doctorImage from './sectionsassets/doctor.png';
+import bgImage from './Sectionsassets/background.jpg';
+import doctorImage from './Sectionsassets/doctor.png';
 
 function AboutSection() {
     return (
         <Box
             sx={{
+                maxHeight: '700px',
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
                 alignItems: 'center',
@@ -70,6 +70,7 @@ function AboutSection() {
             {/* Right Side: Text Content */}
             <Box
                 sx={{
+                    pb: 4,
                     width: { xs: '100%', md: '45%' },
                     textAlign: { xs: 'center', md: 'left' },
                 }}
@@ -80,39 +81,59 @@ function AboutSection() {
                         fontWeight: 'bold',
                         mb: 3,
                         color: '#007bff',
-                        fontSize: { xs: '1.5rem', md: '1.75rem' }
+                        fontSize: { xs: '1.5rem', md: '2rem' }
                     }}
                 >
                     About Wok AI Healthcare
                 </Typography>
 
-                <Typography sx={{ mb: 3, color: '#444', lineHeight: 1.7, fontSize: '1.05rem' }}>
+                <Typography sx={{ mb: 1, color: '#444', lineHeight: 1.7, fontSize: '1.05rem' }}>
                     We believe that good health starts with easy access to trusted care. Our platform connects you with experienced doctors specializing in hair and eye health, ensuring you receive the right treatment at the right time.
                 </Typography>
 
-                <Typography sx={{ mb: 3, color: '#444', lineHeight: 1.7, fontSize: '1.05rem' }}>
+                <Typography sx={{ mb: 1, color: '#444', lineHeight: 1.7, fontSize: '1.05rem' }}>
                     From booking appointments to finding the best specialists, we make the entire process simple and stress-free.
                 </Typography>
 
-                {/* Bullet Points */}
-                <List sx={{ mb: 4 }}>
+                {/* Bullet Points with Green Dots */}
+                <List sx={{ mb: 1, mt: 1 }}>
                     {[
                         'Easy doctor booking in just a few steps',
                         'Verified and trusted hair & eye specialists',
                         'Seamless experience with quick appointments',
                         'Focused on your health, confidence, and well-being',
                     ].map((text, index) => (
-                        <ListItem key={index} disableGutters sx={{ mb: 1 }}>
+                        <ListItem
+                            key={index}
+                            disableGutters
+                            sx={{ paddingY: 0.5 }} // Reduce vertical padding
+                        >
                             <ListItemIcon sx={{ minWidth: 32 }}>
-                                <CheckCircleIcon sx={{ color: '#007bff' }} />
+                                <Box
+                                    sx={{
+                                        width: 15,
+                                        height: 15,
+                                        borderRadius: '50%',
+                                        backgroundColor: '#17d51eff',
+                                        marginRight: 1,
+                                    }}
+                                />
                             </ListItemIcon>
                             <ListItemText
                                 primary={text}
-                                primaryTypographyProps={{ sx: { color: '#333', fontSize: '1.05rem' } }}
+                                primaryTypographyProps={{
+                                    sx: {
+                                        color: '#333',
+                                        fontSize: '1rem',
+                                        lineHeight: 1.4, // Tighter line spacing
+                                        margin: 0, // Remove extra margin
+                                    },
+                                }}
                             />
                         </ListItem>
                     ))}
                 </List>
+
 
                 {/* Button */}
                 <Button
@@ -120,17 +141,17 @@ function AboutSection() {
                     sx={{
                         backgroundColor: '#007bff',
                         color: '#fff',
-                        px: 5,
-                        py: 1.5,
-                        fontSize: '1rem',
-                        borderRadius: '10px',
+                        px: 4,
+                        py: 1.25,
+                        fontSize: '0.95rem',
+                        borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0, 123, 255, 0.3)',
                         '&:hover': {
                             backgroundColor: '#0056b3',
                         },
                     }}
                 >
-                    Read More
+                    Read More 🡢
                 </Button>
             </Box>
         </Box>

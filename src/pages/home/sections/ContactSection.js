@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
-import phoneIcon from './sectionsassets/telephone.svg';
+import phoneIcon from './Sectionsassets/telephone.svg';
 
 function ContactSection() {
     return (
@@ -22,7 +22,7 @@ function ContactSection() {
                     sx={{
                         width: 100,
                         height: 100,
-                        mb: 3,
+                        mb: 1,
                         mx: 'auto',
                     }}
                 />
@@ -32,7 +32,7 @@ function ContactSection() {
                     variant="h5"
                     sx={{
                         fontWeight: 'bold',
-                        mb: 2,
+                        mb: 1,
                         fontSize: { xs: '1.6rem', md: '2rem' },
                     }}
                 >
@@ -43,7 +43,7 @@ function ContactSection() {
                 <Typography
                     sx={{
                         fontSize: { xs: '1rem', md: '1.2rem' },
-                        mb: 4,
+                        mb: 3,
                         maxWidth: 600,
                         mx: 'auto',
                         color: '#060606',
