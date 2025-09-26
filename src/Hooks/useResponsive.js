@@ -1,11 +1,13 @@
-import React from 'react'
+import { useTheme, useMediaQuery } from "@mui/material";
 
 const useResponsive = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  const theme = useTheme();
 
-export default useResponsive
+  return {
+    isMobile: useMediaQuery(theme.breakpoints.down("md")),
+    isTablet: useMediaQuery(theme.breakpoints.between("sm", "md")),
+    isDesktop: useMediaQuery(theme.breakpoints.up("lg")),
+  };
+};
+
+export default useResponsive;

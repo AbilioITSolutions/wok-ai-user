@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 
@@ -31,10 +25,10 @@ import Register from "./Pages/Register";
 import DoctorList from "./Pages/DoctorList";
 // import Footer from "./components/Footer";
 // import PageRoutes from './Routes/PageRoutes';
-
+import ContactUs from "./Pages/ContactUs/ContactUS";
+import AboutUs from "./Pages/AboutUs/AboutUs";
 function App() {
   const [activeStep, setActiveStep] = useState(0);
-
 
   // const renderPage = () => {
   //   switch (activeStep) {
@@ -54,42 +48,22 @@ function App() {
   // };
 
   return (
-
-    <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
-      {/* <Home />
- 
-
-
-
-    
-      <LayersClinic />
-      <Buttons /> */}
-
-<DoctorList/>
-   
+    <Box sx={{ width: "100%", overflowX: "hidden", p: 0, m: 0 }}>
+      {/* <Home /> */}
+      {/* <AboutUs /> */}
+      {/* <ContactUs /> */}
+      {/* <LayersClinic /> */}
+      {/* <Buttons />  */}
+      {/* <DoctorList/> */}
       {/* <Dashboard/> */}
-
-
-    
       {/* <Profile/>
       <MyBilling/>
       <Bookings/>
       <SettingsPage/>
       <AccountSettings/> */}
-      {/* <PageRoutes/> */}\
-     
-    
-
-      
-
-   
-</Box>
-       
-   
-
+      {/* <PageRoutes/> */}
+    </Box>
   );
 }
 
 export default App;
-
-
