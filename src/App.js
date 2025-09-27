@@ -1,25 +1,5 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-
-// import LayerClinicNav from "./Pages/LayerClinicNav";
-// import SelectADoctor from "./Pages/Profile/SelectADoctor";
-// import ScheduleTime from "./Pages/Profile/ScheduleTime";
-// import PatientInfo from "./Pages/Profile/PatientInfo";
-// import Payment from "./Pages/Profile/Payment";
-// import Confirmation from "./Pages/Confirmation";
-// import BookAppointment from "./Pages/Profile/BookAppointment"
-// import { steps } from "./Services/AuthApi";
-
-// import './App.css';
-// import Buttons from './Pages/Buttons';
-// import LayersClinic from './Pages/LayersClinic';
-
-// import Home from './Pages/home/Home'
-// import AccountSettings from './Pages/AccountSetting';
-// import Bookings from './Pages/Bookings';
-// import MyBilling from './Pages/Profile/MyBilling';
-// import Profile from './Pages/Profile/Profile';
-// import SettingsPage from './Pages/Profile/Settingss';
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import DoctorList from "./Pages/DoctorList";
@@ -62,6 +42,14 @@ function App() {
       <SettingsPage/>
       <AccountSettings/> */}
       {/* <PageRoutes/> */}
+import PageRoutes from "./Routes/PageRoutes";
+
+function App() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  return (
+    <Box>
+      <PageRoutes />
     </Box>
   );
 }

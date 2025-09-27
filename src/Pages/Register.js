@@ -2,9 +2,11 @@ import React from "react";
 import { Box, Grid, Container, Typography, TextField, Button } from "@mui/material";
 import img from '../Assets/doctorlogo.png';
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from "react-router";
 
 
 const Register = () => {
+    const navigate = useNavigate();
     return (
         <Box sx={{ minHeight: "100vh" }}>
             <Grid container sx={{ minHeight: "100vh" }}>
@@ -86,7 +88,8 @@ const Register = () => {
 
                             <Typography variant="body2" align="center" sx={{ color: "#8E92B7", mt: 1 }}>
                                 I have a account?{" "}
-                                <span style={{ color: "#368ADD", cursor: "pointer" }}>Sign Up</span>
+                                {/* <span style={{ color: "#368ADD", cursor: "pointer" }}>Sign Up</span> */}
+                                <Button variant="text" disableElevation onClick={() => navigate("/login")}>Sign In</Button>
                             </Typography>
                         </Box>
                     </Container>
