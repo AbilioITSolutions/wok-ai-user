@@ -1,5 +1,31 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
+
+
+
+import SelectADoctor from "./Pages/Profile/SelectADoctor";
+import ScheduleTime from "./Pages/Profile/ScheduleTime";
+import PatientInfo from "./Pages/Profile/PatientInfo";
+import Payment from "./Pages/Profile/Payment";
+import Confirmation from "./Pages/Confirmation";
+
+
+import './App.css';
+import Buttons from './Pages/Buttons';
+import LayersClinic from './Pages/LayersClinic';
+
+
+import AccountSettings from './Pages/AccountSetting';
+import Bookings from './Pages/Bookings';
+import MyBilling from './Pages/Profile/MyBilling';
+import Profile from './Pages/Profile/Profile';
+import SettingsPage from './Pages/Profile/Settingss';
+// import PageRoutes from './Routes/PageRoutes';
+
+import Home from "./Pages/Home/Home"
+
+
+
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import DoctorList from "./Pages/DoctorList";
@@ -28,6 +54,37 @@ function App() {
   // };
 
   return (
+
+    <Box sx={{ width: '100%', overflowX: 'hidden', p: 0, m: 0 }}>
+      <Home />
+
+
+
+
+
+      <LayersClinic />
+      <Buttons />
+
+
+
+      {/* <Dashboard/> */}
+
+
+
+      <Profile />
+      <MyBilling />
+      <Bookings />
+      <SettingsPage />
+      <AccountSettings />
+      {/* <PageRoutes/> */}
+
+
+
+
+
+    </Box>
+
+
     <Box sx={{ width: "100%", overflowX: "hidden", p: 0, m: 0 }}>
       {/* <Home /> */}
       {/* <AboutUs /> */}

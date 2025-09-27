@@ -1,25 +1,36 @@
 import React from 'react';
 import { Box, Typography, Grid, Container } from '@mui/material';
-import logo1 from './sectionsassets/1.svg';
-import logo2 from './sectionsassets/2.svg';
-import logo3 from './sectionsassets/3.svg';
-import logo4 from './sectionsassets/4.svg';
-import logo5 from './sectionsassets/5.svg';
+import logo1 from './Sectionsassets/1.svg';
+import logo2 from './Sectionsassets/2.svg';
+import logo3 from './Sectionsassets/3.svg';
+import logo4 from './Sectionsassets/4.svg';
+import logo5 from './Sectionsassets/5.svg';
 
 function PartnersSection() {
-    const logos = [logo1, logo2, logo3, logo4, logo5];
+    const firstRow = [logo1, logo2, logo3];
+    const secondRow = [logo4, logo5];
+
+    const logoStyle = {
+        width: 200,
+        height: 100,
+        borderRadius: 2.5, // 20px
+        border: '2px solid #fff',
+        objectFit: 'contain',
+        filter: 'brightness(0) invert(1)',
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': { transform: 'scale(1.05)' },
+    };
 
     return (
         <Box
             sx={{
-                width: '100%',        // full width
+                width: '100%',
                 backgroundColor: '#007bff',
                 py: { xs: 6, md: 10 },
                 color: '#fff',
                 textAlign: 'center',
             }}
         >
-            {/* Centered content */}
             <Container maxWidth="lg">
                 <Typography
                     variant="h4"
@@ -45,37 +56,29 @@ function PartnersSection() {
                     Collaborating with clients who share our vision for health.
                 </Typography>
 
-                <Grid
-                    container
-                    spacing={{ xs: 3, sm: 4, md: 6 }}
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    {logos.map((logo, index) => (
-                        <Grid
-                            item
-                            xs={6}
-                            sm={4}
-                            md={2.4}
-                            key={index}
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
+                {/* First Row: 3 logos */}
+                <Grid container spacing={4} justifyContent="center" mb={4}>
+                    {firstRow.map((logo, index) => (
+                        <Grid item key={index}>
                             <Box
                                 component="img"
                                 src={logo}
                                 alt={`Partner ${index + 1}`}
-                                sx={{
-                                    width: '100%',
-                                    maxWidth: { xs: 120, sm: 140, md: 160 },
-                                    height: 'auto',
-                                    filter: 'brightness(0) invert(1)',
-                                    transition: 'transform 0.2s ease-in-out',
-                                    '&:hover': { transform: 'scale(1.05)' },
-                                }}
+                                sx={logoStyle}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+
+                {/* Second Row: 2 logos */}
+                <Grid container spacing={4} justifyContent="center">
+                    {secondRow.map((logo, index) => (
+                        <Grid item key={index}>
+                            <Box
+                                component="img"
+                                src={logo}
+                                alt={`Partner ${index + 4}`}
+                                sx={logoStyle}
                             />
                         </Grid>
                     ))}

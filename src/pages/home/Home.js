@@ -1,14 +1,15 @@
 // Home.js
 import React from 'react'
+
 import Navbar from '../../Components/FloatingNavBar'
 import { Box } from '@mui/material'
-import Hero from './sections/Hero'
-import SpecialistSearch from './sections/SpecialistSearch'
-import AboutSection from './sections/AboutSection'
-import ServicesSection from './sections/ServicesSection'
-import StoriesSection from './sections/StoriesSection'
-import PartnersSection from './sections/PartnersSection'
-import ContactSection from './sections/ContactSection'
+import Hero from './Sections/Hero'
+import SpecialistSearch from './Sections/SpecialistSearch'
+import AboutSection from './Sections/AboutSection'
+import ServicesSection from './Sections/ServicesSection'
+import StoriesSection from './Sections/StoriesSection'
+import PartnersSection from './Sections/PartnersSection'
+import ContactSection from './Sections/ContactSection'
 import Footer from '../../Components/Footer'
 
 const Home = () => {
@@ -22,7 +23,7 @@ const Home = () => {
             <StoriesSection />
             <PartnersSection />
             <ContactSection />
-         <Footer />
+            <Footer />
         </Box>
     )
 }

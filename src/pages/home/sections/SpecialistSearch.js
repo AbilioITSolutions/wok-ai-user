@@ -70,7 +70,6 @@ function SpecialistSearch() {
                     gap: { xs: 2, md: 3 },
                     alignItems: 'stretch',
                     justifyContent: 'center',
-                    maxWidth: 900,
                     mx: 'auto',
                 }}
             >
@@ -106,6 +105,7 @@ function SpecialistSearch() {
                     variant="contained"
                     fullWidth
                     sx={{
+                        maxWidth: { xs: '100%', md: '250px' },
                         flex: 1,
                         backgroundColor: '#007bff',
                         color: '#fff',

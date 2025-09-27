@@ -1,5 +1,5 @@
 import React from 'react';
-import anu from './sectionsassets/anu.jpg';
+import anu from './Sectionsassets/anu.jpg';
 import {
     Box,
     Typography,
@@ -64,7 +64,7 @@ function StoriesSection() {
                 freeMode
                 grabCursor
                 autoplay={{
-                    delay: 1000, // 1 second
+                    delay: 2000, // 1 second
                     disableOnInteraction: false,
                 }}
                 loop
@@ -150,7 +150,7 @@ function StoriesSection() {
                 freeMode
                 grabCursor
                 autoplay={{
-                    delay: 1000,
+                    delay: 2000,
                     disableOnInteraction: false,
                 }}
                 loop
