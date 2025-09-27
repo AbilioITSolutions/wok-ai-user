@@ -2,9 +2,11 @@ import React from "react";
 import { Box, Grid, Container, Typography, TextField, Button } from "@mui/material";
 import img from '../Assets/doctorlogo.png';
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from "react-router";
 
 
 const Login = () => {
+    const navigate = useNavigate();
     return (
         <Box sx={{ minHeight: "100vh" }}>
             <Grid container sx={{ minHeight: "100vh" }}>
@@ -24,7 +26,7 @@ const Login = () => {
                     <img
                         src={img}
                         alt="Login Visual"
-                        
+
                     />
                 </Grid>
 
@@ -59,7 +61,7 @@ const Login = () => {
                                 fullWidth
                                 required
                             />
-                            <TextField type="password" label="Password" placeholder= "********" fullWidth required /> 
+                            <TextField type="password" label="Password" placeholder="********" fullWidth required />
 
                             <Typography variant="body2" sx={{ color: "red", cursor: "pointer" }} >
                                 Forgot Password?
@@ -79,7 +81,8 @@ const Login = () => {
                             </Typography>
                             <Typography variant="body2" align="center" sx={{ color: "#8E92B7", mt: 1 }}>
                                 You don’t have an account?{" "}
-                                <span style={{ color: "#368ADD", cursor: "pointer" }}>Sign Up</span>
+                                {/* <span style={{ color: "#368ADD", cursor: "pointer" }}>Sign Up</span> */}
+                                <Button variant="text" disableElevation onClick={() => navigate("/register")}>Sign Up</Button>
                             </Typography>
                         </Box>
                     </Container>

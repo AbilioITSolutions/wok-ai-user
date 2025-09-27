@@ -12,15 +12,27 @@ import {
     ListItemText,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import logo from '../assets/logo.svg';
+import logo from '../Assets/logo.svg';
+import { useNavigate } from 'react-router';
 
-const navItems = ['Home', 'Services', 'About us', 'Contact us'];
+const navItems = [
+    { name: 'Home', link: "/" },
+    { name: 'Services', link: "/services" },
+    { name: 'About us', link: "/about-us" },
+    { name: 'Contact us', link: "/contact-us" }
+];
 
 function FloatingNavBar() {
+    const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleDrawerToggle = () => {
         setDrawerOpen((prev) => !prev);
+    };
+
+    const handleNavigation = (route) => {
+        navigate(route);
+        setDrawerOpen(false); // Close drawer on mobile after navigation
     };
 
     return (
@@ -63,6 +75,7 @@ function FloatingNavBar() {
                             {navItems.map((item) => (
                                 <Button
                                     key={item}
+                                    onClick={() => handleNavigation(item.link)}
                                     sx={{
                                         color: '#333',
                                         textTransform: 'none',
@@ -71,11 +84,12 @@ function FloatingNavBar() {
                                         '&:hover': { color: '#007bff' },
                                     }}
                                 >
-                                    {item}
+                                    {item.name}
                                 </Button>
                             ))}
                             <Button
                                 variant="contained"
+                                onClick={() => handleNavigation("/login")}
                                 sx={{
                                     backgroundColor: '#007bff',
                                     color: 'white',
