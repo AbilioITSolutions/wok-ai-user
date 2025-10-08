@@ -1,368 +1,191 @@
-import React from "react";
-import { Box, Container, Grid, Typography, Button } from "@mui/material";
-// import {NavLink} from "react-router-dom"
+import React, { useState } from "react";
+import {
+  Box,
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from "@mui/material";
+import { Outlet, useNavigate } from "react-router-dom";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 import LogoutIcon from "@mui/icons-material/Logout";
-import CreateIcon from "@mui/icons-material/Create";
-import man from "../../Assets/ProfileImages/man.png";
+import Navbar from "../../Components/Navbar";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("profile");
+
+  // state for modal
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const sidebarItems = [
+    { id: "profile", label: "Profile", icon: <PermIdentityIcon />, path: "/profile" },
+    { id: "billing", label: "My Billings", icon: <ReceiptIcon />, path: "/profile/billing" },
+    { id: "bookings", label: "Bookings", icon: <CurrencyRupeeIcon />, path: "/profile/bookings" },
+    { id: "settings", label: "Settings", icon: <SettingsIcon />, path: "/profile/settings" },
+    { id: "support", label: "Support", icon: <HeadsetMicIcon />, path: "/profile/support" },
+  ];
+
+  const handleTabClick = (item) => {
+    setActiveTab(item.id);
+    navigate(item.path);
+  };
+
+  const handleDeleteConfirm = () => {
+    setOpenDelete(false);
+    // here add your delete logic
+    console.log("Account deleted!");
+    navigate('/');
+  };
+
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography
-        variant="h5"
-        sx={{ color: "#368ADD", fontWeight: 600, mb: 3 }}
-      >
-        Account Settings
-      </Typography>
-
-      <Grid container spacing={3}>
-
-        <Grid size={{ xs: 12, md: 3 }}>
+    <>
+      <Navbar />
+      <Container maxWidth="xl" sx={{ mt: 14, mb: 4 }}>
+        <Box sx={{ display: "flex", gap: 3, flexDirection: { xs: 'column-reverse', md: 'row' } }}>
+          {/* Left Sidebar */}
           <Box
             sx={{
               border: "1px solid #e0e0e0",
               borderRadius: 2,
               p: 2,
+              backgroundColor: "#ffffff",
+              width: { xs: '100%', md: "280px" },
+              height: "fit-content",
+              maxHeight: { xs: "none", md: "calc(100vh - 120px)" },
+              overflowY: "auto",
+              position: { xs: 'static', md: 'fixed' },
+              top: { xs: 'auto', md: "120px" },
+              left: { xs: 'auto', md: "24px" },
+              order: { xs: 2, md: 1 },
+              display: "block",
+              zIndex: { xs: 'auto', md: 100 },
             }}
           >
-            <Typography variant="body1" sx={{ color: "#368ADD", mb: 1 }}>
-              <PermIdentityIcon sx={{ mr: 1 }} />
-              Profile
-            </Typography>
-            <hr />
-
-            <Typography variant="body1" sx={{ mb: 1 }}>
-              <ReceiptIcon sx={{ mr: 1 }} />
-              My Billings
-            </Typography>
-            <hr />
-
-            <Typography variant="body1" sx={{ mb: 1 }}>
-              <CurrencyRupeeIcon sx={{ mr: 1 }} />
-              Bookings
-            </Typography>
-            <hr />
-
-            <Typography variant="body1" sx={{ mb: 1 }}>
-              <SettingsIcon sx={{ mr: 1 }} />
-              Settings
-            </Typography>
-            <hr />
-
-            <Typography variant="body1" sx={{ mb: 1 }}>
-              <HeadsetMicIcon sx={{ mr: 1 }} />
-              Help Desk
-            </Typography>
-            <hr />
-
             <Typography
-              variant="body1"
-              sx={{ color: "#FF4040", fontWeight: 600 }}
-            >
-              <LogoutIcon sx={{ mr: 1 }} />
-              Log out
-            </Typography>
-          </Box>
-        </Grid>
-
-        {/* 
-<Grid size={{ xs: 12, md: 3 }}>
-  <Box
-    sx={{
-      border: "1px solid #e0e0e0",
-      borderRadius: 2,
-      p: 2,
-    }}
-  >
-    <NavLink
-      to="/profile"
-      style={({ isActive }) => ({
-        textDecoration: "none",
-        color: isActive ? "#368ADD" : "inherit",
-        fontWeight: isActive ? 600 : 400,
-      })}
-    >
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <PermIdentityIcon sx={{ mr: 1 }} />
-        Profile
-      </Typography>
-    </NavLink>
-    <hr />
-
-    <NavLink
-      to="/billings"
-      style={({ isActive }) => ({
-        textDecoration: "none",
-        color: isActive ? "#368ADD" : "inherit",
-        fontWeight: isActive ? 600 : 400,
-      })}
-    >
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <ReceiptIcon sx={{ mr: 1 }} />
-        My Billings
-      </Typography>
-    </NavLink>
-    <hr />
-
-    <NavLink
-      to="/bookings"
-      style={({ isActive }) => ({
-        textDecoration: "none",
-        color: isActive ? "#368ADD" : "inherit",
-        fontWeight: isActive ? 600 : 400,
-      })}
-    >
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <CurrencyRupeeIcon sx={{ mr: 1 }} />
-        Bookings
-      </Typography>
-    </NavLink>
-    <hr />
-
-    <NavLink
-      to="/settings"
-      style={({ isActive }) => ({
-        textDecoration: "none",
-        color: isActive ? "#368ADD" : "inherit",
-        fontWeight: isActive ? 600 : 400,
-      })}
-    >
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <SettingsIcon sx={{ mr: 1 }} />
-        Settings
-      </Typography>
-    </NavLink>
-    <hr />
-
-    <NavLink
-      to="/helpdesk"
-      style={({ isActive }) => ({
-        textDecoration: "none",
-        color: isActive ? "#368ADD" : "inherit",
-        fontWeight: isActive ? 600 : 400,
-      })}
-    >
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <HeadsetMicIcon sx={{ mr: 1 }} />
-        Help Desk
-      </Typography>
-    </NavLink>
-    <hr />
-
-    <Typography
-      variant="body1"
-      sx={{ color: "#FF4040", fontWeight: 600, cursor: "pointer" }}
-      onClick={() => {
-        // handle logout logic
-        console.log("Logging out...");
-      }}
-    >
-      <LogoutIcon sx={{ mr: 1 }} />
-      Log out
-    </Typography>
-  </Box>
-</Grid> */}
-
-        {/* Main Content */}
-        <Grid size={{ xs: 12, md: 9 }}>
-          <Box sx={{ p: 2 }}>
-            {/* Profile Header */}
-            <Box
+              variant="h5"
               sx={{
-                border: "1px solid #e0e0e0",
-                borderRadius: 2,
-                p: 3,
+                color: "#368ADD",
+                fontWeight: 600,
                 mb: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+                textAlign: { xs: "center", md: "left" },
+                display: { xs: "block", md: "block" }
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Box
-                  component="img"
-                  src={man}
-                  alt="Profile"
+              Account Settings
+            </Typography>
+
+            <List sx={{ p: 0 }}>
+              {sidebarItems.map((item) => (
+                <ListItem
+                  key={item.id}
+                  onClick={() => handleTabClick(item)}
                   sx={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: "50%",
+                    cursor: "pointer",
+                    borderRadius: 1,
+                    mb: 0.5,
+                    backgroundColor: activeTab === item.id ? "#f0f8ff" : "transparent",
+                    "&:hover": {
+                      backgroundColor: activeTab === item.id ? "#f0f8ff" : "#f5f5f5",
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      color: activeTab === item.id ? "#368ADD" : "#666",
+                      minWidth: 36,
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.label}
+                    sx={{
+                      color: activeTab === item.id ? "#368ADD" : "#333",
+                      fontWeight: activeTab === item.id ? 600 : 400,
+                      "& .MuiListItemText-primary": {
+                        fontSize: "0.9rem",
+                      },
+                    }}
+                  />
+                </ListItem>
+              ))}
+
+              {/* Logout */}
+              <ListItem
+                onClick={() => setOpenDelete(true)}
+                sx={{
+                  cursor: "pointer",
+                  borderRadius: 1,
+                  mt: 1,
+                  "&:hover": {
+                    backgroundColor: "#fbeaea",
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: "red", minWidth: 36 }}>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Logout"
+                  sx={{
+                    color: "red",
+                    "& .MuiListItemText-primary": {
+                      fontSize: "0.9rem",
+                    },
                   }}
                 />
-                <Box>
-                  <Typography variant="h6">Rohit Reddy</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Patient | Since 2025
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Hyderabad, Telangana, India
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{ borderRadius: "40px", px: 3 }}
-              >
-                Edit <CreateIcon sx={{ ml: 1, fontSize: 18 }} />
-              </Button>
-            </Box>
-
-            {/* Personal Information */}
-            <Box
-              sx={{
-                border: "1px solid #e0e0e0",
-                borderRadius: 2,
-                p: 3,
-                mb: 3,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h6" color="#368ADD">
-                  Personal information
-                </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ borderRadius: "40px", px: 3 }}
-                >
-                  Edit <CreateIcon sx={{ ml: 1, fontSize: 18 }} />
-                </Button>
-              </Box>
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    First name
-                  </Typography>
-                  <Typography fontWeight={500}>Rohit</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Last name
-                  </Typography>
-                  <Typography fontWeight={500}>Reddy</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Full name
-                  </Typography>
-                  <Typography fontWeight={500}>
-                    rohitreddy@gmail.com
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Mobile number
-                  </Typography>
-                  <Typography fontWeight={500}>8753356677</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Bio
-                  </Typography>
-                  <Typography fontWeight={500}>N/A</Typography>
-                </Grid>
-              </Grid>
-            </Box>
-
-            {/* Address */}
-            <Box
-              sx={{
-                border: "1px solid #e0e0e0",
-                borderRadius: 2,
-                p: 3,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h6" color="#368ADD">
-                  Address
-                </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ borderRadius: "40px", px: 3 }}
-                >
-                  Edit <CreateIcon sx={{ ml: 1, fontSize: 18 }} />
-                </Button>
-              </Box>
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Building name
-                  </Typography>
-                  <Typography fontWeight={500}>
-                    Maruthi Sri Apartments
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Street/Road/Area
-                  </Typography>
-                  <Typography fontWeight={500}>
-                    YSR Statue, Madhapur
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    City
-                  </Typography>
-                  <Typography fontWeight={500}>Hyderabad</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    State
-                  </Typography>
-                  <Typography fontWeight={500}>Telangana</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Country
-                  </Typography>
-                  <Typography fontWeight={500}>India</Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Typography variant="body2" color="#A9A9A9">
-                    Zip Code
-                  </Typography>
-                  <Typography fontWeight={500}>500082</Typography>
-                </Grid>
-              </Grid>
-            </Box>
+              </ListItem>
+            </List>
           </Box>
-        </Grid>
-      </Grid>
-    </Container>
+
+          {/* Right Content Area */}
+          <Box
+            sx={{
+           
+              borderRadius: 2,
+              p: { xs: 0, sm: 3 },
+              backgroundColor: "#ffffff",
+              minHeight: "auto",
+              flex: 1,
+              order: { xs: 1, md: 2 },
+              marginLeft: { xs: 0, md: "320px" },
+            }}
+          >
+            <Outlet />
+          </Box>
+        </Box>
+      </Container>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={openDelete} onClose={() => setOpenDelete(false)}>
+        <DialogTitle>{"Delete Account?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to Logout your account? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
 export default Profile;
-

@@ -12,16 +12,75 @@ import {
     ListItemText,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import logo from '../Assets/logo.svg';
+import logo from '../ASSETS/logo.svg';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const navItems = ['Home', 'Services', 'About us', 'Contact us'];
+const navItems = [
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+    { name: 'About us', path: '/about-us' },
+    { name: 'Contact us', path: '/contact-us' }
+];
 
 function FloatingNavBar() {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Function to handle navigation with scroll to top
+    const handleNavigation = (path) => {
+        navigate(path);
+        
+        // Robust scroll to top function
+        const scrollToTop = () => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            const mainContainer = document.querySelector('#root');
+            if (mainContainer) {
+                mainContainer.scrollTop = 0;
+            }
+        };
+
+        // Multiple scroll attempts
+        scrollToTop();
+        setTimeout(scrollToTop, 10);
+        setTimeout(scrollToTop, 100);
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });
+        }, 150);
+    };
+
     const handleDrawerToggle = () => {
         setDrawerOpen((prev) => !prev);
     };
+
+    // Function to check if nav item is active
+    const isActive = (path) => {
+        return location.pathname === path;
+    };
+
+    // Function to get nav item styling
+    const getNavItemStyle = (path) => ({
+        color: isActive(path) ? '#007bff' : '#333',
+        textTransform: 'none',
+        mx: 1.5,
+        fontSize: '1.1rem',
+        padding: '10px 20px',
+        minWidth: 'auto',
+        backgroundColor: isActive(path) ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
+        borderRadius: isActive(path) ? '8px' : '0',
+        '&:hover': {
+            color: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            borderRadius: '8px'
+        },
+    });
 
     return (
         <>
@@ -43,7 +102,7 @@ function FloatingNavBar() {
                         border: '1px solid #fdfbfbff',
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                         color: '#000',
-                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                        zIndex: 1000,
                     }}
                 >
                     <Toolbar sx={{
@@ -55,6 +114,7 @@ function FloatingNavBar() {
                         {/* Logo Image */}
                         <Box
                             component="img"
+                            onClick={() => handleNavigation('/')}
                             src={logo}
                             alt="WOK AI Logo"
                             sx={{
@@ -68,26 +128,16 @@ function FloatingNavBar() {
                         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
                             {navItems.map((item) => (
                                 <Button
-                                    key={item}
-                                    sx={{
-                                        color: '#333',
-                                        textTransform: 'none',
-                                        mx: 1.5,
-                                        fontSize: '1.1rem',
-                                        padding: '10px 20px',
-                                        minWidth: 'auto',
-                                        '&:hover': {
-                                            color: '#007bff',
-                                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                                            borderRadius: '8px'
-                                        },
-                                    }}
+                                    key={item.name}
+                                    sx={getNavItemStyle(item.path)}
+                                    onClick={() => navigate(item.path)}
                                 >
-                                    {item}
+                                    {item.name}
                                 </Button>
                             ))}
                             <Button
                                 variant="contained"
+                                onClick={() => navigate('/login')}
                                 sx={{
                                     backgroundColor: '#007bff',
                                     color: 'white',
@@ -113,22 +163,15 @@ function FloatingNavBar() {
                         <Box sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, alignItems: 'center' }}>
                             {navItems.map((item) => (
                                 <Button
-                                    key={item}
+                                    key={item.name}
                                     sx={{
-                                        color: '#333',
-                                        textTransform: 'none',
-                                        mx: 1,
+                                        ...getNavItemStyle(item.path),
                                         fontSize: '1rem',
                                         padding: '8px 12px',
-                                        minWidth: 'auto',
-                                        '&:hover': {
-                                            color: '#007bff',
-                                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                                            borderRadius: '6px'
-                                        },
                                     }}
+                                    onClick={() => navigate(item.path)}
                                 >
-                                    {item}
+                                    {item.name}
                                 </Button>
                             ))}
                             <Button
@@ -156,16 +199,16 @@ function FloatingNavBar() {
                         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                             <IconButton
                                 color="inherit"
+                                disableRipple
+                                disableFocusRipple
+                                disableTouchRipple
                                 aria-label="open drawer"
                                 edge="end"
                                 onClick={handleDrawerToggle}
                                 sx={{
                                     ml: 1,
                                     padding: '12px',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                                    }
+                                  
                                 }}
                             >
                                 <MenuIcon sx={{ fontSize: '28px' }} />
@@ -177,50 +220,60 @@ function FloatingNavBar() {
 
             {/* Drawer for Mobile Navigation */}
             <Drawer
-                anchor="right"
+                anchor="left"
                 open={drawerOpen}
                 onClose={handleDrawerToggle}
                 PaperProps={{
                     sx: {
                         width: 280,
                         backgroundColor: 'rgba(240,240,240,0.98)',
-                        borderRadius: '20px 0 0 20px',
+                        borderRadius: '0 20px 20px 0',
                         mt: '80px',
+                        
                         height: 'fit-content',
                         boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                        zIndex: 5300,
                     },
                 }}
             >
                 <List sx={{ mt: 3, padding: '0 10px' }}>
                     {navItems.map((item) => (
-                        <ListItem key={item} disablePadding sx={{ mb: 1 }}>
+                        <ListItem key={item.name} disablePadding sx={{ mb: 1 }}>
                             <ListItemButton
                                 sx={{
                                     textAlign: 'center',
                                     borderRadius: '10px',
                                     padding: '16px',
                                     margin: '0 10px',
+                                    backgroundColor: isActive(item.path) ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
                                     '&:hover': {
                                         backgroundColor: 'rgba(0, 123, 255, 0.1)',
                                     }
                                 }}
+                                onClick={() => {
+                                    navigate(item.path);
+                                    handleDrawerToggle(); // Close drawer after navigation
+                                }}
                             >
                                 <ListItemText
-                                    primary={item}
+                                    primary={item.name}
                                     primaryTypographyProps={{
                                         fontSize: '1.2rem',
-                                        fontWeight: '500'
+                                        fontWeight: '500',
+                                        color: isActive(item.path) ? '#007bff' : 'inherit'
                                     }}
                                 />
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <ListItem disablePadding sx={{ mt: 2, mb: 3 }}>
+                    <ListItem disablePadding  sx={{ mt: 2, mb: 3 , width: "100%" }}>
                         <ListItemButton sx={{ justifyContent: 'center' }}>
                             <Button
                                 variant="contained"
+                                onClick={() => navigate('/login')}
                                 sx={{
-                                    minwidth: '340px',
+                                    width: "100%",
+                                    minWidth: "100%",
                                     height: '60px',
                                     backgroundColor: '#368ADD',
                                     color: 'white',
@@ -232,6 +285,7 @@ function FloatingNavBar() {
                                         backgroundColor: '#0056b3',
                                         transform: 'translateY(-2px)',
                                     },
+
                                 }}
                             >
                                 Login

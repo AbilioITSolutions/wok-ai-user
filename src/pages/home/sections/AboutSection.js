@@ -8,8 +8,8 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import bgImage from './Sectionsassets/background.jpg';
-import doctorImage from './Sectionsassets/doctor.png';
+import bgImage from './sectionsassets/background.jpg';
+import homeabout from '../../../ASSETS/homeabout.png';
 
 function AboutSection() {
     return (
@@ -23,7 +23,8 @@ function AboutSection() {
                 px: { xs: 2, sm: 4, md: 6 },
                 py: { xs: 8, sm: 10, md: 12 },
                 gap: { xs: 6, md: 8 },
-                my: 6
+                my: 6,
+                mt:{xs:"300px",md:"200px"}
             }}
         >
             {/* Left Side: Image Layering */}
@@ -35,26 +36,11 @@ function AboutSection() {
                 }}
             >
                 {/* Background Image */}
-                <Box
-                    component="img"
-                    src={bgImage}
-                    alt="Background"
-                    sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        borderRadius: '20px',
-                        zIndex: 1,
-                    }}
-                />
-
+               
                 {/* Foreground Image */}
                 <Box
                     component="img"
-                    src={doctorImage}
+                    src={homeabout}
                     alt="Doctor"
                     sx={{
                         position: 'absolute',

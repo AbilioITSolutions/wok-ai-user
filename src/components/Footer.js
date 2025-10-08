@@ -14,7 +14,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import logo from '../Assets/logo1.svg';
+import logo from '../ASSETS/logo1.svg';
 
 function Footer() {
     const theme = useTheme();
@@ -34,9 +34,9 @@ function Footer() {
         >
             <Container maxWidth="lg">
                 {/* Top Grid */}
-                <Grid container spacing={isMobile ? 4 : 5}>
+                <Grid container spacing={{ xs: 3, sm: 4, md: 8 }}>
                     {/* Logo + Social */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item size={{xs:12,sm:6,md:3}}>
                         <Box
                             component="img"
                             src={logo}
@@ -48,34 +48,53 @@ function Footer() {
                                 mb: 3,
                             }}
                         />
-                        <Stack direction="row" spacing={1.5}>
-                            <IconButton sx={{ color: '#fff', fontSize: { xs: 26, md: 30 } }}>
+                        <Stack direction="row" spacing={{ xs: 1, sm: 1.5 }}>
+                            <IconButton sx={{ 
+                                color: '#fff', 
+                                fontSize: { xs: 22, sm: 26, md: 30 },
+                                p: { xs: 0.5, sm: 1 }
+                            }}>
                                 <FacebookIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ color: '#fff', fontSize: { xs: 26, md: 30 } }}>
+                            <IconButton sx={{ 
+                                color: '#fff', 
+                                fontSize: { xs: 22, sm: 26, md: 30 },
+                                p: { xs: 0.5, sm: 1 }
+                            }}>
                                 <InstagramIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ color: '#fff', fontSize: { xs: 26, md: 30 } }}>
+                            <IconButton sx={{ 
+                                color: '#fff', 
+                                fontSize: { xs: 22, sm: 26, md: 30 },
+                                p: { xs: 0.5, sm: 1 }
+                            }}>
                                 <LinkedInIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ color: '#fff', fontSize: { xs: 26, md: 30 } }}>
+                            <IconButton sx={{ 
+                                color: '#fff', 
+                                fontSize: { xs: 22, sm: 26, md: 30 },
+                                p: { xs: 0.5, sm: 1 }
+                            }}>
                                 <YouTubeIcon fontSize="inherit" />
                             </IconButton>
                         </Stack>
                     </Grid>
 
                     {/* Useful Links */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item size={{xs:12,sm:6,md:3}}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
-                            mb: 3,
-                            fontSize: { xs: '1.2rem', md: '1.3rem' }
+                            mb: { xs: 2, sm: 3 },
+                            fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.3rem' }
                         }}>
                             Useful Links
                         </Typography>
-                        <Stack spacing={1.5}>
+                        <Stack spacing={{ xs: 1, sm: 1.5 }}>
                             {['Home', 'Services', 'About us', 'Contact', 'Find a doctor'].map((text, i) => (
-                                <Link key={i} href="#" underline="none" color="inherit" sx={{ fontSize: { xs: '1rem', md: '1.1rem' } }}>
+                                <Link key={i} href="#" underline="none" color="inherit" sx={{ 
+                                    fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                    '&:hover': { opacity: 0.8 }
+                                }}>
                                     {text}
                                 </Link>
                             ))}
@@ -83,17 +102,20 @@ function Footer() {
                     </Grid>
 
                     {/* Categories */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item size={{xs:12,sm:6,md:2}}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
-                            mb: 3,
-                            fontSize: { xs: '1.2rem', md: '1.3rem' }
+                            mb: { xs: 2, sm: 3 },
+                            fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.3rem' }
                         }}>
                             Categories
                         </Typography>
-                        <Stack spacing={1.5}>
+                        <Stack spacing={{ xs: 1, sm: 1.5 }}>
                             {['Hair', 'Skin', 'Dental', 'Eye Care', 'Surgery'].map((text, i) => (
-                                <Link key={i} href="#" underline="none" color="inherit" sx={{ fontSize: { xs: '1rem', md: '1.1rem' } }}>
+                                <Link key={i} href="#" underline="none" color="inherit" sx={{ 
+                                    fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                    '&:hover': { opacity: 0.8 }
+                                }}>
                                     {text}
                                 </Link>
                             ))}
@@ -101,22 +123,31 @@ function Footer() {
                     </Grid>
 
                     {/* Contact Info */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item size={{xs:12,sm:6,md:4}}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
-                            mb: 3,
-                            fontSize: { xs: '1.2rem', md: '1.3rem' }
+                            mb: { xs: 2, sm: 3 },
+                            fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.3rem' }
                         }}>
                             Contact Us
                         </Typography>
-                        <Stack spacing={1.5}>
-                            <Typography sx={{ fontSize: { xs: '1rem', md: '1.1rem' } }}>
+                        <Stack spacing={{ xs: 1, sm: 1.5 }}>
+                            <Typography sx={{ 
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                lineHeight: { xs: 1.4, md: 1.5 }
+                            }}>
                                 +91-743-561-0842
                             </Typography>
-                            <Typography sx={{ fontSize: { xs: '1rem', md: '1.1rem' } }}>
+                            <Typography sx={{ 
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                lineHeight: { xs: 1.4, md: 1.5 }
+                            }}>
                                 help@wokai.com
                             </Typography>
-                            <Typography sx={{ fontSize: { xs: '0.95rem', md: '1.05rem' } }}>
+                            <Typography sx={{ 
+                                fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.05rem' },
+                                lineHeight: { xs: 1.3, md: 1.4 }
+                            }}>
                                 Capital PK Rd, VIP Hills, Madhapur, Hyderabad, Telangana 500081
                             </Typography>
                         </Stack>
@@ -124,7 +155,7 @@ function Footer() {
                 </Grid>
 
                 {/* Divider */}
-                <Box sx={{ borderTop: '1px solid rgba(255,255,255,0.3)', my: 4 }} />
+                <Box sx={{ borderTop: '1px solid rgba(255,255,255,0.3)', my: { xs: 3, sm: 4 } }} />
 
                 {/* Bottom Section */}
                 <Grid
@@ -134,7 +165,7 @@ function Footer() {
                     alignItems="center"
                 >
                     {/* Copyright */}
-                    <Grid item xs={12} md="auto">
+                    <Grid item size={{xs:12 , md:"auto"}} >
                         <Typography sx={{
                             fontSize: { xs: '0.95rem', md: '1rem' },
                             textAlign: { xs: 'center', md: 'left' },
@@ -145,7 +176,7 @@ function Footer() {
                     </Grid>
 
                     {/* Legal Links */}
-                    <Grid item xs={12} md="auto">
+                    <Grid item size={{xs:12, md:"auto"}} >
                         <Stack
                             direction="row"
                             spacing={3}

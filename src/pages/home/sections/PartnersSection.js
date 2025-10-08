@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Typography, Grid, Container } from '@mui/material';
-import logo1 from './Sectionsassets/1.svg';
-import logo2 from './Sectionsassets/2.svg';
-import logo3 from './Sectionsassets/3.svg';
-import logo4 from './Sectionsassets/4.svg';
-import logo5 from './Sectionsassets/5.svg';
+import logo1 from './sectionsassets/1.svg';
+import logo2 from './sectionsassets/2.svg';
+import logo3 from './sectionsassets/3.svg';
+import logo4 from './sectionsassets/4.svg';
+import logo5 from './sectionsassets/5.svg';
 
 function PartnersSection() {
     const firstRow = [logo1, logo2, logo3];
@@ -18,6 +18,7 @@ function PartnersSection() {
         objectFit: 'contain',
         filter: 'brightness(0) invert(1)',
         transition: 'transform 0.2s ease-in-out',
+        padding: 2,
         '&:hover': { transform: 'scale(1.05)' },
     };
 
@@ -79,6 +80,7 @@ function PartnersSection() {
                                 src={logo}
                                 alt={`Partner ${index + 4}`}
                                 sx={logoStyle}
+                              
                             />
                         </Grid>
                     ))}

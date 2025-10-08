@@ -22,7 +22,7 @@ export default function Cardsection() {
   ];
 
   return (
-    <Box sx={{ marginTop: "80px", height: "300PX" }}>
+    <Box sx={{ marginTop: "80px", height: "300PX" , mb:{xs:'300px',md:'0px'}}}>
       <Box>
         <Grid container spacing={4} justifyContent="center" sx={{ mt: 3 }}>
           {cardData.map((card, index) => (

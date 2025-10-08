@@ -1,225 +1,337 @@
-// PatientInfo.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
+    Typography, 
+    Card, 
+    CardContent, 
+    Button, 
+    Container, 
   Grid,
   TextField,
-  Typography,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Checkbox,
   FormControlLabel,
-  Button,
-  Paper,
-  Divider,
-} from "@mui/material";
+    InputAdornment
+} from '@mui/material';
 
-import PersonIcon from "@mui/icons-material/Person";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import { Container } from "@mui/system";
-// import StepperNav from "../../Routes/StepperNav";
+import PersonIcon from '@mui/icons-material/Person';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
+import { useBooking } from '../../Context/BookingContext';
+import Navbar from '../../Components/Navbar';
+import Footer from '../../Components/Footer';
 
 const PatientInfo = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    dob: "",
-    gender: "",
-    currentSymptoms: "",
-    currentMedications: "",
-    allergies: "",
-    medicalHistory: "",
-    newPatient: false,
-    insurance: false,
-    consent: false,
-    privacy: false,
-  });
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
+    const navigate = useNavigate();
+    const { bookingData, updateBookingData } = useBooking();
+    const [formData, setFormData] = useState(bookingData.patientInfo || {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        dateOfBirth: '',
+        gender: '',
+        currentSymptoms: '',
+        currentMedications: '',
+        allergies: '',
+        medicalHistory: '',
+        isNewPatient: false,
+        hasInsurance: false,
+        consentTreatment: false,
+        agreePrivacy: false
     });
-  };
 
-//   const handleSubmit = () => {
-//     console.log("Patient Info JSON:", formData);
-//   };
+    useEffect(() => {
+        if (bookingData.patientInfo) {
+            setFormData(bookingData.patientInfo);
+        }
+    }, [bookingData.patientInfo]);
+
+    const steps = [
+        { number: 1, title: 'Select Doctor', subtitle: 'Choose your healthcare provider', active: false, completed: true },
+        { number: 2, title: 'Schedule', subtitle: 'Select appointment slot', active: false, completed: true },
+        { number: 3, title: 'Patient Info', subtitle: 'Confirm your details', active: true, completed: false },
+        { number: 4, title: 'Confirmation', subtitle: 'Review and confirm', active: false, completed: false },
+        { number: 5, title: 'Payment', subtitle: 'Choose payment method', active: false, completed: false }
+    ];
+
+    const handleInputChange = (field) => (event) => {
+        const newFormData = {
+      ...formData,
+            [field]: event.target.value
+        };
+        setFormData(newFormData);
+        updateBookingData('patientInfo', newFormData);
+    };
+
+    const handleCheckboxChange = (field) => (event) => {
+        const newFormData = {
+            ...formData,
+            [field]: event.target.checked
+        };
+        setFormData(newFormData);
+        updateBookingData('patientInfo', newFormData);
+    };
 
   return (
+        <>
+            <Navbar />
+            <Box sx={{ pt: 16, pb: 3, backgroundColor: '#fafbfc', minHeight: '100vh' }}>
     <Container maxWidth="lg">
-      {/* <StepperNav/> */}
-    <Box p={3}>
-      <Typography variant="h5" fontWeight="bold" mb={3}>
+                    {/* Header */}
+                    <Box sx={{ mb: 4 }}>
+                        <Typography variant="h4" sx={{ 
+                            fontWeight: 'bold',
+                            fontSize: '2rem',
+                            mb: 1,
+                            color: '#333'
+                        }}>
         Patient Information
       </Typography>
+                    </Box>
 
-      
-      {/* Side by side equal width sections */}
-      <Grid container spacing={3}>
+                    {/* Progress Steps */}
+                       {/* Progress Steps */}
+                    <Card sx={{
+                        borderRadius: 2,
+                        boxShadow: 'none',
+                        border: '1px solid #e0e0e0',
+                        backgroundColor: '#ffffff',
+                        mb: 4,
+                        overflow: 'visible'
+                    }}>
+                        <Box sx={{ 
+                            p: { xs: 2, sm: 3 },
+                            display: 'flex', 
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            alignItems: { xs: 'flex-start', sm: 'center' },
+                            gap: { xs: 2, sm: 4 },
+                            justifyContent: 'space-between'
+                        }}>
+                            {steps.map((step, index) => (
+                                <Box key={step.number} sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center',
+                                    gap: { xs: 1.5, sm: 2 },
+                                    flex: 1,
+                                    width: { xs: '100%', sm: 'auto' },
+                                    mb: { xs: 1, sm: 0 }
+                                }}>
+                                    {/* Circle */}
+                                    <Box sx={{
+                                        width: { xs: 40, sm: step.completed ? 50 : 60 },
+                                        height: { xs: 40, sm: step.completed ? 50 : 60 },
+                                        borderRadius: '50%',
+                                        backgroundColor: step.completed ? '#4CAF50' : step.active ? '#368ADD' : '#e0e0e0',
+                                        color: step.completed ? '#fff' : step.active ? '#fff' : '#999',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontWeight: 'bold',
+                                        fontSize: { xs: '1rem', sm: step.completed ? '1.2rem' : '1.4rem' },
+                                        flexShrink: 0
+                                    }}>
+                                        {step.completed ? '✓' : step.number}
+                                    </Box>
+                                    
+                                    {/* Text */}
+                                    <Box>
+                                        <Typography sx={{
+                                            fontWeight: 'bold',
+                                            fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                            color: '#333',
+                                            mb: 0.5
+                                        }}>
+                                            {step.title}
+                                        </Typography>
+                                        <Typography sx={{
+                                            fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                                            color: '#666',
+                                            lineHeight: 1.2
+                                        }}>
+                                            {step.subtitle}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
+                    </Card>
+
+                    {/* Patient Information Form */}
+                    <Card sx={{
+                        borderRadius: 2,
+                        boxShadow: 'none',
+                        border: '1px solid #e0e0e0',
+                        backgroundColor: '#ffffff',
+                        mb: 4
+                    }}>
+                        <CardContent sx={{ p: 4 }}>
+                            <Grid container spacing={4}>
         {/* Personal Details */}
-        <Grid size={{xs:12, md:6}}>
-          <Paper variant="outlined" sx={{ p: 2, height: "100%" }}>
-            <Box display="flex" alignItems="center" mb={2}>
-              <PersonIcon color="primary" sx={{ mr: 1 }} />
-              <Typography variant="h6">Personal Details</Typography>
+                                <Grid item size={{xs:12, md:6}}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                        <PersonIcon sx={{ color: '#368ADD', mr: 1, fontSize: '1.5rem' }} />
+                                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                            Personal Details
+                                        </Typography>
             </Box>
-            <Divider sx={{ mb: 2 }} />
 
-            <Grid container spacing={2}>
-              <Grid size={{xs:12, sm:6}}>
+                                    <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
                 <TextField
                   fullWidth
                   label="First Name"
-                  name="firstName"
                   value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="John"
+                                            onChange={handleInputChange('firstName')}
+                                            variant="outlined"
+                                            size="small"
                 />
-              </Grid>
-              <Grid size={{xs:12, md:6}}>
                 <TextField
                   fullWidth
                   label="Last Name"
-                  name="lastName"
                   value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Doe"
+                                            onChange={handleInputChange('lastName')}
+                                            variant="outlined"
+                                            size="small"
                 />
-              </Grid>
-              <Grid item xs={12}>
+                                    </Box>
+                                    
                 <TextField
                   fullWidth
                   label="Email ID"
-                  name="email"
                   value={formData.email}
-                  onChange={handleChange}
-                  placeholder="johndoe@gmail.com"
-                />
-              </Grid>
-              <Grid item xs={12}>
+                                        onChange={handleInputChange('email')}
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ mb: 3 }}
+                                    />
+                                    
                 <TextField
                   fullWidth
                   label="Phone Number"
-                  name="phone"
                   value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+1 (555) 123-4567"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+                                        onChange={handleInputChange('phone')}
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ mb: 3 }}
+                                    />
+                                    
+                                    <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField
                   fullWidth
-                  type="date"
                   label="Date of Birth"
-                  name="dob"
-                  InputLabelProps={{ shrink: true }}
-                  value={formData.dob}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                                            placeholder="DD/MM/YYYY"
+                                            value={formData.dateOfBirth}
+                                            onChange={handleInputChange('dateOfBirth')}
+                                            variant="outlined"
+                                            size="small"
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <CalendarTodayIcon sx={{ color: '#666' }} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                        <FormControl fullWidth size="small">
                   <InputLabel>Gender</InputLabel>
                   <Select
-                    name="gender"
                     value={formData.gender}
-                    onChange={handleChange}
+                                                onChange={handleInputChange('gender')}
+                                                label="Gender"
                   >
-                    <MenuItem value="">Select Gender</MenuItem>
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
                     <MenuItem value="other">Other</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
-            </Grid>
-          </Paper>
+                                    </Box>
         </Grid>
 
         {/* Medical Information */}
-        <Grid size={{xs:12, md:6}}>
-          <Paper variant="outlined" sx={{ p: 2, height: "100%" }}>
-            <Box display="flex" alignItems="center" mb={2}>
-              <FavoriteBorderIcon color="error" sx={{ mr: 1 }} />
-              <Typography variant="h6">Medical Information</Typography>
+                                <Grid item size={{xs:12, md:6}}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                        <FavoriteIcon sx={{ color: '#368ADD', mr: 1, fontSize: '1.5rem' }} />
+                                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                            Medical Information
+                                        </Typography>
             </Box>
-            <Divider sx={{ mb: 2 }} />
 
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Current Symptoms"
-                  name="currentSymptoms"
+                                        placeholder="Please describe here..."
                   value={formData.currentSymptoms}
-                  onChange={handleChange}
+                                        onChange={handleInputChange('currentSymptoms')}
                   multiline
-                  rows={2}
-                  placeholder="Please describe here..."
-                />
-              </Grid>
-              <Grid item xs={12}>
+                                        rows={3}
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ mb: 3 }}
+                                    />
+                                    
                 <TextField
                   fullWidth
                   label="Current Medications"
-                  name="currentMedications"
+                                        placeholder="Please describe here..."
                   value={formData.currentMedications}
-                  onChange={handleChange}
-                  placeholder="Please describe here..."
-                />
-              </Grid>
-              <Grid item xs={12}>
+                                        onChange={handleInputChange('currentMedications')}
+                                        multiline
+                                        rows={3}
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ mb: 3 }}
+                                    />
+                                    
                 <TextField
                   fullWidth
                   label="Allergies"
-                  name="allergies"
+                                        placeholder="Please describe here..."
                   value={formData.allergies}
-                  onChange={handleChange}
-                  placeholder="Please describe here..."
-                />
-              </Grid>
-              <Grid size={{xs:12}}>
+                                        onChange={handleInputChange('allergies')}
+                                        multiline
+                                        rows={3}
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ mb: 3 }}
+                                    />
+                                    
                 <TextField
                   fullWidth
                   label="Medical History"
-                  name="medicalHistory"
+                                        placeholder="Please describe here..."
                   value={formData.medicalHistory}
-                  onChange={handleChange}
+                                        onChange={handleInputChange('medicalHistory')}
                   multiline
-                  rows={2}
-                  placeholder="Please describe here..."
+                                        rows={3}
+                                        variant="outlined"
+                                        size="small"
                 />
-              </Grid>
-            </Grid>
-          </Paper>
         </Grid>
       </Grid>
 
-      {/* Additional Info */}
-      <Box mt={3}>
-        <Paper  sx={{ p: 4 }}>
-          <Box display="flex" alignItems="center" mb={2}>
-            <SettingsIcon color="action" sx={{ mr: 1 }} />
-            <Typography variant="h6">Additional Information</Typography>
+                            {/* Additional Information */}
+                            <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid #e0e0e0' }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                    <SettingsIcon sx={{ color: '#368ADD', mr: 1, fontSize: '1.5rem' }} />
+                                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                        Additional Information
+                                    </Typography>
           </Box>
-          {/* <Divider sx={{ mb: 2 }} /> */}
 
-          <Grid container spacing={2}>
-            <Grid size={{xs:12, md:6}}>
+                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0 }}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="newPatient"
-                    checked={formData.newPatient}
-                    onChange={handleChange}
+                                                checked={formData.isNewPatient}
+                                                onChange={handleCheckboxChange('isNewPatient')}
+                                                sx={{ color: '#368ADD' }}
                   />
                 }
                 label="I am a new patient to this doctor"
@@ -227,21 +339,19 @@ const PatientInfo = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="insurance"
-                    checked={formData.insurance}
-                    onChange={handleChange}
+                                                checked={formData.hasInsurance}
+                                                onChange={handleCheckboxChange('hasInsurance')}
+                                                sx={{ color: '#368ADD' }}
                   />
                 }
                 label="I have health insurance"
               />
-            </Grid>
-            <Grid size={{xs:12, sm:6, md:6}}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="consent"
-                    checked={formData.consent}
-                    onChange={handleChange}
+                                                checked={formData.consentTreatment}
+                                                onChange={handleCheckboxChange('consentTreatment')}
+                                                sx={{ color: '#368ADD' }}
                   />
                 }
                 label="I consent to receive medical treatment"
@@ -249,28 +359,61 @@ const PatientInfo = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="privacy"
-                    checked={formData.privacy}
-                    onChange={handleChange}
+                                                checked={formData.agreePrivacy}
+                                                onChange={handleCheckboxChange('agreePrivacy')}
+                                                sx={{ color: '#368ADD' }}
                   />
                 }
                 label="I agree to the privacy policy and terms"
               />
-            </Grid>
-          </Grid>
-        </Paper>
+                                </Box>
       </Box>
-      {/* Buttons */}
-      <Grid container  sx={{display:"flex", justifyContent:"space-between", mt: 2 }}>
-      
-                      <Button startIcon={<ArrowBack />}>Back</Button>
-                      <Button variant="contained" endIcon={<ArrowForward />}>
+                        </CardContent>
+                    </Card>
+
+                    {/* Navigation Buttons */}
+                    <Box sx={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        mt: 4 
+                    }}>
+                        <Button
+                            variant="outlined"
+                            startIcon={<ArrowBackIcon />}
+                            onClick={() => navigate(-1)}
+                            sx={{
+                                px: 4,
+                                py: 1.5,
+                                borderColor: '#ccc',
+                                color: '#666',
+                                '&:hover': {
+                                    borderColor: '#999',
+                                    backgroundColor: '#f5f5f5'
+                                }
+                            }}
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            variant="contained"
+                            endIcon={<ArrowForwardIcon />}
+                            onClick={() => navigate('/doctorlist/clinic/confirmation')}
+                            sx={{
+                                px: 4,
+                                py: 1.5,
+                                backgroundColor: '#368ADD',
+                                '&:hover': {
+                                    backgroundColor: '#2c6bb3'
+                                }
+                            }}
+                        >
                           Continue
                       </Button>
-      
-                  </Grid>
     </Box>
     </Container>
+            </Box>
+            <Footer />
+        </>
   );
 };
 

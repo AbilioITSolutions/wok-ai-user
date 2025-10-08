@@ -4,27 +4,26 @@ import { Container } from '@mui/system';
  
 const AbouttextPage = () => {
   return (
-    <Box sx={{ backgroundColor: '#fff', p: 4, marginTop:"200px"}}>
+    <Box sx={{ backgroundColor: '#fff', p: 4, marginTop:{xs:"100px",md:"200px"}}}>
         <Container maxWidth="lg">
-
-             <Grid container spacing={8}  >
+             <Grid container spacing={4} alignItems="flex-start">
         {/* Left side link */}
-        <Grid item xs={12} md={2}>
-          <Link href="#" color="#2B58D6" underline="hover" sx={{ fontSize: '15px' , marginRight:"330px",font:"Albert Sans",fontWeight:"400"}}>
+        <Grid item size={{xs:12,md:5}}>
+          <Link href="#" color="#2B58D6" underline="hover" sx={{ fontSize: '20px', font:"Albert Sans", fontWeight:"400"}}>
             Who are we?
           </Link>
         </Grid>
 
         {/* Main content */}
-        <Grid item xs={12} md={10}>
+        <Grid item size={{xs:12,md:7}}>
           <Box>
-            <Typography variant="h4" component="h1" sx={{ fontWeight: '300', mb: 2 , color:"#1E1E23" , fontSize:"30px"}}>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: '300', mb: 2 , color:"#1E1E23" , fontSize:"30px" , fontWeight:"700" , lineHeight:"30px"}}>
               Book doctor appointments at <br />
               nearby clinics in just a few taps <br />
               with Wok AI.
             </Typography>
 
-            <Typography variant="body2" sx={{ maxWidth: 650, color:"#BBBBBB", fontSize:"10px",font:"Albert Sans"}}>
+            <Typography variant="body2" sx={{ maxWidth: 650, color:"#BBBBBB", fontSize:"13px",font:"Albert Sans"}}>
               With Wok AI, your health is always in safe hands. You can easily find trusted clinics nearby,
               search doctors by specialty, rating, or availability, and book an appointment in just a few clicks—
               no waiting in long queues. Get instant confirmations and reminders, manage your bookings anytime,

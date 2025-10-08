@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import heroImage from './Sectionsassets/doctorshero.svg';
+import heroImage from './sectionsassets/doctorshero.svg';
 
 function Hero() {
     return (
@@ -61,6 +61,7 @@ function Hero() {
                     color: '#368ADD',
                     fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                     textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                    fontWeight: '800',
                     letterSpacing: '0.5px'
                 }}>
                     Find the right surgery at the right price
@@ -70,7 +71,8 @@ function Hero() {
                     fontSize: { xs: '1.1rem', sm: '1.4rem' },
                     lineHeight: 1.6,
                     textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)',
-                    mx: 'auto'
+                    mx: 'auto',
+                    fontWeight: '600',
                 }}>
                     Compare surgery costs across India's best hospitals. Get second opinions. Make informed decisions
                 </Typography>

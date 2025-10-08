@@ -2,7 +2,7 @@ import React from 'react'
 import AbouttextPage from './Abouttextpage'
 import Ourmission from './Ourmission'
 import Ourvission from './Ourvission'
-import FloatingNavBar from "../../Components/FloatingNavBar"
+import FloatingNavBar from "../../Components/FloatingNavbar"
 import Footer from "../../Components/Footer"
 import AboutHeropage from './AboutHeropage'
 

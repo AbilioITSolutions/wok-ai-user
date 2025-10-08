@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography, Container } from "@mui/material";
-import Vission from "../../Assets/Aboutusimages/Vission.png";
+import Vission from "../../ASSETS/Aboutusimages/Vission.png";
 export default function Ourvission() {
   return (
     <Box sx={{ py: 8, bgcolor: "background.paper" }
@@ -15,12 +15,12 @@ export default function Ourvission() {
               src={Vission}
               alt="Person using tablet"
               sx={{
-                 width: "500px",
+                 width: {xs:"100%",md:"500px"},
                 height:"300px",
                 borderRadius: 3, // Rounded corners
                 boxShadow: 3,
                 objectFit: "cover",
-                marginRight:"80px"
+                marginRight:{xs:"0px",md:"80px"}
               }}
             />
           </Grid>

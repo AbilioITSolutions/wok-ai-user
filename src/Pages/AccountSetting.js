@@ -6,57 +6,135 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const supportItems = [
   {
-    icon: <ChatBubbleOutlineIcon color="primary" />,
+    icon: <ChatBubbleOutlineIcon color="primary" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }} />,
     title: "Live Chat Support",
     subtitle: "Get instant help with booking your appointment",
-    action: <Button variant="contained">Chat Now</Button>,
+    action: <Button
+      sx={{
+        width: { xs: '100%', sm: 'auto' },
+        minWidth: { xs: 'auto', sm: '120px' },
+        bgcolor: '#368ADD',
+        fontSize: { xs: '0.8rem', sm: '0.875rem' },
+        py: { xs: 1, sm: 1.5 }
+      }}
+      variant="contained"
+    >
+      Chat Now
+    </Button>,
   },
   {
-    icon: <PhoneIcon color="primary" />,
+    icon: <PhoneIcon color="primary" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }} />,
     title: "Call Support",
     subtitle: "Speak with our booking specialists",
     action: (
-      <Button variant="contained">+91 8765766724</Button>
+      <Button
+        sx={{
+          width: { xs: '100%', sm: 'auto' },
+          minWidth: { xs: 'auto', sm: '140px' },
+          bgcolor: '#368ADD',
+          fontSize: { xs: '0.8rem', sm: '0.875rem' },
+          py: { xs: 1, sm: 1.5 }
+        }}
+        variant="contained"
+      >
+        +91 8765766724
+      </Button>
     ),
   },
   {
-    icon: <InsertDriveFileIcon color="primary" />,
+    icon: <InsertDriveFileIcon color="primary" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }} />,
     title: "Booking Guide",
     subtitle: "Step-by-step booking instructions",
-    action: <Button variant="contained">View Guide</Button>,
+    action: <Button
+      sx={{
+        width: { xs: '100%', sm: 'auto' },
+        minWidth: { xs: 'auto', sm: '120px' },
+        bgcolor: '#368ADD',
+        fontSize: { xs: '0.8rem', sm: '0.875rem' },
+        py: { xs: 1, sm: 1.5 }
+      }}
+      variant="contained"
+    >
+      View Guide
+    </Button>,
   },
 ];
 
 export default function SupportGrid() {
   return (
-    <Grid container spacing={2}>
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid size={{ xs: 12, md: 9 }}>
+    <Grid container spacing={{ xs: 1, sm: 2 }}>
+      <Container maxWidth="xl" sx={{ mt: { xs: 2, sm: 4 } }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           {supportItems.map((support, index) => (
             <Paper
               key={index}
               variant="outlined"
               sx={{
-                p: 2,
-                mb: 2,
-                borderRadius: 2,
+                p: { xs: 2, sm: 3, md: 4 },
+                mb: { xs: 1.5, sm: 2 },
+                borderRadius: { xs: 1.5, sm: 2 },
                 display: "flex",
+                flexDirection: { xs: 'column', sm: 'row' },
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                gap: { xs: 2, sm: 0 },
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  transform: 'translateY(-1px)'
+                }
               }}
             >
-              <Box display="flex" alignItems="center" gap={2}>
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={{ xs: 1.5, sm: 2 }}
+                sx={{
+                  width: { xs: '100%', sm: 'auto' },
+                  minWidth: 0 // Allow flex item to shrink
+                }}
+              >
                 {support.icon}
-                <Box>
-                  <Typography fontWeight={600}>
+                <Box sx={{
+                  minWidth: 0, // Allow text to wrap properly
+                  flex: 1
+                }}>
+                  <Typography
+                    fontWeight={600}
+                    sx={{
+                      fontSize: { xs: '1rem', sm: '1.125rem' },
+                      mb: { xs: 0.25, sm: 0.5 },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {support.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                      lineHeight: { xs: 1.4, sm: 1.5 },
+                      display: '-webkit-box',
+                      WebkitLineClamp: { xs: 2, sm: 3 },
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}
+                  >
                     {support.subtitle}
                   </Typography>
                 </Box>
               </Box>
-              {support.action}
+              <Box sx={{
+                width: { xs: '100%', sm: 'auto' },
+                display: 'flex',
+                justifyContent: { xs: 'center', sm: 'flex-end' },
+                mt: { xs: 1, sm: 0 }
+              }}>
+                {support.action}
+              </Box>
             </Paper>
           ))}
         </Grid>
