@@ -3,6 +3,8 @@ import config from "../Config";
 
 const apiUrl = config.apiUrl;
 
+// Get token from localStorage at runtime
+const getToken = () => localStorage.getItem('authToken');
 // Create Enquiry API
 export const createEnquiry = async (enquiryData) => {
     try {
