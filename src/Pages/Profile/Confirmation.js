@@ -10,7 +10,9 @@ import {
     Avatar,
     Checkbox,
     FormControlLabel,
-    Divider
+    Divider,
+    Alert,
+    CircularProgress
 } from '@mui/material';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -21,11 +23,15 @@ import { useBooking } from '../../Context/BookingContext';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
 import tick from '../../ASSETS/tick.png';
+import { createBooking } from '../../Apis/ConformationApis';
 
 const Confirmation = () => {
     const navigate = useNavigate();
-    const { bookingData } = useBooking();
-    const [agreeTerms, setAgreeTerms] = useState(true);
+    const { bookingData, clearBookingData } = useBooking();
+    const [agreeTerms, setAgreeTerms] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [bookingSuccess, setBookingSuccess] = useState(false);
 
     const steps = [
         { number: 1, title: 'Select Doctor', subtitle: 'Choose your healthcare provider', active: false, completed: true },
@@ -64,6 +70,67 @@ const Confirmation = () => {
         }
     };
 
+    // Handle booking confirmation
+    const handleConfirmBooking = async () => {
+        if (!agreeTerms) {
+            setError('Please agree to the terms and conditions before proceeding.');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Prepare booking data from context
+            const bookingPayload = {
+                doctorId: bookingData.selectedDoctor || 1,
+                clinicId: bookingData.clinicId || 2,
+                treatmentId: bookingData.treatmentId || 2,
+                treatmentServiceId: bookingData.serviceId || 1,
+                bookingType: bookingData.consultingType?.toLowerCase() || 'offline',
+                consultingPrice: 899, // Set your price here
+                bookingDate: bookingData.selectedDate ? `${new Date().getFullYear()}-06-${bookingData.selectedDate.toString().padStart(2, '0')}` : '2025-06-30',
+                bookingTime: bookingData.selectedTime?.replace(/ AM| PM/, '').trim() || '11:00',
+                userDetails: {
+                    firstName: bookingData.patientInfo?.firstName || '',
+                    lastName: bookingData.patientInfo?.lastName || '',
+                    email:bookingData.patientInfo?.email || '',
+                    dateOfBirth: bookingData.patientInfo?.dateOfBirth ? bookingData.patientInfo.dateOfBirth.replace(/\//g, '-') : '',
+                    gender: bookingData.patientInfo?.gender || '',
+                    phone: bookingData.patientInfo?.phone || ''
+                },
+                symptoms: bookingData.patientInfo?.currentSymptoms || '',
+                medications: bookingData.patientInfo?.currentMedications || '',
+                allergies: bookingData.patientInfo?.allergies || '',
+             
+                medicalHistory: bookingData.patientInfo?.medicalHistory || '',
+                additionalInfo: 'Booking created from confirmation page',
+                token: 'your_jwt_token_here' 
+                // You'll need to get this from auth context or localStorage
+            };
+
+            console.log('Creating booking with data:', bookingPayload);
+
+            const response = await createBooking(bookingPayload);
+            console.log('Booking created successfully:', response);
+
+            setBookingSuccess(true);
+            // Clear booking data after successful booking
+            setTimeout(() => {
+                clearBookingData();
+                // Navigate to success page or home
+                navigate("/doctorlist/clinic/payment")
+            }, 2000);
+
+        } catch (error) {
+            console.error('Booking creation failed:', error);
+            setError(error?.response?.data?.message || 'Failed to create booking. Please try again.');
+        } finally {
+            
+            setLoading(false);
+        }
+    };
+
     const preparationItems = [
         "Ensure stable internet connection for video calls",
         "Test your camera and microphone beforehand",
@@ -88,9 +155,8 @@ const Confirmation = () => {
                         }} />
                         <Typography variant="h4" sx={{ 
                             fontWeight: 'bold',
-                            fontSize: '2rem',
-                            mb: 1,
-                            color: '#333'
+                            fontSize: '1.5rem',
+                            mb: 2
                         }}>
                             Confirm Your Appointment
                         </Typography>
@@ -101,6 +167,25 @@ const Confirmation = () => {
                             Please review your appointment details before confirming
                         </Typography>
                     </Box>
+                    {error && (
+                        <Alert severity="error" sx={{ mb: 3 }}>
+                            {error}
+                        </Alert>
+                    )}
+
+                    {/* Success Alert */}
+                    {bookingSuccess && (
+                        <Alert severity="success" sx={{ mb: 3 }}>
+                            Booking confirmed successfully! Redirecting...
+                        </Alert>
+                    )}
+
+                    {/* Loading State */}
+                    {loading && (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+                            <CircularProgress />
+                        </Box>
+                    )}
 
                     {/* Progress Steps */}
                      {/* Progress Steps */}
@@ -371,15 +456,15 @@ const Confirmation = () => {
                         </Button>
                         <Button
                             variant="contained"
-                            startIcon={<CheckCircleIcon />}
-                            onClick={() => navigate('/doctorlist/clinic/payment')}
-                            disabled={!agreeTerms}
+                            startIcon={loading ? <CircularProgress size={16} color="inherit" /> : <CheckCircleIcon />}
+                            onClick={handleConfirmBooking}
+                            disabled={!agreeTerms || loading || bookingSuccess}
                             sx={{
                                 px: 4,
                                 py: 1.5,
-                                backgroundColor: '#368ADD',
+                                backgroundColor: loading ? '#ccc' : bookingSuccess ? '#4CAF50' : '#368ADD',
                                 '&:hover': {
-                                    backgroundColor: '#2c6bb3'
+                                    backgroundColor: loading ? '#ccc' : bookingSuccess ? '#45a049' : '#2c6bb3'
                                 },
                                 '&:disabled': {
                                     backgroundColor: '#ccc',
@@ -387,7 +472,7 @@ const Confirmation = () => {
                                 }
                             }}
                         >
-                            Continue
+                            {loading ? 'Creating Booking...' : bookingSuccess ? 'Booking Confirmed!' : 'Confirm Appointment'}
                         </Button>
                     </Box>
                 </Container>

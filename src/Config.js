@@ -1,5 +1,5 @@
 const Config = {
-    apiUrl : "http://192.168.0.61:8082/api/v1",
+    apiUrl : "http://192.168.0.40:8082/api/v1",
     token : localStorage.getItem('authToken')
     
 };

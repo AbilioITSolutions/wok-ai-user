@@ -212,24 +212,22 @@ function Navbar() {
             </Box>
 
             {/* Mobile Menu Button - Centered */}
-            <Box sx={{ 
-              display: { xs: "flex", md: "none" }, 
-              justifyContent: "center", 
-              alignItems: "center",
+            <Box sx={{
+              display: { xs: "flex", md: "none" },
+              alignItems: "flex-end",
+              justifyContent: "center",
               height: "100%",
-              alignSelf: "center"
+              pb:3.2   
             }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerToggle}
-                sx={{ 
+                sx={{
                   color: "#333",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  height: "80px",
-                  alignSelf: "center"
+                  justifyContent: "center"
                 }}
               >
                 <MenuIcon />

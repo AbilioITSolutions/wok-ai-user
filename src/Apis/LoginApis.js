@@ -5,8 +5,7 @@ const apiUrl = Config.apiUrl;
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${apiUrl}/users/register`, {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
+      fullName: userData.fullName,
       email: userData.email,
       phoneNumber: userData.phoneNumber,
       password: userData.password

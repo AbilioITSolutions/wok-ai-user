@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Box,
@@ -8,7 +8,16 @@ import {
     CardContent,
     Avatar,
     Divider,
-    Button
+    Button,
+    Link,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    CircularProgress,
+    Alert
 } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -30,36 +39,33 @@ import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Navbar from "../../Components/Navbar";
+import { getUserHealthSummary } from "../../Apis/DashboardApis";
+import { getmedications } from "../../Apis/AppointmentsApis";
+import { getUserAppointments } from "../../Apis/ProfileApis";
 
 const Dashboard = () => {
-    const user = {
-        name: "John",
-        date: "Saturday, August 30, 2025",
-        subtitle: "Here's your health overview",
-        cards: [
-            {
-                title: "Appointment History",
-                subtitle: "Tomorrow 2:30 PM",
-                icon: <CalendarMonthIcon color="primary" fontSize="medium" />
-            },
-            {
-                title: "Health Summary",
-                subtitle: "Excellent (95/100)",
-                icon: <FavoriteBorderIcon sx={{ color: "green" }} fontSize="medium" />
-            },
-            {
-                title: "Medications",
-                subtitle: "3 active prescriptions",
-                icon: <MedicationIcon sx={{ color: "orange" }} fontSize="medium" />
-            },
-            {
-                title: "Documents",
-                subtitle: "5 recent files",
-                icon: <DescriptionIcon sx={{ color: "purple" }} fontSize="medium" />
-            }
-        ]
-    };
+    const [appointmentsData, setAppointmentsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await getUserAppointments();
+                setAppointmentsData(response?.data || []);
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+                setError('Failed to load appointments. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAppointments();
+    }, []);
+   
     return (
         <Box sx={{ mt: '100px', pb: 4 }}>
             <Navbar />
@@ -67,46 +73,16 @@ const Dashboard = () => {
                 {/* Greeting */}
                 <Box mb={3}>
                     <Typography variant="h4" fontWeight="bold">
-                        Good afternoon, {user.name}!
+                        Welcome to your Dashboard
                     </Typography>
                     <Typography variant="body2" color='#A9A9A9'>
-                        {user.date} • {user.subtitle}
+                        {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} • Here's your health overview
                     </Typography>
                 </Box>
 
-                {/* Cards */}
-                <Grid container spacing={2} sx={{ mb: 3 }}>
-                    {user.cards.map((card, index) => (
-                        <Grid item size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-                            <Card
-                                sx={{
-                                    borderRadius: 2,
-                                    border: '1px solid #e0e0e0',
-                                    cursor: "pointer",
-                                    boxShadow: 'none',
-                                    height: "100%"
-                                }}
-                            >
-                                <CardContent sx={{ p: 2 }}>
-                                    <Box display="flex" alignItems="center" gap={2}>
-                                        {card.icon}
-                                        <Box>
-                                            <Typography variant="subtitle1" fontWeight="600">
-                                                {card.title}
-                                            </Typography>
-                                            <Typography variant="body2" color='#A9A9A9'>
-                                                {card.subtitle}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-
-                <QuickInfo />
+                <QuickInfo appointmentsData={appointmentsData} loading={loading} error={error} />
                 <HealthSummary />
+               
             </Container>
         </Box>
     );
@@ -114,62 +90,35 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-export const QuickInfo = () => {
+export const QuickInfo = ({ appointmentsData = [], loading = false, error = null }) => {
+    // Debug: Log the appointments data structure
+    console.log('Appointments data in QuickInfo:', appointmentsData);
+ 
+    // Use API data for appointments
     const data = {
-        appointments: [
-            {
-                id: 1,
-                clinic: "Layers Clinic",
-                specialist: "Hair Specialist",
-                date: "Friday, August 29, 2025",
-                time: "11:00 AM",
-                status: "Scheduled",
-                btnBackgroundColor: "#FFEEC3",
-                color: '#FFB600',
-                border: '1px solid #FFB600',
-                logo: layersImg
-            },
-            {
-                id: 2,
-                clinic: "Amaya Hair & Skin Clinic",
-                specialist: "Hair Surgeon",
-                date: "Friday, August 12, 2025",
-                time: "10:30 AM",
-                status: "Completed",
-                btnBackgroundColor: "#DCFFDE",
-                color: '#02D210',
-                border: '1px solid #02D210',
-                logo: amayaClinicImg
-            }
-        ],
-        reminders: [
-            {
-                id: 1,
-                title: "Upcoming Appointment",
-                description:
-                    "Your offline consultation with Layers Clinic is scheduled for tomorrow at 2:30 PM...",
-                icon: upCominglogo
-            },
-            {
-                id: 2,
-                title: "Cancelled Your Appointment",
-                description:
-                    "Your consultation with Eye Clinic is cancelled please contact us.",
-                icon: cancelledlogo
-            },
-            {
-                id: 3,
-                title: "Upcoming Appointment",
-                description:
-                    "Your offline consultation with Layers Clinic is scheduled for tomorrow at 2:30 PM...",
-                icon: upCominglogo
-            }
-        ]
+        appointments: appointmentsData,
+        reminders: [] // TODO: Add reminders API when available
     };
 
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 4 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+            </Alert>
+        );
+    }
+    
     return (
-        <Box sx={{ py: 2 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>Quick Info</Typography>
+        <Box sx={{ py: 0 }}>
+            
             <Grid container spacing={2}>
                 {/* Left - Appointments */}
                 <Grid item size={{ xs: 12, md: 6 }}>
@@ -206,10 +155,16 @@ export const QuickInfo = () => {
                                     sx={{ border: '1px solid #eee' }}
                                 >
                                     <Box display="flex" alignItems="center" gap={2} mb={{ xs: 2, sm: 0 }}>
-                                        <Avatar src={appt.logo} alt={appt.clinic} sx={{ height: 50, width: 50 }} />
+                                        <Avatar sx={{ height: 50, width: 50, backgroundColor: '#368ADD', color: 'white' }}>
+                                            {(appt.clinic?.name || appt.clinic || 'C').charAt(0)}
+                                        </Avatar>
                                         <Box>
-                                            <Typography sx={{ color: '#368ADD' }}>{appt.clinic}</Typography>
-                                            <Typography variant="body2" color='#A9A9A9'>{appt.specialist}</Typography>
+                                            <Typography sx={{ color: '#368ADD' }}>
+                                                {appt.clinic?.name || appt.clinic || 'Clinic Name'}
+                                            </Typography>
+                                            <Typography variant="body2" color='#A9A9A9'>
+                                                {appt.treatment_service?.name || appt.specialist || 'Specialty'}
+                                            </Typography>
                                             <Box
                                                 display="flex"
                                                 alignItems="center"
@@ -218,9 +173,17 @@ export const QuickInfo = () => {
                                                 flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
                                             >
                                                 <CalendarMonthIcon fontSize="small" color="action" />
-                                                <Typography variant="caption" sx={{ mr: { xs: 1, sm: 0 } }}>{appt.date}</Typography>
+                                                <Typography variant="caption" sx={{ mr: { xs: 1, sm: 0 } }}>
+                                                    {appt.bookingDate ? new Date(appt.bookingDate).toLocaleDateString('en-US', { 
+                                                        weekday: 'long', 
+                                                        month: 'long', 
+                                                        day: 'numeric' 
+                                                    }) : 'Date N/A'}
+                                                </Typography>
                                                 <AccessTimeIcon fontSize="small" color="action" />
-                                                <Typography variant="caption">{appt.time}</Typography>
+                                                <Typography variant="caption">
+                                                    {appt.bookingTime || 'Time N/A'}
+                                                </Typography>
                                             </Box>
                                         </Box>
                                     </Box>
@@ -234,14 +197,17 @@ export const QuickInfo = () => {
                                         <Button
                                             variant="outlined"
                                             sx={{
-                                                color: appt.color,
-                                                backgroundColor: appt.btnBackgroundColor,
-                                                border: appt.border,
+                                                color: appt.bookingStatus === 'completed' ? '#02D210' : 
+                                                       appt.bookingStatus === 'cancelled' ? '#F44336' : '#FFB600',
+                                                backgroundColor: appt.bookingStatus === 'completed' ? '#DCFFDE' : 
+                                                                appt.bookingStatus === 'cancelled' ? '#FFEBEE' : '#FFEEC3',
+                                                border: appt.bookingStatus === 'completed' ? '1px solid #02D210' : 
+                                                       appt.bookingStatus === 'cancelled' ? '1px solid #F44336' : '1px solid #FFB600',
                                                 borderRadius: '50px',
                                                 fontSize: '12px'
                                             }}
                                         >
-                                            {appt.status}
+                                            {appt.bookingStatus || 'Scheduled'}
                                         </Button>
                                         <ChevronRightIcon />
                                     </Box>
@@ -253,14 +219,14 @@ export const QuickInfo = () => {
 
                 {/* Right - Reminders */}
                 <Grid item size={{ xs: 12, md: 6 }}>
-                    <Card sx={{ borderRadius: 2, border: '1px solid #e0e0e0', boxShadow: "none" }}>
+                    <Card sx={{ borderRadius: 2, border: '1px solid #e0e0e0', boxShadow: "none" , mb:4 }}>
                         <CardContent sx={{ p: 2 }}>
                             <Box
                                 display="flex"
                                 flexDirection={{ xs: 'column', sm: 'row' }}
                                 justifyContent="space-between"
                                 alignItems={{ xs: 'flex-start', sm: 'center' }}
-                                mb={2}
+                              
                             >
                                 <Box display="flex" alignItems="center" gap={1} mb={{ xs: 1, sm: 0 }}>
                                     <NotificationsActiveIcon sx={{ color: '#FFB600' }} />
@@ -325,8 +291,41 @@ export const QuickInfo = () => {
     );
 };
 
+
+
 export const HealthSummary = () => {
-    const vitals = [
+    const [healthData, setHealthData] = useState(null);
+    const [medicationsData, setMedicationsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchHealthSummary = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                // Fetch health summary and medications data
+                const [healthResponse, medicationsResponse] = await Promise.all([
+                    getUserHealthSummary(),
+                    getmedications()
+                ]);
+                
+                setHealthData(healthResponse);
+                setMedicationsData(medicationsResponse || []);
+            } catch (error) {
+                console.error('Error fetching health summary:', error);
+                setError('Failed to load health summary. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHealthSummary();
+    }, []);
+
+    // Default vitals data (fallback)
+    const defaultVitals = [
         {
             icon: <FavoriteBorderIcon color="primary" />,
             label: "Blood Pressure",
@@ -354,18 +353,95 @@ export const HealthSummary = () => {
         {
             icon: <DeviceThermostatIcon color="primary" />,
             label: "Temperature",
-            value: "108.6",
+            value: "98.6",
             unit: "°F",
-            status: "High",
-            statusColor: "red",
+            status: "Normal",
+            statusColor: "green",
         },
     ];
 
+    // Helper function to get status color
+    const getStatusColor = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'normal':
+                return 'green';
+            case 'high':
+                return 'red';
+            case 'low':
+                return 'orange';
+            case 'stable':
+                return 'goldenrod';
+            default:
+                return 'green';
+        }
+    };
+
+    // Map API data to vitals format
+    const mapApiDataToVitals = (healthSummary) => {
+        if (!healthSummary) return defaultVitals;
+        
+        return [
+            {
+                icon: <FavoriteBorderIcon color="primary" />,
+                label: "Blood Pressure",
+                value: `${healthSummary.bloodPressure}/80`, // Assuming diastolic is 80
+                unit: "mmHg",
+                status: healthSummary.bpStatus || "Normal",
+                statusColor: getStatusColor(healthSummary.bpStatus),
+            },
+            {
+                icon: <MonitorHeartIcon color="primary" />,
+                label: "Heart Rate",
+                value: healthSummary.heartRate || "72",
+                unit: "bpm",
+                status: healthSummary.hrStatus || "Normal",
+                statusColor: getStatusColor(healthSummary.hrStatus),
+            },
+            {
+                icon: <FitnessCenterIcon color="primary" />,
+                label: "Weight",
+                value: healthSummary.weight || "165",
+                unit: "kg",
+                status: healthSummary.weightStatus || "Stable",
+                statusColor: getStatusColor(healthSummary.weightStatus),
+            },
+            {
+                icon: <DeviceThermostatIcon color="primary" />,
+                label: "Temperature",
+                value: healthSummary.temperature || "98.6",
+                unit: "°F",
+                status: healthSummary.tempStatus || "Normal",
+                statusColor: getStatusColor(healthSummary.tempStatus),
+            },
+        ];
+    };
+
+    // Use API data if available, otherwise use default data
+    const vitals = healthData?.healthSummary ? mapApiDataToVitals(healthData.healthSummary) : defaultVitals;
+    const medicationsCount = 3; // Default value since not provided in API response
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 4 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+            </Alert>
+        );
+    }
+
     return (
-        <Grid container spacing={2} sx={{ height: '100%' }}>
+        <Grid container spacing={2} sx={{ height: '100%' , mt:2 }}>
             {/* Left big box */}
             <Grid item size={{ xs: 12, md: 8 }}>
                 <Box
+                    
                     p={2}
                     borderRadius={2}
                     border="1px solid #e0e0e0"
@@ -435,24 +511,108 @@ export const HealthSummary = () => {
                 </Box>
             </Grid>
 
-            {/* Right small box */}
+            {/* Right side - Single card with two sections */}
             <Grid item size={{ xs: 12, md: 4 }}>
-                <Box
-                    borderRadius={2}
-                    border="1px solid #e0e0e0"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    height="100%"
-                    textAlign="center"
-                    p={3}
-                >
-                    <LocalPharmacyIcon sx={{ fontSize: 32, color: "grey.400" }} />
-                    <Typography variant="subtitle1" color="text.secondary">Medications</Typography>
-                    <Typography variant="body2" color="text.disabled">3 active prescriptions</Typography>
+                <Card sx={{ 
+                    borderRadius: 2, 
+                    border: '1px solid #e0e0e0', 
+                    boxShadow: 'none',
+                    height: '100%'
+                }}>
+                    <CardContent sx={{ p: 0, height: '100%' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            {/* Medications Section */}
+                            <Box sx={{ p: 1.5, borderBottom: '1px solid #f0f0f0' }}>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-between'
+                                }}>
+                                    {/* Left side - Icon and text */}
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                        <Box sx={{
+                                            width: 40,
+                                            height: 40,
+                                            backgroundColor: '#FFEEC3',
+                                            borderRadius: '50%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <MedicationIcon sx={{ fontSize: 20, color: '#FFB600' }} />
+                                        </Box>
+                                        <Box>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                                Medications
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ color: '#666' }}>
+                                                2 active prescriptions
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+
+                                    {/* Right side - Action link */}
+                                    
+                                </Box>
+                            </Box>
+
+                            {/* Treatment Section */}
+                            <Box sx={{ p: 1.5 }}>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-between',
+                                    height: '100%'
+                                }}>
+                                    {/* Left side - Icon and text */}
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                        <Box sx={{
+                                            width: 40,
+                                            height: 40,
+                                            backgroundColor: '#FFEEC3',
+                                            borderRadius: '50%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <DescriptionIcon sx={{ fontSize: 20, color: '#FFB600' }} />
+                                        </Box>
+                                        <Box>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                                {medicationsData?.length > 0 ? medicationsData[0]?.treatmentServiceName || 'Hair Transplant' : 'Hair Transplant'}
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ color: '#666' }}>
+                                                {medicationsData?.length > 0 ? medicationsData[0]?.doctorName || 'DR. Sarah Johnson' : 'DR. Sarah Johnson'}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+
+                                    {/* Right side - Action link */}
+                                    <Box 
+                                        sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
+                                        onClick={() => {
+                                            if (medicationsData?.length > 0 && medicationsData[0]?.imageUrl) {
+                                                window.open(medicationsData[0].imageUrl, '_blank');
+                                            }
+                                        }}
+                                    >
+                                        <Typography variant="body2" sx={{ color: '#368ADD', fontWeight: 500 }}>
+                                            View Details
+                                        </Typography>
+                                        
+                                    </Box>
+                                </Box>
+                            </Box>
                 </Box>
+                    </CardContent>
+                </Card>
             </Grid>
         </Grid>
     );
+    
 };
+
+
+
+
+

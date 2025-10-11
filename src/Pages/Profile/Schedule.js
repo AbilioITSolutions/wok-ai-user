@@ -67,71 +67,38 @@ const Schedule = () => {
                     // Transform API response to match component structure
                     if (response && response.data) {
                         const { start_time, end_time, availableSlots } = response.data;
-                        
+
                         // Generate time slots based on doctor's schedule
                         const slots = [];
-                        if (start_time && end_time) {
-                            // Convert time strings to Date objects for calculation
-                            const startTime = new Date(`1970-01-01T${start_time}`);
-                            const endTime = new Date(`1970-01-01T${end_time}`);
-                            
-                            // Generate 30-minute slots between start and end time
-                            let currentTime = new Date(startTime);
-                            while (currentTime < endTime) {
-                                const timeString = currentTime.toLocaleTimeString('en-US', {
+                        if (availableSlots && availableSlots.length > 0) {
+                            // Directly use the available slots from API and convert to 12-hour format
+                            availableSlots.forEach(slotTime => {
+                                // Create a Date object from the 24-hour time string
+                                const time24Hour = `${slotTime}:00`;
+                                const slotDateTime = new Date(`1970-01-01T${time24Hour}`);
+
+                                // Format for display (12-hour format)
+                                const time12Hour = slotDateTime.toLocaleTimeString('en-US', {
                                     hour: 'numeric',
                                     minute: '2-digit',
                                     hour12: true
                                 });
-                                
-                                // Check if this slot is in the availableSlots array
-                                const isAvailable = availableSlots.some(slot => {
-                                    const slotTime = new Date(`1970-01-01T${slot.time || slot.startTime}`);
-                                    return slotTime.getTime() === currentTime.getTime();
-                                });
-                                
+
                                 slots.push({
-                                    time: timeString,
-                                    available: isAvailable
+                                    time: time12Hour,
+                                    available: true,
+                                    time24: slotTime
                                 });
-                                
-                                // Add 30 minutes
-                                currentTime.setMinutes(currentTime.getMinutes() + 30);
-                            }
-                        setTimeSlots(slots.length > 0 ? slots : [
-                            { time: '09:00 AM', available: true },
-                            { time: '09:30 AM', available: true },
-                            { time: '10:00 AM', available: true },
-                            { time: '10:30 AM', available: true },
-                            { time: '11:00 AM', available: true },
-                            { time: '12:00 PM', available: true },
-                            { time: '01:00 PM', available: false },
-                            { time: '01:30 PM', available: false },
-                            { time: '02:00 PM', available: false },
-                            { time: '02:30 PM', available: false },
-                            { time: '03:00 PM', available: false },
-                            { time: '03:30 PM', available: false },
-                            { time: '04:00 PM', available: false },
-                            { time: '04:30 PM', available: false },
-                            { time: '05:00 PM', available: false },
-                            { time: '05:30 PM', available: false }
-                        ]);
+                            });
                         }
-                        }
+
+                        setTimeSlots(slots.length > 0 ? slots : []);
+                    }
                     } catch (error) {
                     console.error('Error fetching time slots:', error);
-                    setError('Failed to load available time slots. Using default schedule.');
-                    // Fallback to default slots on error
-                    setTimeSlots([
-                        { time: '09:00 AM', available: true },
-                        { time: '09:30 AM', available: true },
-                        { time: '10:00 AM', available: true },
-                        { time: '10:30 AM', available: true },
-                        { time: '11:00 AM', available: true },
-                        { time: '12:00 PM', available: true },
-                        { time: '01:00 PM', available: false },
-                        { time: '01:30 PM', available: false }
-                    ]);
+                    setError('Failed to load available time slots. Please try again later.');
+                    // Set empty slots on error - no fallback default slots
+                    setTimeSlots([]);
                 } finally {
                     setLoading(false);
                 }

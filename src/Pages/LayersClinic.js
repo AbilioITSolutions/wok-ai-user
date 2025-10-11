@@ -45,6 +45,7 @@ import noFacilities from "../ASSETS/nofacilies.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getAllClinicsByid, getClinicWithTreatmentsServices, getDoctorsByClinic, getServicePricesByClinic } from "../Apis/TreatmentsApis";
+import { useBooking } from "../Context/BookingContext";
 
 export default function LayersClinic() {
     const [activeTab, setActiveTab] = useState(0);
@@ -58,6 +59,7 @@ export default function LayersClinic() {
     const [clinicData, setClinicData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { updateBookingData } = useBooking();
 
     // State for dynamic categories from API
     const [expandedCategories, setExpandedCategories] = useState({});
@@ -120,6 +122,20 @@ export default function LayersClinic() {
 
         fetchClinicData();
     }, [clinicId]);
+
+    const handleBookNow = (clinicId, treatmentId, serviceId, serviceName) => {
+        updateBookingData('clinicId', clinicId);
+        updateBookingData('treatmentId', treatmentId);
+        updateBookingData('serviceId', serviceId);
+        navigate(`/doctorlist/clinic/book-appointment`, {
+            state: {
+                clinicId: clinicId,
+                treatmentId: treatmentId,
+                serviceId: serviceId,
+                serviceName: serviceName
+            }
+        });
+    };
 
     const handleTabChange = (event, newValue) => {
         setActiveTab(newValue);
@@ -634,14 +650,7 @@ export default function LayersClinic() {
                                                                         {service.name}
                                                                     </Typography>
                                                                     <Button 
-                                                                        onClick={() => navigate(`/doctorlist/clinic/book-appointment`, {
-                                                                            state: {
-                                                                                clinicId: clinicId,
-                                                                                treatmentId: treatmentId, // Send actual treatment ID
-                                                                                serviceId: service.id, // Send actual service ID
-                                                                                serviceName: service.name
-                                                                            }
-                                                                        })}
+                                                                        onClick={() => handleBookNow(clinicId, treatmentId, service.id, service.name)}
                                                                         variant="contained" 
                                                                         sx={{   
                                                                             backgroundColor: '#368ADD',

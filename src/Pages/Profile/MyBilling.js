@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -6,54 +6,54 @@ import {
   CardContent,
   Avatar,
   Divider,
-  Grid
+  Grid,
+  CircularProgress,
+  Alert
 } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ComputerIcon from "@mui/icons-material/Computer";
 import WorkIcon from "@mui/icons-material/Work";
+import { getUserAppointments } from '../../Apis/ProfileApis';
 
 const MyBilling = () => {
-  const appointments = [
-    {
-      id: 1,
-      doctor: {
-        name: "DR. Sarah Johnson",
-        specialty: "Hair Specialist",
-        experience: "10 years experience",
-        avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face",
-        status: "Confirmed"
-      },
-      appointment: {
-        date: "Saturday, August 30, 2025",
-        time: "11:00 AM EST",
-        type: "Offline"
-      },
-      booking: {
-        id: "APT-1756544321272",
-        total: "₹899.0"
-      }
-    },
-    {
-      id: 2,
-      doctor: {
-        name: "DR. Rajendhar Reddy",
-        specialty: "Dermatologist",
-        experience: "8 years experience",
-        avatar: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=face",
-        status: "Confirmed"
-      },
-      appointment: {
-        date: "Monday, September 2, 2025",
-        time: "2:30 PM EST",
-        type: "Online"
-      },
-      booking: {
-        id: "APT-1756544321273",
-        total: "₹750.0"
-      }
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await getUserAppointments();
+                setAppointments(response.data || []);
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+                setError('Failed to load billing information. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAppointments();
+    }, []);
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+                <CircularProgress />
+            </Box>
+        );
     }
-  ];
+
+    if (error) {
+        return (
+            <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+            </Alert>
+        );
+    }
 
   return (
     <Box>
@@ -62,7 +62,12 @@ const MyBilling = () => {
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {appointments.map((appointment) => (
+        {appointments.length === 0 ? (
+            <Typography variant="body1" sx={{ color: '#666', textAlign: 'center', py: 4 }}>
+                No billing information found.
+            </Typography>
+        ) : ( 
+          appointments.map((appointment) => (
           <Card
             key={appointment.id}
             sx={{
@@ -89,8 +94,8 @@ const MyBilling = () => {
                   width: { xs: "100%", md: "auto" }
                 }}>
                   <Avatar
-                    src={appointment.doctor.avatar}
-                    alt={appointment.doctor.name}
+                    src={appointment.doctor?.image}
+                    alt={appointment.doctor?.name || 'Doctor'}
                     sx={{
                       width: { xs: 50, sm: 60 },
                       height: { xs: 50, sm: 60 },
@@ -103,10 +108,10 @@ const MyBilling = () => {
                       color: "#368ADD",
                       mb: 0.5
                     }}>
-                      {appointment.doctor.name}
+                      {appointment.doctor?.name || 'Doctor Name'}
                     </Typography>
                     <Typography variant="body2" sx={{ color: "#666", mb: 1 }}>
-                      {appointment.doctor.specialty}
+                      {appointment.treatment_service?.name || 'Specialty'}
                     </Typography>
                     <Box sx={{
                       display: "flex",
@@ -117,7 +122,7 @@ const MyBilling = () => {
                     }}>
                       <WorkIcon sx={{ fontSize: "1rem", color: "#666" }} />
                       <Typography variant="body2" sx={{ color: "#666" }}>
-                        {appointment.doctor.experience}
+                        {`${appointment.doctor?.experience || 'N/A'} years experience`}
                       </Typography>
                     </Box>
                     <Typography
@@ -132,7 +137,7 @@ const MyBilling = () => {
                         display: "inline-block"
                       }}
                     >
-                      {appointment.doctor.status}
+                      {appointment.bookingType || 'Scheduled'}
                     </Typography>
                   </Box>
                 </Box>
@@ -156,7 +161,7 @@ const MyBilling = () => {
                       Date
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
-                      {appointment.appointment.date}
+                      {appointment.bookingDate ? new Date(appointment.bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Date not available'}
                     </Typography>
                   </Box>
 
@@ -171,7 +176,7 @@ const MyBilling = () => {
                       Time
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
-                      {appointment.appointment.time}
+                      {appointment.bookingTime || 'Time not available'}
                     </Typography>
                   </Box>
 
@@ -186,7 +191,7 @@ const MyBilling = () => {
                       Type
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
-                      {appointment.appointment.type}
+                      {appointment.appointment_type || 'Online'}
                     </Typography>
                   </Box>
                 </Box>
@@ -207,7 +212,7 @@ const MyBilling = () => {
                     Booking ID
                   </Typography>
                   <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
-                    {appointment.booking.id}
+                    {appointment.id}
                   </Typography>
                 </Box>
                 <Box sx={{ textAlign: { xs: "left", sm: "right" } }}>
@@ -215,13 +220,14 @@ const MyBilling = () => {
                     Total Paid
                   </Typography>
                   <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>
-                    {appointment.booking.total}
+                    {`₹${appointment.consultingPrice || '0.00'}`}
                   </Typography>
                 </Box>
               </Box>
             </CardContent>
           </Card>
-        ))}
+        )))
+      }
       </Box>
     </Box>
   );

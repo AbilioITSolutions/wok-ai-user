@@ -10,8 +10,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        fullName: '',
         email: '',
         phoneNumber: '',
         password: '',
@@ -46,8 +45,7 @@ const Register = () => {
 
         try {
             const registrationData = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
+                fullName: formData.fullName,
                 email: formData.email,
                 phoneNumber: formData.phoneNumber,
                 password: formData.password // Only send password, not confirmPassword
@@ -125,20 +123,10 @@ const Register = () => {
                         <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                             <TextField
                                 type="text"
-                                label="First Name"
-                                placeholder="John"
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                fullWidth
-                                required
-                            />
-                            <TextField
-                                type="text"
-                                label="Last Name"
-                                placeholder="Doe"
-                                name="lastName"
-                                value={formData.lastName}
+                                label="Full Name"
+                                placeholder="John Doe"
+                                name="fullName"
+                                value={formData.fullName}
                                 onChange={handleInputChange}
                                 fullWidth
                                 required
