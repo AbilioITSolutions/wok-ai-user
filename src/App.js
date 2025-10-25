@@ -12,7 +12,6 @@ const ScrollToTopOnRouteChange = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log('🔄 Route changed to:', pathname, '- Resetting all scroll positions');
 
     // Method 1: Reset main scroll containers immediately
     window.scrollTo(0, 0);
@@ -44,7 +43,6 @@ const ScrollToTopOnRouteChange = () => {
         }
       });
 
-      console.log(`✅ Route change: Reset ${resetCount} scrollable containers`);
     };
 
     // Method 3: Target specific common containers
@@ -72,14 +70,12 @@ const ScrollToTopOnRouteChange = () => {
       const finalScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
       if (finalScroll > 0) {
-        console.log('⚠️ Route change: Final scroll still > 0, forcing reset');
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
         resetAllScrollableElements();
       }
 
-      console.log('🎯 Route change scroll reset complete for:', pathname);
     }, 100);
 
   }, [pathname]);

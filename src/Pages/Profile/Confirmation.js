@@ -113,10 +113,8 @@ const Confirmation = () => {
                 // You'll need to get this from auth context or localStorage
             };
 
-            console.log('Creating booking with data:', bookingPayload);
 
             const response = await createBooking(bookingPayload);
-            console.log('Booking created successfully:', response);
 
             setBookingSuccess(true);
             // Clear booking data after successful booking
