@@ -146,9 +146,6 @@ export default Dashboard;
 
 export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading = false, error = null, navigate }) => {
     // Debug: Log the data structures
-    console.log('Appointments data in QuickInfo:', appointmentsData);
-    console.log('Reminders data in QuickInfo:', remindersData);
- 
     // Use API data for appointments and reminders
     const data = {
         appointments: appointmentsData,
@@ -156,8 +153,6 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
     };
     
     // Debug: Log the processed data
-    console.log('Processed reminders data:', data.reminders);
-    console.log('Is reminders array:', Array.isArray(data.reminders));
 
     return (
         <Box sx={{ py: 0 }}>

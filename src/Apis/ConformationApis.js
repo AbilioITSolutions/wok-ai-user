@@ -38,7 +38,6 @@ export const createBooking = async (bookingData) => {
         return response.data;
     } catch (error) {
         console.error('Error creating booking:', token);
-        console.log("token", token)
 
         throw error;
        

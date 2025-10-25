@@ -36,15 +36,8 @@ const BookAppointment = () => {
     const [error, setError] = useState(null);
 
     // Log state data received from navigation
-    console.log("BookAppointment - Navigation state:", location.state);
-    console.log("BookAppointment - Clinic ID:", location.state?.clinicId);
-    console.log("BookAppointment - Treatment ID:", location.state?.treatmentId);
-    console.log("BookAppointment - Service ID:", location.state?.serviceId);
-    console.log("BookAppointment - Service Name:", location.state?.serviceName);
 
     const handleDoctorSelect = (doctorId) => {
-        console.log('Selecting doctor:', doctorId);
-        console.log('Available doctors data:', doctorsData);
         
         if (!doctorsData || !Array.isArray(doctorsData)) {
             console.error('No doctors data available');
@@ -52,7 +45,6 @@ const BookAppointment = () => {
         }
 
         const selectedDoctor = doctorsData.find(doc => doc && doc.id === doctorId);
-        console.log('Found selected doctor:', selectedDoctor);
         
         if (selectedDoctor) {
             setSelectedDoctor(doctorId);
@@ -75,7 +67,6 @@ const BookAppointment = () => {
                 serviceId: location.state?.serviceId
             };
             
-            console.log('Storing doctor data in context:', doctorData);
             updateBookingData('selectedDoctor', doctorData);
         } else {
             console.error(`Doctor with ID ${doctorId} not found in doctors data`);
@@ -84,9 +75,7 @@ const BookAppointment = () => {
 
     // Load data from context on mount
     useEffect(() => {
-        console.log('Booking data on mount:', bookingData);
         if (bookingData.selectedDoctor && bookingData.selectedDoctor.id) {
-            console.log('Loading selectedDoctor from context:', bookingData.selectedDoctor);
             setSelectedDoctor(bookingData.selectedDoctor.id);
         }
     }, []);
@@ -102,7 +91,6 @@ const BookAppointment = () => {
 
                 if (clinicId && treatmentId && serviceId) {
                     const response = await getDoctorsByClinicTreatmentService(clinicId, treatmentId, serviceId);
-                    console.log('Doctors API response:', response);
 
                     // Transform API data to match component structure
                     if (response && response.doctors && Array.isArray(response.doctors)) {
@@ -447,8 +435,6 @@ const BookAppointment = () => {
                             variant="contained"
                             disabled={!selectedDoctor}
                             onClick={() => {
-                                console.log('Continue button clicked');
-                                console.log('Navigating to schedule with selected doctor:', selectedDoctor);
                                 handleDoctorSelect(selectedDoctor);
                                 navigate('/schedule', {
                                     state: {

@@ -27,7 +27,6 @@ const SelectADoctor = () => {
   const handleDoctorSelect = (doctorId) => {
     const selectedDoctor = doctors.find(doc => doc.id === doctorId);
     if (selectedDoctor) {
-      console.log('Setting selected doctor:', selectedDoctor);
       // Make sure we're storing the complete doctor object
       const doctorData = {
         id: selectedDoctor.id,
@@ -41,7 +40,6 @@ const SelectADoctor = () => {
         image: selectedDoctor.image
       };
       
-      console.log('Storing doctor data in context:', doctorData);
       updateBookingData('selectedDoctor', doctorData);
       setSelectedDoctorId(doctorId);
     } 

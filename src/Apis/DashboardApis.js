@@ -15,7 +15,6 @@ export const getUserHealthSummary = async () => {
         'Authorization': `Bearer ${token}`
       }
     });
-    console.log('Health Summary API Response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching user health summary:', error);
