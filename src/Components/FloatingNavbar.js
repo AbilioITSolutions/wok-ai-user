@@ -73,12 +73,10 @@ function FloatingNavBar() {
         fontSize: '1.1rem',
         padding: '10px 20px',
         minWidth: 'auto',
-        backgroundColor: isActive(path) ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
-        borderRadius: isActive(path) ? '8px' : '0',
+        backgroundColor: 'transparent',
+        borderRadius: '0',
         '&:hover': {
             color: '#007bff',
-            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-            borderRadius: '8px'
         },
     });
 
@@ -90,11 +88,11 @@ function FloatingNavBar() {
                     position="fixed"
                     sx={{
                         width: { xs: 'calc(100% - 40px)', sm: 'calc(100% - 120px)' }, // Responsive width
-                        top: { xs: '20px', sm: '55px' },
+                        top: { xs: '20px', sm: '20px' },
                         left: 0,
                         right: 0,
                         mx: 'auto',
-                        height: { xs: '70px', sm: '95px' },
+                        height: { xs: '70px', sm: '80px' },
                         opacity: 1,
                         backgroundColor: 'rgba(224, 220, 220, 0.8)',
                         backdropFilter: 'blur(1px)',
@@ -143,15 +141,13 @@ function FloatingNavBar() {
                                     color: 'white',
                                     borderRadius: '10px',
                                     textTransform: 'none',
-                                    padding: '12px 30px',
+                                    padding: '7px 10px',
                                     fontSize: '1.1rem',
                                     fontWeight: 'bold',
                                     marginLeft: 3,
-                                    minWidth: '120px',
+                                    minWidth: '100px',
                                     '&:hover': {
                                         backgroundColor: '#0056b3',
-                                        transform: 'translateY(-2px)',
-                                        boxShadow: '0 4px 12px rgba(0, 123, 255, 0.3)',
                                     },
                                 }}
                             >
@@ -165,9 +161,17 @@ function FloatingNavBar() {
                                 <Button
                                     key={item.name}
                                     sx={{
-                                        ...getNavItemStyle(item.path),
+                                        color: isActive(item.path) ? '#007bff' : '#333',
+                                        textTransform: 'none',
+                                        mx: 1,
                                         fontSize: '1rem',
                                         padding: '8px 12px',
+                                        minWidth: 'auto',
+                                        backgroundColor: 'transparent',
+                                        borderRadius: '0',
+                                        '&:hover': {
+                                            color: '#007bff',
+                                        },
                                     }}
                                     onClick={() => navigate(item.path)}
                                 >
@@ -245,10 +249,7 @@ function FloatingNavBar() {
                                     borderRadius: '10px',
                                     padding: '16px',
                                     margin: '0 10px',
-                                    backgroundColor: isActive(item.path) ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                                    }
+                                    backgroundColor: 'transparent',
                                 }}
                                 onClick={() => {
                                     navigate(item.path);
@@ -283,7 +284,7 @@ function FloatingNavBar() {
                                     fontWeight: 'bold',
                                     '&:hover': {
                                         backgroundColor: '#0056b3',
-                                        transform: 'translateY(-2px)',
+                                        
                                     },
 
                                 }}

@@ -26,9 +26,10 @@ export const getAllServicesByTReatment = async (treatmentId) => {
 };
 
 
-export const getAllClinics = async () => {
+export const getAllClinics = async (search = "") => {
     try {
-        const response = await axios.get(`${apiUrl}/clinic/getall-clinics`);
+        const url = search ? `${apiUrl}/clinic/getall-clinics?search=${encodeURIComponent(search)}` : `${apiUrl}/clinic/getall-clinics`;
+        const response = await axios.get(url);
         // Return the data array from the response structure: { status: true, data: [...] }
         return response.data;
     } catch (error) {

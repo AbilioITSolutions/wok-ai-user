@@ -220,6 +220,7 @@ export default function Requestsection() {
             borderRadius: 3,
             overflow: "hidden",
             display: "flex",
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)',
             justifyContent: "space-evenly",
             flexDirection: { xs: "column", md: "row" },
           }}
@@ -228,7 +229,7 @@ export default function Requestsection() {
           <Box
             sx={{
               flex: { xs: "1 1 100%", md: "0 0 40%" },
-              minHeight: { xs: 300, md: 400 },
+              minHeight: { xs: 150, md: 400 },
               width: { xs: "100%", md: "55%" },
               p: { xs: 1, md: 2 },
             }}
@@ -334,6 +335,16 @@ export default function Requestsection() {
                   <Checkbox
                     checked={formData.agreeSentMsg}
                     onChange={handleInputChange('agreeSentMsg')}
+                    color="primary"
+                    sx={{
+                      color: '#368ADD',
+                      '&.Mui-checked': {
+                        color: '#368ADD',
+                      },
+                      '& .MuiSvgIcon-root': {
+                        fontSize: 20,
+                      }
+                    }}
                   />
                 }
                 label="I would like to receive monthly newsletter on energy market reports."

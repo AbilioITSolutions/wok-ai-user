@@ -16,7 +16,7 @@ export const createBooking = async (bookingData) => {
             bookingDate: bookingData.bookingDate,
             bookingTime: bookingData.bookingTime,
             
-                fullName: bookingData.userDetails.firstName+" " +bookingData.userDetails.lastName,
+                fullName: bookingData.userDetails.fullName,
                 email:bookingData.userDetails.email,
                 dob: bookingData.userDetails.dateOfBirth,
                 gender: bookingData.userDetails.gender ,

@@ -12,17 +12,12 @@ export default function Ourmission() {
             <Typography
               variant="h4"
               component="h2"
-              sx={{ color: "#368ADD", fontWeight: 300, mb: 2 , fontSize:"40px",font:"Albert Sans" , margin:"20px",}}
+              sx={{ color: "#368ADD", fontWeight: 300, mb: 2 , fontSize:"40px",font:"Albert Sans" }}
             >
               Our Mission
             </Typography>
             <Typography variant="body1" color="#000000" sx={{fontSize:"13px"}} >
-              At Wok AI, our mission is to make quality healthcare accessible,
-              simple, and reliable for everyone. We bridge the gap between
-              patients and trusted doctors by bringing clinic appointments
-              closer, faster, and smarter. Through technology, we honor the
-              timeless value of personal care while building a future where
-              booking a doctor is as easy as a tap.
+              Our mission is to revolutionize the way patients approach surgical care by placing their needs, concerns, and choices at the forefront. We strive to simplify the decision-making process by offering clear comparisons of hospitals and procedures, helping patients understand the true costs involved, and providing access to trusted second opinions from experienced medical professionals. Through our platform, we aim to eliminate confusion, reduce financial uncertainty, and foster transparency in every interaction. By leveraging technology and a patient-first philosophy, we are committed to making surgical care more accessible, affordable, and empowering—so that every individual can make informed decisions with confidence and peace of mind.
             </Typography>
           </Grid>
 
@@ -36,7 +31,7 @@ export default function Ourmission() {
                 width: {xs:"100%",md:"500px"},
                 height:"300px",
                 borderRadius: 3, // Rounded corners
-                boxShadow: 3,
+                
                 objectFit: "cover",
                 marginLeft:{xs:"0px",md:"90px"}
               }}

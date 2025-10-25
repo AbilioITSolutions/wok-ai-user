@@ -78,7 +78,7 @@ const Remainder = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '100vh',
-                backgroundColor: '#fafbfc'
+                backgroundColor: '#fff'
             }}>
                 <Box sx={{ flex: 1, pt: 16, pb: 3 }}>
                     <Container maxWidth="xl">
@@ -92,14 +92,12 @@ const Remainder = () => {
                                 <Box sx={{
                                     display: 'flex',
                                     alignItems: 'center',
+                                    justifyContent: 'center',
                                     mb: 3
                                 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <NotificationsIcon sx={{
-                                            color: '#FFC107',
-                                            fontSize: '1.5rem'
-                                        }} />
-                                        <Box>
+                                        
+                                        <Box sx={{ textAlign: 'center' }}>
                                             <Typography variant="h6" sx={{
                                                 fontWeight: 'bold',
                                                 color: '#2c3e50',
@@ -118,59 +116,72 @@ const Remainder = () => {
                                     </Box>
                                 </Box>
 
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                    {reminders.length === 0 ? (
-                                        <Typography sx={{ textAlign: 'center', color: '#666', py: 4 }}>
-                                            No reminders found.
-                                        </Typography>
-                                    ) : (
-                                        reminders.map((reminder, index) => (
-                                            <Card
-                                                key={reminder.bookingId}
-                                                sx={{
-                                                    borderRadius: '8px',
-                                                    border: '1px solid #e0e0e0',
-                                                    boxShadow: 'none',
-                                                    py:1,
-                                                    backgroundColor: '#fff'
-                                                }}
-                                            >
-                                                <CardContent sx={{ p: 2 }}>
-                                                    <Box sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: 2
-                                                    }}>
-                                                        <Avatar sx={{
-                                                            width: 40,
-                                                            height: 40,
-                                                            backgroundColor: reminder.bookingStatus === 'cancelled' ? '#F44336' : '#FFC107',
-                                                            color: '#fff'
+                                <Box sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    mb: 2
+                                }}>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                        maxWidth: '800px',
+                                        width: '100%'
+                                    }}>
+                                        {reminders.length === 0 ? (
+                                            <Typography sx={{ textAlign: 'center', color: '#666', py: 4 }}>
+                                                No reminders found.
+                                            </Typography>
+                                        ) : (
+                                            reminders.map((reminder, index) => (
+                                                <Card
+                                                    key={reminder.bookingId}
+                                                    sx={{
+                                                        borderRadius: '8px',
+                                                        // backgroundColor: '#fff',
+                                                        boxShadow: 'none',
+                                                        border:'1px solid #e0e0e0',
+                                                        py:1,
+                                                        backgroundColor: '#fff'
+                                                    }}
+                                                >
+                                                    <CardContent sx={{ p: 2 }}>
+                                                        <Box sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: 2
                                                         }}>
-                                                            {getIcon(reminder.bookingStatus)}
-                                                        </Avatar>
-                                                        <Box sx={{ flex: 1 }}>
-                                                            <Typography sx={{
-                                                                fontWeight: 'bold',
-                                                                color: '#2c3e50',
-                                                                fontSize: '1rem',
-                                                                mb: 0.5
+                                                            <Avatar sx={{
+                                                                width: 40,
+                                                                height: 40,
+                                                                backgroundColor: reminder.bookingStatus === 'cancelled' ? '#F44336' : '#FFC107',
+                                                                color: '#fff'
                                                             }}>
-                                                                {reminder.reminderType}
-                                                            </Typography>
-                                                            <Typography sx={{
-                                                                color: '#979797',
-                                                                fontSize: '0.85rem',
-                                                                lineHeight: 1.4
-                                                            }}>
-                                                                {reminder.message}
-                                                            </Typography>
+                                                                {getIcon(reminder.bookingStatus)}
+                                                            </Avatar>
+                                                            <Box sx={{ flex: 1 }}>
+                                                                <Typography sx={{
+                                                                    fontWeight: 'bold',
+                                                                    color: '#2c3e50',
+                                                                    fontSize: '1rem',
+                                                                    mb: 0.5
+                                                                }}>
+                                                                    {reminder.reminderType}
+                                                                </Typography>
+                                                                <Typography sx={{
+                                                                    color: '#979797',
+                                                                    fontSize: '0.85rem',
+                                                                    lineHeight: 1.4
+                                                                }}>
+                                                                    {reminder.message}
+                                                                </Typography>
+                                                            </Box>
                                                         </Box>
-                                                    </Box>
-                                                </CardContent>
-                                            </Card>
-                                        ))
-                                    )}
+                                                    </CardContent>
+                                                </Card>
+                                            ))
+                                        )}
+                                    </Box>
                                 </Box>
                             </CardContent>
                         </Box>

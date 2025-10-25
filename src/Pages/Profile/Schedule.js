@@ -36,6 +36,22 @@ const Schedule = () => {
     const [selectedTime, setSelectedTime] = useState(bookingData.selectedTime || '11:00 AM');
     const [consultingType, setConsultingType] = useState(bookingData.consultingType || 'Offline');
 
+    // Log the received doctor data when component mounts or bookingData changes
+    useEffect(() => {
+        console.log('Schedule Component - Booking Data:', bookingData);
+        if (bookingData.selectedDoctor) {
+            console.log('Selected Doctor Details:', {
+                id: bookingData.selectedDoctor.id,
+                name: bookingData.selectedDoctor.name,
+                specializations: bookingData.selectedDoctor.specializations,
+                experience: bookingData.selectedDoctor.experience,
+                rating: bookingData.selectedDoctor.rating
+            });
+        } else {
+            console.warn('No doctor selected in booking context');
+        }
+    }, [bookingData]);
+
     // New state for API integration
     const [timeSlots, setTimeSlots] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -64,37 +80,22 @@ const Schedule = () => {
                     const response = await getDoctorAvailableTimeSlots(selectedDoctor);
                     console.log('Time slots API response:', response);
 
-                    // Transform API response to match component structure
-                    if (response && response.data) {
-                        const { start_time, end_time, availableSlots } = response.data;
-
-                        // Generate time slots based on doctor's schedule
-                        const slots = [];
-                        if (availableSlots && availableSlots.length > 0) {
-                            // Directly use the available slots from API and convert to 12-hour format
-                            availableSlots.forEach(slotTime => {
-                                // Create a Date object from the 24-hour time string
-                                const time24Hour = `${slotTime}:00`;
-                                const slotDateTime = new Date(`1970-01-01T${time24Hour}`);
-
-                                // Format for display (12-hour format)
-                                const time12Hour = slotDateTime.toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit',
-                                    hour12: true
-                                });
-
-                                slots.push({
-                                    time: time12Hour,
-                                    available: true,
-                                    time24: slotTime
-                                });
-                            });
-                        }
-
-                        setTimeSlots(slots.length > 0 ? slots : []);
+                    console.log('Raw API response:', response);
+                    
+                    if (response && response.status && Array.isArray(response.slots)) {
+                        // Map the slots array to the expected format
+                        const slots = response.slots.map(slotTime => ({
+                            time: slotTime,  // Keep the original time string (e.g., "07:00 AM")
+                            available: true
+                        }));
+                        
+                        console.log('Processed slots:', slots);
+                        setTimeSlots(slots);
+                    } else {
+                        console.warn('No valid slots found in response');
+                        setTimeSlots([]);
                     }
-                    } catch (error) {
+                } catch (error) {
                     console.error('Error fetching time slots:', error);
                     setError('Failed to load available time slots. Please try again later.');
                     // Set empty slots on error - no fallback default slots
@@ -214,11 +215,35 @@ const Schedule = () => {
             setSelectedDate(null);
         }
     };
-
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
     ];
+
+    const handleContinue = () => {
+        // Create full date string from selectedDate, currentMonth, currentYear
+        let dateString;
+        if (selectedDate) {
+            const fullDate = new Date(currentYear, currentMonth, selectedDate);
+            if (isNaN(fullDate.getTime())) {
+                // Invalid date (e.g., February 31), use current date
+                dateString = new Date().toISOString().split('T')[0];
+            } else {
+                dateString = fullDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+            }
+        } else {
+            // If no date selected, use current date
+            dateString = new Date().toISOString().split('T')[0];
+        }
+
+        // Store current state in context
+        updateBookingData('selectedDate', dateString);
+        updateBookingData('selectedTime', selectedTime);
+        updateBookingData('consultingType', consultingType);
+
+        // Navigate to next page
+        navigate('/doctorlist/clinic/patient-info');
+    };
 
     return (
         <>
@@ -230,7 +255,7 @@ const Schedule = () => {
                         <Typography variant="h4" sx={{ 
                             fontWeight: 'bold',
                             fontSize: '2rem',
-                            mb: 1,
+                            mb: 1,  
                             color: '#333'
                         }}>
                             Select Date & Time
@@ -412,24 +437,28 @@ const Schedule = () => {
                                             ) : (
                                                 <Box sx={{ 
                                                     display: 'grid', 
-                                                    gridTemplateColumns: 'repeat(2, 1fr)', 
-                                                    gap: 2,
-                                                    mb: 4
+                                                    gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' },
+                                                    gap: 1.5,
+                                                    mb: 4,
+                                                    px: 1
                                                 }}>
                                                     {timeSlots.map((slot, index) => (
                                                         <Box
                                                             key={index}
                                                             sx={{
-                                                                p: 2,
+                                                                p: 1.5,
                                                                 textAlign: 'center',
-                                                                borderRadius: 1,
-                                                                backgroundColor: slot.time === selectedTime ? '#368ADD' : '#E6F0FF',
-                                                                color: slot.time === selectedTime ? '#fff' : '#368ADD',
+                                                                borderRadius: '8px',
+                                                                backgroundColor: slot.time === selectedTime ? '#368ADD' : '#F5F9FF',
+                                                                color: slot.time === selectedTime ? '#fff' : '#333',
+                                                                border: slot.time === selectedTime ? 'none' : '1px solid #E0E0E0',
                                                                 cursor: 'pointer',
-                                                                fontWeight: 'bold',
-                                                                fontSize: '0.9rem',
+                                                                fontWeight: 500,
+                                                                fontSize: '0.875rem',
+                                                                transition: 'all 0.2s ease',
                                                                 '&:hover': {
-                                                                    backgroundColor: slot.time === selectedTime ? '#368ADD' : '#D6E8FF'
+                                                                    backgroundColor: slot.time === selectedTime ? '#2D7BC8' : '#E6F0FF',
+                                                                    borderColor: slot.time === selectedTime ? '#2D7BC8' : '#B3D1FF'
                                                                 }
                                                             }}
                                                             onClick={() => {
@@ -518,7 +547,7 @@ const Schedule = () => {
                     }}>
                         <Button
                             variant="outlined"
-                            onClick={() => navigate('/doctorlist/clinic/book-appointment')}
+                            onClick={() => navigate(-1)}
                             startIcon={<ArrowBackIcon />}
                             sx={{
                                 px: 4,
@@ -536,7 +565,8 @@ const Schedule = () => {
                         <Button
                             variant="contained"
                             endIcon={<ArrowForwardIcon />}
-                            onClick={() => navigate('/doctorlist/clinic/patient-info')}
+                            onClick={handleContinue}
+                            disabled={!selectedDate || !selectedTime || !consultingType}
                             sx={{
                                 px: 4,
                                 py: 1.5,

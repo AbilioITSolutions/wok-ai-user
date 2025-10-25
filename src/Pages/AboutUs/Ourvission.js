@@ -18,7 +18,7 @@ export default function Ourvission() {
                  width: {xs:"100%",md:"500px"},
                 height:"300px",
                 borderRadius: 3, // Rounded corners
-                boxShadow: 3,
+                
                 objectFit: "cover",
                 marginRight:{xs:"0px",md:"80px"}
               }}
@@ -36,12 +36,8 @@ export default function Ourvission() {
             >
               Our Vision
             </Typography>
-            <Typography variant="body1" color="#000000" sx={{fontSize:"13px"}}>
-              To create a world where accessing healthcare is effortless,
-              trusted, and within <br/>everyone’s reach. Wok AI envisions a future
-              where patients connect with the right<br/>ors at the right time,
-              guided by technology that simplifies care without losing <br/>the
-              human touch.
+            <Typography variant="body1" color="#000000" sx={{fontSize:"13px" , width:"500px"}}>
+              To build a future where every patient—regardless of background or income—can access transparent, affordable, and high-quality surgical care. We envision a healthcare ecosystem where trust replaces uncertainty, and every decision is backed by data, empathy, and integrity. We believe that surgery decisions shouldn’t be overwhelming or opaque. Our vision is to make healthcare more human—where patients feel heard, informed, and empowered to choose what’s best for them.
             </Typography>
           </Grid>
         </Grid>

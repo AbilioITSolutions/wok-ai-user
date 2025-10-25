@@ -10,8 +10,10 @@ import {
 } from '@mui/material';
 import bgImage from './sectionsassets/background.jpg';
 import homeabout from '../../../ASSETS/homeabout.png';
+import { useNavigate } from 'react-router-dom';
 
 function AboutSection() {
+    const navigate = useNavigate();
     return (
         <Box
             sx={{
@@ -124,6 +126,7 @@ function AboutSection() {
                 {/* Button */}
                 <Button
                     variant="contained"
+                    onClick={() => navigate("/about-us")}
                     sx={{
                         backgroundColor: '#007bff',
                         color: '#fff',
@@ -131,9 +134,10 @@ function AboutSection() {
                         py: 1.25,
                         fontSize: '0.95rem',
                         borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0, 123, 255, 0.3)',
+                        
                         '&:hover': {
                             backgroundColor: '#0056b3',
+
                         },
                     }}
                 >

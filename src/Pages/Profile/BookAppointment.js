@@ -13,10 +13,7 @@ import {
     Chip,
     Button,
     Radio,
-    RadioGroup,
-    FormControlLabel,
     Container,
-    Stack,
     CircularProgress,
     Alert
 } from "@mui/material";
@@ -33,7 +30,7 @@ const BookAppointment = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { bookingData, updateBookingData } = useBooking();
-    const [selectedDoctor, setSelectedDoctor] = useState(1);
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [doctorsData, setDoctorsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -47,17 +44,50 @@ const BookAppointment = () => {
 
     const handleDoctorSelect = (doctorId) => {
         console.log('Selecting doctor:', doctorId);
-        setSelectedDoctor(doctorId);
-        updateBookingData('selectedDoctor', doctorId);
-        console.log('Updated booking data:', bookingData);
+        console.log('Available doctors data:', doctorsData);
+        
+        if (!doctorsData || !Array.isArray(doctorsData)) {
+            console.error('No doctors data available');
+            return;
+        }
+
+        const selectedDoctor = doctorsData.find(doc => doc && doc.id === doctorId);
+        console.log('Found selected doctor:', selectedDoctor);
+        
+        if (selectedDoctor) {
+            setSelectedDoctor(doctorId);
+            
+            // Create a safe doctor data object with correct property names
+            const doctorData = {
+                id: selectedDoctor.id || doctorId,
+                name: selectedDoctor.name || 'Doctor',
+                specializations: Array.isArray(selectedDoctor.specializations) 
+                    ? [...selectedDoctor.specializations] 
+                    : [],
+                experience: selectedDoctor.experience || 'Not specified',
+                rating: selectedDoctor.rating || 0,
+                reviews: selectedDoctor.reviewCount || 0,  // Note: using reviewCount instead of reviews
+                time: selectedDoctor.availability || 'Not available',  // Using availability instead of time
+                available: selectedDoctor.isAvailable !== undefined ? selectedDoctor.isAvailable : true,  // Using isAvailable
+                image: selectedDoctor.avatar || '',  // Using avatar instead of image
+                clinicId: location.state?.clinicId,
+                treatmentId: location.state?.treatmentId,
+                serviceId: location.state?.serviceId
+            };
+            
+            console.log('Storing doctor data in context:', doctorData);
+            updateBookingData('selectedDoctor', doctorData);
+        } else {
+            console.error(`Doctor with ID ${doctorId} not found in doctors data`);
+        }
     };
 
     // Load data from context on mount
     useEffect(() => {
         console.log('Booking data on mount:', bookingData);
-        if (bookingData.selectedDoctor) {
+        if (bookingData.selectedDoctor && bookingData.selectedDoctor.id) {
             console.log('Loading selectedDoctor from context:', bookingData.selectedDoctor);
-            setSelectedDoctor(bookingData.selectedDoctor);
+            setSelectedDoctor(bookingData.selectedDoctor.id);
         }
     }, []);
 
@@ -304,7 +334,7 @@ const BookAppointment = () => {
                                             onClick={() => handleDoctorSelect(doctor.id)}
                                             sx={{
                                                 borderRadius: 2,
-                                                border: selectedDoctor === doctor.id ? '2px solid #368ADD' : '1px solid #e0e0e0',
+
                                                 backgroundColor: '#ffffff',
                                                 p: { xs: 2, sm: 3 },
                                                 display: 'flex',
@@ -313,9 +343,7 @@ const BookAppointment = () => {
                                                 gap: { xs: 2, sm: 3 },
                                                 cursor: 'pointer',
                                                 transition: 'all 0.2s ease-in-out',
-                                                '&:hover': {
-                                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                                                }
+                                                
                                             }}>
                                             {/* Radio Button and Avatar Container */}
                                             <Box sx={{ 
@@ -421,6 +449,7 @@ const BookAppointment = () => {
                             onClick={() => {
                                 console.log('Continue button clicked');
                                 console.log('Navigating to schedule with selected doctor:', selectedDoctor);
+                                handleDoctorSelect(selectedDoctor);
                                 navigate('/schedule', {
                                     state: {
                                         selectedDoctor: selectedDoctor

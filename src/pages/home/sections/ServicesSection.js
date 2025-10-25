@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
     IconButton,
     Card,
     CardContent,
-    Container
+    Container,
+    CircularProgress,
+    Alert
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -15,27 +17,104 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import serviceIcon from './sectionsassets/hair-icon.png';
 import headerBg from './sectionsassets/header-bg.png';
-
-const services = [
-    { title: 'Follicular Unit Transplantation' },
-    { title: 'Follicular Unit Extraction' },
-    { title: 'Direct Hair Implantation' },
-    { title: 'Orthokeratology' },
-    { title: 'Laser Trabeculoplasty' },
-];
-
+import { getAllTreatments } from '../../../Apis/TreatmentsApis';
+import { useNavigate } from 'react-router-dom';
+import colordesign from '../../../ASSETS/colordesign.png'
 function ServicesSection() {
+    const navigate = useNavigate();
+    const [treatments, setTreatments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchTreatments = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await getAllTreatments();
+                if (response.status) {
+                    setTreatments(response.data || []);
+                } else {
+                    setError('Failed to load treatments');
+                }
+            } catch (err) {
+                console.error('Error fetching treatments:', err);
+                setError('An error occurred while fetching treatments');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTreatments();
+    }, []);
+
+    // Show loading spinner while fetching data
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    width: '100%',
+                    backgroundColor: '#e6f0ff',
+                    height: { xs: '80vh', md: '100vh' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <CircularProgress size={60} />
+            </Box>
+        );
+    }
+
+    // Show error message if there's an error
+    if (error) {
+        return (
+            <Box
+                sx={{
+                    width: '100%',
+                    backgroundColor: '#e6f0ff',
+                    height: { xs: '80vh', md: '100vh' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    p: 3,
+                }}
+            >
+                <Alert severity="error" sx={{ maxWidth: 600 }}>
+                    {error}
+                </Alert>
+            </Box>
+        );
+    }
+
     return (
         <Box
             sx={{
                 width: '100%',
                 backgroundColor: '#e6f0ff',
                 height: { xs: 'auto', md: '100vh' },
-                minHeight: { xs: '80vh', md: '100vh' },
+                minHeight: { xs: '80vh', md: '105vh' },
                 position: 'relative',
                 overflow: 'hidden',
             }}
         >
+            {/* Left Side Decorative Icon */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    left: 0,
+                    top: '30%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 1,
+                    width: { xs: '120px', sm: '150px', md: '320px' },
+                    height: { xs: '120px', sm: '150px', md: '320px' },
+                    backgroundImage: `url(${colordesign})`,
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    opacity: 0.8,
+                }}
+            />
             {/* Top Text Box with Background Image */}
             <Box
                 sx={{
@@ -43,20 +122,22 @@ function ServicesSection() {
                     backgroundSize: { xs: 'cover', md: '120%' },
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    pb: { xs: 12, sm: 16, md: 24 },
+                    pb: { xs: 12, sm: 16, md: 28 },
                     textAlign: 'center',
                     color: '#fff',
                 }}
             >
                 <Container maxWidth="xl">
-                    <Box sx={{ 
-                        display: 'flex', 
-                        flexDirection: { xs: 'column', md: 'row' },
-                        justifyContent: 'space-between', 
-                        alignItems: { xs: 'center', md: 'start' },
-                        p: { xs: 2, sm: 3, md: 5 },
-                        gap: { xs: 3, md: 0 }
-                    }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: { xs: 'column', md: 'row' },
+                            justifyContent: 'space-between',
+                            alignItems: { xs: 'center', md: 'start' },
+                            p: { xs: 2, sm: 3, md: 5 },
+                            gap: { xs: 3, md: 0 },
+                        }}
+                    >
                         <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' } }}>
                             <Typography
                                 variant="h4"
@@ -78,13 +159,15 @@ function ServicesSection() {
                                 Easy access to specialists who care about your well-being.
                             </Typography>
                         </Box>
-                        <Box sx={{ 
-                            display: { xs: 'flex', md: 'flex' }, 
-                            gap: 2, 
-                            ml: { xs: 0, md: 4 }, 
-                            alignItems: 'center',
-                            justifyContent: { xs: 'center', md: 'flex-end' }
-                        }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 2,
+                                ml: { xs: 0, md: 4 },
+                                alignItems: 'center',
+                                justifyContent: { xs: 'center', md: 'flex-end' },
+                            }}
+                        >
                             <IconButton
                                 className="swiper-button-prev"
                                 sx={{
@@ -100,10 +183,12 @@ function ServicesSection() {
                                     },
                                 }}
                             >
-                                <ArrowForwardIcon sx={{ 
-                                    transform: 'rotate(180deg)', 
-                                    fontSize: { xs: '1.2rem', md: '1.5rem' } 
-                                }} />
+                                <ArrowForwardIcon
+                                    sx={{
+                                        transform: 'rotate(180deg)',
+                                        fontSize: { xs: '1.2rem', md: '1.5rem' },
+                                    }}
+                                />
                             </IconButton>
                             <IconButton
                                 className="swiper-button-next"
@@ -124,7 +209,7 @@ function ServicesSection() {
                             </IconButton>
                         </Box>
                     </Box>
-                </Container> 
+                </Container>
             </Box>
 
             {/* Full Width Swiper Section */}
@@ -136,130 +221,160 @@ function ServicesSection() {
                     width: '100%',
                     px: { xs: 0, sm: 3, md: 0 },
                     '& .services-swiper .swiper-pagination': {
-                        position: 'absolute !important',
                         bottom: '20px !important',
                         left: '50% !important',
                         transform: 'translateX(-50%) !important',
-                        display: 'flex !important',
-                        justifyContent: 'center !important',
-                        alignItems: 'center !important',
-                        gap: '8px !important',
-                        zIndex: 10,
-                        opacity: '1 !important',
-                        visibility: 'visible !important',
-                        height: 'auto !important',
-                        '&.swiper-pagination-bullets': {
-                            display: 'flex !important',
-                            alignItems: 'center !important',
-                            height: 'auto !important',
-                        },
-                    },
-                    '& .services-swiper .swiper-pagination-bullet': {
-                        width: '8px !important',
-                        height: '8px !important',
-                        backgroundColor: '#ccc !important',
-                        borderRadius: '50% !important',
-                        cursor: 'pointer !important',
-                        transition: 'all 0.3s ease !important',
-                        opacity: '1 !important',
-                        visibility: 'visible !important',
-                        display: 'inline-block !important',
-                        margin: '0 4px !important',
-                        border: 'none !important',
-                        outline: 'none !important',
-                        flexShrink: '0 !important',
-                        alignSelf: 'center !important',
-                        '&:hover': {
-                            backgroundColor: '#007bff !important',
-                        },
-                    },
-                    '& .services-swiper .swiper-pagination-bullet-active': {
-                        backgroundColor: '#007bff !important',
-                        transform: 'scale(1.2) !important',
-                        opacity: '1 !important',
                     },
                 }}
             >
                 <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
-                    spaceBetween={{ xs: 16, sm: 20, md: 24 }}
-                    slidesPerView={1}
+                    spaceBetween={treatments.length === 2 ? '15%' : 24}
+                    slidesPerView={treatments.length === 1 ? 1 : 'auto'}
+                    centeredSlides={false}
                     navigation={{
                         nextEl: '.swiper-button-next',
                         prevEl: '.swiper-button-prev',
                     }}
-                    pagination={{ 
+                    pagination={{
                         clickable: true,
                         type: 'bullets',
-                        dynamicBullets: false,
                     }}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,
                     }}
-                    loop={true}
+                    loop={treatments.length > 1}
                     breakpoints={{
-                        480: { slidesPerView: 1.2, spaceBetween: 16 },
-                        600: { slidesPerView: 2, spaceBetween: 20 },
-                        960: { slidesPerView: 3, spaceBetween: 24 },
+                        480: {
+                            slidesPerView: treatments.length === 1 ? 1 : (treatments.length === 2 ? 2 : 1.2),
+                            spaceBetween: treatments.length === 2 ? 20 : 16,
+                            centeredSlides: false
+                        },
+                        600: {
+                            slidesPerView: treatments.length === 1 ? 1 : (treatments.length === 2 ? 2 : 2),
+                            spaceBetween: treatments.length === 2 ? 40 : 20,
+                            centeredSlides: false
+                        },
+                        960: {
+                            slidesPerView: treatments.length === 1 ? 1 : (treatments.length === 2 ? 2 : 3),
+                            spaceBetween: treatments.length === 2 ? 60 : 24,
+                            centeredSlides: false
+                        },
                     }}
-                    style={{ 
-                        paddingBottom: '60px', 
+                    style={{
+                        paddingBottom: '60px',
                         width: '100%',
-                        '--swiper-pagination-color': '#007bff',
-                        '--swiper-pagination-bullet-size': '12px',
-                        '--swiper-pagination-bullet-horizontal-gap': '8px',
                     }}
                     className="services-swiper"
                 >
-                    {services.map((service, index) => (
-                        <SwiperSlide key={index}>
+                    {treatments.map((treatment, index) => (
+                        <SwiperSlide key={treatment.id || index}>
                             <Card
                                 sx={{
                                     height: '100%',
-                                    minHeight: { xs: 280, sm: 280, md: 300 },
+                                    minHeight: { xs: 320, sm: 340, md: 360 },
                                     borderRadius: '16px',
                                     backgroundColor: '#fff',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    alignItems: 'center',
+                                    alignItems: 'flex-start',
                                     justifyContent: 'flex-start',
-                                    p: { xs: 3, sm: 4, md: 5 },
+                                    p: { xs: 2  , sm: 2, md: 3 },
                                     mx: 'auto',
-                                    maxWidth: { xs: 280, sm: 300, md: 320 },
-                                    textAlign: 'center',
+                                    maxWidth: { xs: 320, sm: 350, md: 420 },
+                                    textAlign: 'left',
                                     boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
                                 }}
                             >
                                 <Box
                                     component="img"
-                                    src={serviceIcon}
-                                    alt="Service Icon"
-                                    sx={{ 
-                                        width: { xs: 80, sm: 90, md: 100 }, 
-                                        height: { xs: 80, sm: 90, md: 100 }, 
-                                        mb: { xs: 2, sm: 3, md: 3 } 
+                                    src={treatment.imageUrl || serviceIcon}
+                                    alt={treatment.name || 'Service Icon'}
+                                    sx={{
+                                        width: { xs: 80, sm: 90, md: 80 },
+                                        height: { xs: 80, sm: 90, md: 80 },
+                                        mb: { xs: 2, sm: 3, md: 3 },
+                                        objectFit: 'cover',
+                                        borderRadius: '8px',
+                                        alignSelf: 'flex-start',
                                     }}
                                 />
-                                <CardContent sx={{ flexGrow: 1, p: { xs: 1, md: 2 } }}>
+                                <CardContent sx={{ flexGrow: 1, p: { xs: 1, md: 0 }, width: '100%' }}>
                                     <Typography
                                         variant="subtitle1"
-                                        sx={{ 
-                                            fontWeight: 600, 
+                                        sx={{
+                                            fontWeight: 600,
                                             color: '#003366',
                                             fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
-                                            lineHeight: { xs: '1.3', md: '1.4' }
+                                            lineHeight: { xs: '1.3', md: '1.4' },
+                                            mb: 2,
                                         }}
                                     >
-                                        {service.title}
+                                        {treatment.treatmentName ||
+                                            treatment.name ||
+                                            treatment.title}
                                     </Typography>
+                                    {treatment.description && (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: '#666',
+                                                fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+                                                lineHeight: { xs: '1.4', md: '1.5' },
+                                                mb: 0   ,
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 3,
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                            }}
+                                        >
+                                            {treatment.description}
+                                        </Typography>
+                                    )}
                                 </CardContent>
-                                <Typography
-                                    sx={{ fontSize: { xs: '40px', sm: '50px', md: '60px' }, color: '#777' }}
+                                <Box
+                                   onClick={() => navigate(`/login`)}
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-start',
+                                        mt: 'auto',
+                                        pt: 2,
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            '& .view-services-text': {
+                                                color: '#007bff',
+                                            },
+                                            '& .view-services-arrow': {
+                                                transform: 'translateX(4px)',
+                                                color: '#007bff',
+                                            },
+                                        },
+                                    }}
                                 >
-                                    <ArrowForwardIcon sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2rem' } }} />
-                                </Typography>
-                                
+                                    <Typography
+                                        className="view-services-text"
+                                        sx={{
+                                            fontSize: { xs: '0.9rem', sm: '1rem', md: "1rem" },
+                                            fontWeight: 600,
+                                            color: '#ff4040',
+                                            mr: 1,
+                                            transition: 'color 0.3s ease',
+                                        }}
+                                    >
+                                        View Services
+                                    </Typography>
+                                    <ArrowForwardIcon
+                                        className="view-services-arrow"
+                                        sx={{
+                                            fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1rem' },
+                                            color: '#666',
+                                            transition: 'transform 0.3s ease, color 0.3s ease',
+                                        }}
+                                    />
+                                </Box>
                             </Card>
                         </SwiperSlide>
                     ))}

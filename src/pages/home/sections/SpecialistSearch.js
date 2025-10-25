@@ -12,8 +12,10 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { getAllTreatments, getAllServicesByTReatment } from '../../../Apis/TreatmentsApis';
+import { useNavigate } from 'react-router-dom';
 
 function SpecialistSearch() {
+    const navigate = useNavigate();
     const [selectedTreatment, setSelectedTreatment] = useState('');
     const [selectedService, setSelectedService] = useState('');
     const [treatments, setTreatments] = useState([]);
@@ -22,6 +24,8 @@ function SpecialistSearch() {
     const [servicesLoading, setServicesLoading] = useState(false);
     const [error, setError] = useState(null);
     const [servicesError, setServicesError] = useState(null);
+    const [treatmentFocused, setTreatmentFocused] = useState(false);
+    const [serviceFocused, setServiceFocused] = useState(false);
 
     // Fetch treatments on component mount
     useEffect(() => {
@@ -119,6 +123,7 @@ function SpecialistSearch() {
                 px: { xs: 3, sm: 4, md: 5 },
                 py: { xs: 4, sm: 5, md: 6 },
                 border: '1px solid #e0e0e0',
+               
                 borderRadius: '16px',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
                 backgroundColor: '#fff',
@@ -154,11 +159,16 @@ function SpecialistSearch() {
                 {/* Select Treatment Dropdown */}
                 <TextField
                     select
+                    label="Select a treatment"
                     value={selectedTreatment}
                     onChange={handleTreatmentChange}
-                    placeholder="Select Treatment"
+                    onFocus={() => setTreatmentFocused(true)}
+                    onBlur={() => setTreatmentFocused(false)}
                     variant="outlined"
                     disabled={loading}
+                    InputLabelProps={{
+                        shrink: treatmentFocused || Boolean(selectedTreatment),
+                    }}
                     sx={{
                         flex: { xs: 1, sm: 1, md: 1.5 },
                         backgroundColor: '#fff',
@@ -186,6 +196,16 @@ function SpecialistSearch() {
                             display: 'flex',
                             alignItems: 'center',
                             paddingLeft: '12px',
+                            paddingRight: '30px',
+                            width: '100%',
+                        },
+                        '& .MuiInputLabel-root': {
+                            color: '#999',
+                            left: '20px', // Slightly more gap from the search icon
+                            '&.Mui-focused': {
+                                color: '#007bff',
+                                transform: 'translate(0px, -9px) scale(0.75)',
+                            },
                         },
                     }}
                     InputProps={{
@@ -222,11 +242,16 @@ function SpecialistSearch() {
                 {/* Choose Service Dropdown */}
                 <TextField
                     select
+                    label={!selectedTreatment ? "Select a treatment first" : "Choose a service"}
                     value={selectedService}
                     onChange={handleServiceChange}
-                    placeholder="Choose Service"
+                    onFocus={() => setServiceFocused(true)}
+                    onBlur={() => setServiceFocused(false)}
                     variant="outlined"
                     disabled={servicesLoading || !selectedTreatment}
+                    InputLabelProps={{
+                        shrink: serviceFocused || Boolean(selectedService),
+                    }}
                     sx={{
                         flex: { xs: 1, sm: 1, md: 1.5 },
                         backgroundColor: '#fff',
@@ -254,6 +279,16 @@ function SpecialistSearch() {
                             display: 'flex',
                             alignItems: 'center',
                             paddingLeft: '12px',
+                            paddingRight: '30px',
+                            width: '100%',
+                        },
+                        '& .MuiInputLabel-root': {
+                            color: '#999',
+                            left: '20px', // Slightly more gap from the search icon
+                            '&.Mui-focused': {
+                                color: '#007bff',
+                                transform: 'translate(0px, -9px) scale(0.75)',
+                            },
                         },
                     }}
                     InputProps={{
@@ -268,11 +303,7 @@ function SpecialistSearch() {
                         ),
                     }}
                 >
-                    {!selectedTreatment ? (
-                        <MenuItem disabled>
-                            <em>Select a treatment first</em>
-                        </MenuItem>
-                    ) : servicesError ? (
+                    {servicesError ? (
                         <MenuItem disabled>
                             <Alert severity="error" sx={{ width: '100%', py: 0.5 }}>
                                 {servicesError}
@@ -294,6 +325,7 @@ function SpecialistSearch() {
                 {/* Search Button */}
                 <Button
                     variant="contained"
+                    onClick={() => navigate("/login")}
                     sx={{
                         backgroundColor: '#007bff',
                         color: '#fff',

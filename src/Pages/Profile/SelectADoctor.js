@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useBooking } from "../../Context/BookingContext";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Card,
@@ -18,11 +20,42 @@ import { Container } from "@mui/system";
 
 
 const SelectADoctor = () => {
-  const [selectedDoctor, setSelectedDoctor] = useState(1);
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+  const { bookingData, updateBookingData } = useBooking();
+  const navigate = useNavigate();
+
+  const handleDoctorSelect = (doctorId) => {
+    const selectedDoctor = doctors.find(doc => doc.id === doctorId);
+    if (selectedDoctor) {
+      console.log('Setting selected doctor:', selectedDoctor);
+      // Make sure we're storing the complete doctor object
+      const doctorData = {
+        id: selectedDoctor.id,
+        name: selectedDoctor.name,
+        specializations: [...(selectedDoctor.specializations || [])],
+        experience: selectedDoctor.experience,
+        rating: selectedDoctor.rating,
+        reviews: selectedDoctor.reviews,
+        time: selectedDoctor.time,
+        available: selectedDoctor.available,
+        image: selectedDoctor.image
+      };
+      
+      console.log('Storing doctor data in context:', doctorData);
+      updateBookingData('selectedDoctor', doctorData);
+      setSelectedDoctorId(doctorId);
+    } 
+  };
+
+  const handleContinue = () => {
+    if (selectedDoctorId) {
+      handleDoctorSelect(selectedDoctorId);
+      navigate('/profile/schedule');
+    }
+  };
 
   return (
    <Container maxWidth="lg">
-    {/* <StepperNav/> */}
     <Box sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, border: "1px solid #eee", width: '100%' }}>
       <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
         Select Doctor
@@ -30,23 +63,23 @@ const SelectADoctor = () => {
 
       <Grid container spacing={2}>
         {doctors.map((doctor) => (
-          <Grid size={{ xs: 12, md: 12 }} key={doctor.id}>
-            <Grid  size={{xs:12}} key={doctor.id}>
-              <Card
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  opacity: doctor.available ? 1 : 0.5,
-                  border:
-                    selectedDoctor === doctor.id
-                      ? "2px solid #1976d2"
-                      : "1px solid #e0e0e0",
-                  borderRadius: 3
-                }}
-                onClick={() => doctor.available && setSelectedDoctor(doctor.id)}
-              >
+          <Grid item xs={12} md={12} key={doctor.id}>
+            <Card
+              sx={{
+                p: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                opacity: doctor.available ? 1 : 0.5,
+                border:
+                  selectedDoctorId === doctor.id
+                    ? "2px solid #1976d2"
+                    : "1px solid #e0e0e0",
+                borderRadius: 3,
+                cursor: doctor.available ? 'pointer' : 'default'
+              }}
+              onClick={() => doctor.available && handleDoctorSelect(doctor)}
+            >
                 {/* Left Section (Avatar + Info) */}
                 <Grid container spacing={2} alignItems="center" sx={{ flex: 1 }}>
                   {/* Avatar - takes half width */}
@@ -121,13 +154,11 @@ const SelectADoctor = () => {
 
                 {/* Right Section (Radio button) */}
                 <Radio
-                  checked={selectedDoctor === doctor.id}
-                  onChange={() => setSelectedDoctor(doctor.id)}
+                  checked={selectedDoctorId === doctor.id}
+                  onChange={() => handleDoctorSelect(doctor.id)}
                   disabled={!doctor.available}
                 />
               </Card>
-            </Grid>
-
           </Grid>
         ))}
       </Grid>
@@ -137,7 +168,8 @@ const SelectADoctor = () => {
         <Button
           variant="contained"
           endIcon={<span>&rarr;</span>}
-          disabled={!selectedDoctor}
+          disabled={!selectedDoctorId}
+          onClick={handleContinue}
         >
           Continue
         </Button>

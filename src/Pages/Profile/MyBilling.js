@@ -157,9 +157,7 @@ const MyBilling = () => {
                     flexWrap: { xs: "wrap", md: "nowrap" }
                   }}>
                     <CalendarTodayIcon sx={{ fontSize: { xs: "1rem", md: "1.2rem" }, color: "#666" }} />
-                    <Typography variant="body2" sx={{ color: "#666", minWidth: "40px" }}>
-                      Date
-                    </Typography>
+                    
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
                       {appointment.bookingDate ? new Date(appointment.bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Date not available'}
                     </Typography>
@@ -172,9 +170,7 @@ const MyBilling = () => {
                     flexWrap: { xs: "wrap", md: "nowrap" }
                   }}>
                     <AccessTimeIcon sx={{ fontSize: { xs: "1rem", md: "1.2rem" }, color: "#666" }} />
-                    <Typography variant="body2" sx={{ color: "#666", minWidth: "40px" }}>
-                      Time
-                    </Typography>
+                    
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
                       {appointment.bookingTime || 'Time not available'}
                     </Typography>
@@ -187,9 +183,7 @@ const MyBilling = () => {
                     flexWrap: { xs: "wrap", md: "nowrap" }
                   }}>
                     <ComputerIcon sx={{ fontSize: { xs: "1rem", md: "1.2rem" }, color: "#666" }} />
-                    <Typography variant="body2" sx={{ color: "#666", minWidth: "40px" }}>
-                      Type
-                    </Typography>
+                    
                     <Typography variant="body2" sx={{ fontWeight: 500, color: "#333" }}>
                       {appointment.appointment_type || 'Online'}
                     </Typography>

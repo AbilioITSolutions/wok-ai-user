@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-    Typography, 
-    Card, 
-    CardContent, 
-    Button, 
-    Container, 
+    Typography,
+    Card,
+    CardContent,
+    Button,
+    Container,
   Grid,
   TextField,
   FormControl,
@@ -14,7 +14,9 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-    InputAdornment
+    InputAdornment,
+    Snackbar,
+    Alert
 } from '@mui/material';
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -32,8 +34,7 @@ const PatientInfo = () => {
     const navigate = useNavigate();
     const { bookingData, updateBookingData } = useBooking();
     const [formData, setFormData] = useState(bookingData.patientInfo || {
-        firstName: '',
-        lastName: '',
+        fullname: '',
         email: '',
         phone: '',
         dateOfBirth: '',
@@ -80,11 +81,74 @@ const PatientInfo = () => {
         updateBookingData('patientInfo', newFormData);
     };
 
-  return (
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
+    // Validate personal details (core required fields for enabling button)
+    const validatePersonalDetails = () => {
+        if (!formData.fullname || formData.fullname.trim() === '') {
+            return { isValid: false, message: 'Please enter your full name.' };
+        }
+
+        if (!formData.email || formData.email.trim() === '') {
+            return { isValid: false, message: 'Please enter your email address.' };
+        }
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email.trim())) {
+            return { isValid: false, message: 'Please enter a valid email address.' };
+        }
+
+        if (!formData.phone || formData.phone.trim() === '') {
+            return { isValid: false, message: 'Please enter your phone number.' };
+        }
+
+        if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
+            return { isValid: false, message: 'Please enter a valid 10-digit phone number.' };
+        }
+
+        if (!formData.gender || formData.gender === '') {
+            return { isValid: false, message: 'Please select your gender.' };
+        }
+
+        return { isValid: true, message: '' };
+    };
+
+    // Check if form can proceed
+    const canProceed = () => {
+        const validation = validatePersonalDetails();
+        return validation.isValid;
+    };
+
+    // Handle continue button click
+    const handleContinue = () => {
+        // First validate personal details (for enabling/disabling button)
+        const personalValidation = validatePersonalDetails();
+
+        if (!personalValidation.isValid) {
+            setSnackbarMessage(personalValidation.message);
+            setSnackbarOpen(true);
+            return;
+        }
+
+        // Proceed to next step
+        navigate('/doctorlist/clinic/confirmation');
+    };
+
+    // Handle snackbar close
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+
+    return (
         <>
             <Navbar />
             <Box sx={{ pt: 16, pb: 3, backgroundColor: '#fafbfc', minHeight: '100vh' }}>
-    <Container maxWidth="lg">
+                <Container maxWidth="lg">
                     {/* Header */}
                     <Box sx={{ mb: 4 }}>
                         <Typography variant="h4" sx={{ 
@@ -183,24 +247,16 @@ const PatientInfo = () => {
                                         </Typography>
             </Box>
 
-                                    <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  value={formData.firstName}
-                                            onChange={handleInputChange('firstName')}
-                                            variant="outlined"
-                                            size="small"
-                />
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  value={formData.lastName}
-                                            onChange={handleInputChange('lastName')}
-                                            variant="outlined"
-                                            size="small"
-                />
-                                    </Box>
+                                    <TextField
+                                        fullWidth
+                                        label="Full Name"
+                                        value={formData.fullname}
+                                        onChange={handleInputChange('fullname')}
+                                        variant="outlined"
+                                        size="small"
+                                        required
+                                        sx={{ mb: 3 }}
+                                    />
                                     
                 <TextField
                   fullWidth
@@ -209,37 +265,50 @@ const PatientInfo = () => {
                                         onChange={handleInputChange('email')}
                                         variant="outlined"
                                         size="small"
+                                        required
+                                        helperText="Enter a valid email address"
                                         sx={{ mb: 3 }}
                                     />
                                     
                 <TextField
                   fullWidth
                   label="Phone Number"
+                  type="tel"
+                  inputProps={{
+                    maxLength: 10,
+                    pattern: '[0-9]{10}',
+                    inputMode: 'numeric'
+                  }}
                   value={formData.phone}
-                                        onChange={handleInputChange('phone')}
+                                        onChange={(e) => {
+                                            const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+                                            handleInputChange('phone')({ target: { value } });
+                                        }}
                                         variant="outlined"
                                         size="small"
+                                        required
                                         sx={{ mb: 3 }}
+                                        helperText="Enter 10-digit mobile number"
                                     />
                                     
                                     <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField
                   fullWidth
                   label="Date of Birth"
-                                            placeholder="DD/MM/YYYY"
-                                            value={formData.dateOfBirth}
-                                            onChange={handleInputChange('dateOfBirth')}
-                                            variant="outlined"
-                                            size="small"
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <CalendarTodayIcon sx={{ color: '#666' }} />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                        <FormControl fullWidth size="small">
+                  type="date"
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange('dateOfBirth')}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    max: new Date().toISOString().split('T')[0], // Today
+                    min: new Date(new Date().getFullYear() - 120, 0, 1).toISOString().split('T')[0], // 120 years ago
+                  }}
+                />
+                                        <FormControl fullWidth size="small" required>
                   <InputLabel>Gender</InputLabel>
                   <Select
                     value={formData.gender}
@@ -397,24 +466,45 @@ const PatientInfo = () => {
                         <Button
                             variant="contained"
                             endIcon={<ArrowForwardIcon />}
-                            onClick={() => navigate('/doctorlist/clinic/confirmation')}
+                            onClick={handleContinue}
                             sx={{
                                 px: 4,
                                 py: 1.5,
-                                backgroundColor: '#368ADD',
+                                backgroundColor: canProceed() ? '#368ADD' : '#cccccc',
+                                color: canProceed() ? '#fff' : '#666666',
+                                cursor: canProceed() ? 'pointer' : 'not-allowed',
+                                opacity: canProceed() ? 1 : 0.7,
                                 '&:hover': {
-                                    backgroundColor: '#2c6bb3'
+                                    backgroundColor: canProceed() ? '#2c6bb3' : '#b0b0b0',
+                                    opacity: canProceed() ? 1 : 0.8
                                 }
                             }}
                         >
                           Continue
                       </Button>
-    </Box>
-    </Container>
+                    </Box>
+                </Container>
             </Box>
             <Footer />
+
+            {/* Snackbar for validation messages */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={4000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="warning"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </>
-  );
+    );
 };
 
 export default PatientInfo;

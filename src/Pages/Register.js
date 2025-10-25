@@ -24,14 +24,32 @@ const Register = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        
+        // Special handling for phone number field
+        if (name === 'phoneNumber') {
+            // Only allow numbers and limit to 10 digits
+            const numbersOnly = value.replace(/\D/g, '').slice(0, 10);
+            setFormData(prev => ({
+                ...prev,
+                [name]: numbersOnly
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate phone number is exactly 10 digits
+        if (!/^\d{10}$/.test(formData.phoneNumber)) {
+            setError('Please enter a valid 10-digit mobile number');
+            setOpenSnackbar(true);
+            return;
+        }
 
         // Validate passwords match
         if (formData.password !== formData.confirmPassword) {
@@ -90,12 +108,13 @@ const Register = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         p: 2,
-                        minHeight: "100vh",
+                        height: "100vh",
                         display: { xs: "none", md: "block" },
                     }}
                 >
                     <img
                         src={img}
+                        style={{ width: '100%', height: '100%' }}
                         alt="Login Visual"
                     />
                 </Grid>
@@ -116,7 +135,7 @@ const Register = () => {
                         <Typography gutterBottom variant="h4" sx={{ color: "#000" }}>
                             Get Registered, Get Started
                         </Typography>
-                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3 }}>
+                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3, fontStyle: 'italic' }}>
                             Register now to explore opportunities and unlock your personalized <br /> experience
                         </Typography>
 
@@ -124,7 +143,7 @@ const Register = () => {
                             <TextField
                                 type="text"
                                 label="Full Name"
-                                placeholder="John Doe"
+                                placeholder="Enter your name..."
                                 name="fullName"
                                 value={formData.fullName}
                                 onChange={handleInputChange}
@@ -134,7 +153,7 @@ const Register = () => {
                             <TextField
                                 type="email"
                                 label="Email"
-                                placeholder="rohitreddy@gmail.com"
+                                placeholder="Enter your email..."
                                 name="email"
                                 value={formData.email}
                                 onChange={handleInputChange}
@@ -144,7 +163,7 @@ const Register = () => {
                             <TextField
                                 type='tel'
                                 label="Mobile Number"
-                                placeholder="8753356677"
+                                placeholder="Enter your mobile number..."
                                 name="phoneNumber"
                                 value={formData.phoneNumber}
                                 onChange={handleInputChange}
@@ -176,7 +195,7 @@ const Register = () => {
                             />
                             <TextField
                                 type={showPassword ? 'text' : 'password'}
-                                label="Confirm Password"
+                                label="Confirm Password"       
                                 placeholder="********"
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
@@ -204,12 +223,20 @@ const Register = () => {
                                 type="submit"
                                 variant="contained"
                                 disableElevation
-                                fullWidth
                                 disabled={loading}
                                 sx={{
                                     backgroundColor: "#368ADD",
                                     color: "white",
                                     mt: 1,
+                                    width: { xs: '200px', md: '250px' },
+                                    padding: { xs: '8px 16px', md: '10px 20px' },
+                                    fontSize: { xs: '14px', md: '16px' },
+                                    borderRadius: '8px',
+                                    height: { xs: '36px', md: '40px' },
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    mx: 'auto',
                                     '&:hover': {
                                         backgroundColor: "#2d76c4"
                                     }
@@ -218,9 +245,42 @@ const Register = () => {
                                 {loading ? 'Registering...' : 'Register'}
                             </Button>
 
-                            <Typography variant="body2" align="center" sx={{ color: "#8E92B7", mt: 1 }}>
+                            <Typography
+                                variant="body2"
+                                align="center"
+                                sx={{
+                                    color: "#8E92B7",
+                                    mt: 1,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    gap: 0.5,
+                                    height: '24px'
+                                }}
+                            >
                                 Already have an account?{" "}
-                                <Button variant="text" disableElevation onClick={() => navigate("/login")}>Sign In</Button>
+                                <Button
+                                    variant="text"
+                                    disableElevation
+                                    onClick={() => navigate("/login")}
+                                    sx={{
+                                        color: "#368ADD",
+                                        textTransform: "none",
+                                        fontSize: "14px",
+                                        padding: "2px 4px",
+                                        minWidth: "auto",
+                                        height: '20px',
+                                        minHeight: '20px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        '&:hover': {
+                                            backgroundColor: "rgba(54, 138, 221, 0.1)",
+                                            color: "#2d76c4"
+                                        }
+                                    }}
+                                >
+                                    Sign In
+                                </Button>
                             </Typography>
                         </Box>
                     </Container>

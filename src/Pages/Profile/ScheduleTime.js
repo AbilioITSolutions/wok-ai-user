@@ -18,12 +18,30 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { Container } from "@mui/system";
-// import StepperNav from "../../Routes/StepperNav";
+import { useNavigate } from "react-router-dom";
+import { useBooking } from "../../Context/BookingContext";
 
 const ScheduleTime = () => {
     const [date, setDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState("11:00 AM");
     const [consulting, setConsulting] = useState("offline");
+
+    const navigate = useNavigate();
+    const { updateBookingData } = useBooking();
+
+    const handleContinue = () => {
+        // Store the current state in context, even if defaults
+        const appointmentDate = date ? date.format('YYYY-MM-DD') : null;
+        const appointmentTime = selectedTime;
+        const consultingType = consulting;
+
+        updateBookingData('appointmentDate', appointmentDate);
+        updateBookingData('appointmentTime', appointmentTime);
+        updateBookingData('consultingType', consultingType);
+
+        // Navigate to next page
+        navigate('/doctorlist/clinic/patient-info'); // Replace with actual route
+    };
 
     return (
         <Container maxWidth="lg">
@@ -177,8 +195,8 @@ const ScheduleTime = () => {
 
             <Grid container  sx={{display:"flex", justifyContent:"space-between", mt: 6}}>
 
-                <Button startIcon={<ArrowBack />}>Back</Button>
-                <Button variant="contained" endIcon={<ArrowForward />}>
+                <Button onClick={() => navigate(-1)} startIcon={<ArrowBack />}>Back</Button>
+                <Button variant="contained" endIcon={<ArrowForward />} onClick={handleContinue}>
                     Continue
                 </Button>
 

@@ -24,6 +24,7 @@ import Payment from '../Pages/Profile/Payment'
 import SettingsPage from '../Pages/Profile/Settingss'
 import SupportGrid from '../Pages/AccountSetting'
 import ProtectedRoute from './ProtectedRoute'
+import BookingGuide from '../Pages/BookingGuide'
 
 
 const PageRoutes = () => {
@@ -59,6 +60,7 @@ const PageRoutes = () => {
                   <Route path='settings' element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
                   <Route path='support' element={<ProtectedRoute><SupportGrid /></ProtectedRoute>} />
                 </Route>
+                <Route path='/booking-guide' element={<ProtectedRoute><BookingGuide /></ProtectedRoute>} />
 
                 <Route path='/my-billing' element={
                     <ProtectedRoute>

@@ -43,19 +43,24 @@ const Confirmation = () => {
 
     // Get data from context
     const appointmentData = {
-        doctor: {
-            name: bookingData.selectedDoctor ? `DR. ${bookingData.selectedDoctor === 1 ? 'Sarah Johnson' : bookingData.selectedDoctor === 2 ? 'Rajendhar Reddy' : 'Bharath Reddy'}` : "DR. Sarah Johnson",
-            specialty: "Hair Specialist",
-            experience: "15 years experience",
+        doctor: bookingData.selectedDoctor ? {
+            name: `DR. ${bookingData.selectedDoctor.name || 'N/A'}`,
+            specialty: bookingData.selectedDoctor.specializations?.join(', ') || 'General Practitioner',
+            experience: bookingData.selectedDoctor.experience || 'N/A',
+            avatar: bookingData.selectedDoctor.image || "/api/placeholder/80/80"
+        } : {
+            name: 'DR. N/A',
+            specialty: 'N/A',
+            experience: 'N/A',
             avatar: "/api/placeholder/80/80"
         },
         consultation: {
             type: bookingData.consultingType || "Offline",
-            date: bookingData.selectedDate ? `${bookingData.selectedDate}/06/2025, Saturday` : "30/06/2025, Saturday",
-            time: bookingData.selectedTime || "11:00 AM EST"
+            date: bookingData.selectedDate || "N/A",
+            time: bookingData.selectedTime || "N/A"
         },
         patient: {
-            fullName: bookingData.patientInfo ? `${bookingData.patientInfo.firstName} ${bookingData.patientInfo.lastName}`.trim() || "John Doe" : "John Doe",
+            fullName: bookingData.patientInfo ? bookingData.patientInfo.fullname || "John Doe" : "John Doe",
             email: bookingData.patientInfo?.email || "johndoe@gmail.com",
             mobile: bookingData.patientInfo?.phone || "+1 (555) 123-4567",
             symptoms: bookingData.patientInfo?.currentSymptoms || "-",
@@ -83,17 +88,16 @@ const Confirmation = () => {
 
             // Prepare booking data from context
             const bookingPayload = {
-                doctorId: bookingData.selectedDoctor || 1,
+                doctorId: bookingData.selectedDoctor?.id || 1,
                 clinicId: bookingData.clinicId || 2,
                 treatmentId: bookingData.treatmentId || 2,
                 treatmentServiceId: bookingData.serviceId || 1,
-                bookingType: bookingData.consultingType?.toLowerCase() || 'offline',
+                bookingType: bookingData.consultingType?.toLowerCase() || '',
                 consultingPrice: 899, // Set your price here
-                bookingDate: bookingData.selectedDate ? `${new Date().getFullYear()}-06-${bookingData.selectedDate.toString().padStart(2, '0')}` : '2025-06-30',
+                bookingDate: bookingData.selectedDate || '',
                 bookingTime: bookingData.selectedTime?.replace(/ AM| PM/, '').trim() || '11:00',
                 userDetails: {
-                    firstName: bookingData.patientInfo?.firstName || '',
-                    lastName: bookingData.patientInfo?.lastName || '',
+                    fullName: bookingData.patientInfo?.fullname ? bookingData.patientInfo.fullname.replace(/undefined/g, '').trim() || '' : '',
                     email:bookingData.patientInfo?.email || '',
                     dateOfBirth: bookingData.patientInfo?.dateOfBirth ? bookingData.patientInfo.dateOfBirth.replace(/\//g, '-') : '',
                     gender: bookingData.patientInfo?.gender || '',
@@ -194,7 +198,7 @@ const Confirmation = () => {
                         boxShadow: 'none',
                         border: '1px solid #e0e0e0',
                         backgroundColor: '#ffffff',
-                        mb: 4,
+                        mb: 3,
                         overflow: 'visible'
                     }}>
                         <Box sx={{ 
@@ -255,11 +259,11 @@ const Confirmation = () => {
                     </Card>
 
                     {/* Main Content */}
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         {/* Left Column */}
                         <Grid item size={{xs:12, md:6}}>
                             {/* Doctor Details */}
-                            <Card sx={{ mb: 3, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
+                            <Card sx={{ mb: 2, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
                                 <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" sx={{ 
                                         fontWeight: 'bold', 
@@ -283,7 +287,7 @@ const Confirmation = () => {
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                                 <WorkIcon sx={{ fontSize: '1rem', color: '#666' }} />
                                                 <Typography variant="body2" sx={{ color: '#666' }}>
-                                                    {appointmentData.doctor.experience}
+                                                     {appointmentData.doctor.experience}yrs experience
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -292,7 +296,7 @@ const Confirmation = () => {
                             </Card>
 
                             {/* Consultation Details */}
-                            <Card sx={{ mb: 3, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
+                            <Card sx={{ mb: 2, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
                                 <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" sx={{ 
                                         fontWeight: 'bold', 
@@ -320,12 +324,12 @@ const Confirmation = () => {
                         {/* Right Column */}
                         <Grid item size={{xs:12, md:6}}>
                             {/* Patient Information */}
-                            <Card sx={{ mb: 3, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
+                            <Card sx={{ mb: 2, borderRadius: 2, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
                                 <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" sx={{ 
                                         fontWeight: 'bold', 
                                         color: '#368ADD', 
-                                        mb: 3 
+                                        mb: 1
                                     }}>
                                         Patient Information
                                     </Typography>
@@ -419,7 +423,7 @@ const Confirmation = () => {
                     </Grid>
 
                     {/* Terms and Navigation */}
-                    <Box sx={{ mt: 4, mb: 4 }}>
+                    <Box sx={{ mt: 3, mb: 3 }}>
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -437,7 +441,7 @@ const Confirmation = () => {
                     <Box sx={{ 
                         display: 'flex', 
                         justifyContent: 'space-between', 
-                        mt: 4 
+                        mt: 3 
                     }}>
                         <Button
                             variant="text"
