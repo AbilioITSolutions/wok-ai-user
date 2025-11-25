@@ -15,7 +15,6 @@ export const getdocuments = async () => {
         'Authorization': `Bearer ${token}`
       }
     });
-    console.log('Documents API Response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching documents:', error);

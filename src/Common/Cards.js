@@ -17,7 +17,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn"; // Used for locatio
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 
-const Cards = ({ data }) => {
+const Cards = ({ data, onReviewClick }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -96,7 +96,7 @@ const Cards = ({ data }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: 1,
+           
           }}
         >
           <Typography variant="h6" component="div" sx={{ color: "#368ADD", fontWeight: 600 }}>
@@ -104,7 +104,10 @@ const Cards = ({ data }) => {
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", color: "text.secondary", fontSize: '0.9rem' }}>
             <StarIcon sx={{ fontSize: "16px", color: "#FFC107", mr: 0.5 }} />
-            <Typography component="span" variant="body1" sx={{ fontWeight: 600 }}>
+            <Typography  onClick={(e) => {
+              e.stopPropagation();
+              onReviewClick();
+            }}   component="span" variant="body1" sx={{ fontWeight: 600 }}>
               {safeData.rating}
             </Typography>
           </Box>
@@ -118,9 +121,26 @@ const Cards = ({ data }) => {
                 {safeData.location}
               </Typography>
           </Box>
-          <Typography variant="body2" sx={{ fontSize: "13px", color: "#A9A9A9" }}>
+          <Box 
+            onClick={(e) => {
+              e.stopPropagation();
+              onReviewClick();
+            }} 
+            sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              cursor: "pointer", 
+              color: "#A9A9A9", 
+              "&:hover": { color: "#368ADD" } 
+            }}
+          >
+            <Typography variant="body2" sx={{ fontSize: "13px", mr: 0.5 , color: "#A9A9A9" }}>
               {safeData.reviews}
-          </Typography>
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: "13px" , color: "#A9A9A9"}}>
+            Rating 
+            </Typography>
+          </Box>
         </Box>
 
         {/* Specialty Tags/Buttons */}
@@ -167,7 +187,7 @@ const Cards = ({ data }) => {
           <Typography variant="body2" sx={{ color: "#A9A9A9" }}>
             Price Range:{" "}
             <Typography component="span" sx={{ color: "red", fontWeight: 600 }}> 
-                {safeData.priceRange}
+                ₹{safeData.priceRange}
             </Typography>
           </Typography>
         </Box>

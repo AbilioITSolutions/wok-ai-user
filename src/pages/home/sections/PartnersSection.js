@@ -17,9 +17,8 @@ function PartnersSection() {
         border: '2px solid #fff',
         objectFit: 'contain',
         filter: 'brightness(0) invert(1)',
-        transition: 'transform 0.2s ease-in-out',
+        transition: 'transform 0.2s linear',
         padding: 2,
-        '&:hover': { transform: 'scale(1.05)' },
     };
 
     return (

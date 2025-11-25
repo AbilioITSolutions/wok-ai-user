@@ -1,5 +1,6 @@
 import React from 'react';
-import anu from './sectionsassets/anu.jpg';
+// Profile images for testimonials
+
 import {
   Box,
   Typography,
@@ -13,15 +14,60 @@ import { FreeMode, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 
-// Dummy testimonials
-const testimonials = Array(5).fill({
-  name: 'Anupama Parameswaran',
-  treatment: 'Hair Treatment',
-  feedback:
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-  rating: 5,
-});
-
+// Diverse testimonials with varied ratings and feedback
+const testimonials = [
+  {
+    name: 'Anupama Parameswaran',
+    treatment: 'Hair Regrowth Treatment',
+    feedback: 'After struggling with hair loss for years, I saw visible results within just 2 months of treatment. The doctors were extremely knowledgeable and the staff made me feel comfortable throughout the process.',
+    rating: 5,
+  },
+  {
+    name: 'Rahul Sharma',
+    treatment: 'Skin Rejuvenation',
+    feedback: 'The skin treatment has transformed my complexion completely. The dermatologist took time to understand my skin type and suggested a personalized care routine that worked wonders.',
+    rating: 4,
+  },
+  {
+    name: 'Priya Patel',
+    treatment: 'Laser Hair Removal',
+    feedback: 'I was skeptical at first, but the results have been amazing. The procedure was virtually painless and the staff made sure I was comfortable throughout. Highly recommended!',
+    rating: 5,
+  },
+  {
+    name: 'Vikram Mehta',
+    treatment: 'Weight Management',
+    feedback: 'The weight management program was well-structured and the nutritionist was very supportive. I lost 12kg in 4 months and have maintained it for 6 months now.',
+    rating: 4,
+  },
+  {
+    name: 'Sneha Reddy',
+    treatment: 'Acne Treatment',
+    feedback: 'After trying multiple treatments elsewhere, I finally found a solution here. My skin has never been clearer. The doctors are patient and the follow-up care is excellent.',
+    rating: 5,
+  },
+  {
+    name: 'Arjun Kapoor',
+    treatment: 'Hair Transplant',
+    feedback: 'The hair transplant procedure was done professionally. The results look very natural. The only reason I\'m giving 4 stars is because of the waiting time during follow-ups.',
+    rating: 4,
+  },
+  {
+    name: 'Meera Nair',
+    treatment: 'Anti-Aging Treatment',
+    feedback: 'The anti-aging treatment has made a noticeable difference in my skin texture and fine lines. The staff is professional and the clinic maintains high hygiene standards.',
+    rating: 5,
+  }
+];
+const profileImages = [
+  'https://randomuser.me/api/portraits/women/1.jpg',
+  'https://randomuser.me/api/portraits/men/1.jpg',
+  'https://randomuser.me/api/portraits/women/2.jpg',
+  'https://randomuser.me/api/portraits/men/2.jpg',
+  'https://randomuser.me/api/portraits/women/3.jpg',
+  'https://randomuser.me/api/portraits/men/3.jpg',
+  'https://randomuser.me/api/portraits/women/4.jpg'
+];
 function StoriesSection() {
   return (
     <Box
@@ -100,7 +146,7 @@ function StoriesSection() {
                 minHeight: { xs: 200, sm: 220, md: 230 },
                 
                 mx: 'auto',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                transition: 'transform 0.3s linear, box-shadow 0.3s linear',
                 '&:hover': {
                   transform: 'translateY(-2px)',
                   boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
@@ -114,6 +160,12 @@ function StoriesSection() {
                     color: '#444',
                     fontSize: { xs: '0.85rem', sm: '0.9rem', md: '1rem' },
                     lineHeight: { xs: '1.5', md: '1.6' },
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    minHeight: '4.5em',
                   }}
                 >
                   {testimonial.feedback}
@@ -130,8 +182,12 @@ function StoriesSection() {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box
                       component="img"
-                      src={anu}
+                      src={profileImages[index % profileImages.length]}
                       alt={testimonial.name}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=random`;
+                      }}
                       sx={{
                         width: { xs: 35, sm: 40 },
                         height: { xs: 35, sm: 40 },
@@ -185,7 +241,7 @@ function StoriesSection() {
         spaceBetween={24}
         slidesPerView={1.2}
         freeMode
-        grabCursor
+        
         autoplay={{
           delay: 0,
           disableOnInteraction: false,
@@ -216,11 +272,7 @@ function StoriesSection() {
                 minHeight: { xs: 200, sm: 220, md: 230 },
                 maxWidth: { xs: 300, sm: 400, md: 650, lg: 700 },
                 mx: 'auto',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                },
+                transition: 'transform 0.3s linear, box-shadow 0.3s linear',
               }}
             >
               <CardContent>
@@ -230,6 +282,12 @@ function StoriesSection() {
                     color: '#444',
                     fontSize: { xs: '0.85rem', sm: '0.9rem', md: '1rem' },
                     lineHeight: { xs: '1.5', md: '1.6' },
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    minHeight: '4.5em',
                   }}
                 >
                   {testimonial.feedback}
@@ -246,8 +304,12 @@ function StoriesSection() {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box
                       component="img"
-                      src={anu}
+                      src={profileImages[index % profileImages.length]}
                       alt={testimonial.name}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=random`;
+                      }}
                       sx={{
                         width: { xs: 35, sm: 40 },
                         height: { xs: 35, sm: 40 },

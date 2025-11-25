@@ -188,13 +188,16 @@ const Login = () => {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        minHeight: "100vh",
+
                         display: { xs: "none", md: "block" },
                     }}
                 >
                     <img
                         src={img}
                         alt="Login Visual"
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
                     />
                 </Grid>
 
@@ -214,20 +217,20 @@ const Login = () => {
                         <Typography gutterBottom variant="h4" sx={{ color: "#000" }}>
                             Signing Your Account
                         </Typography>
-                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3 }}>
-                            Welcome back! Sign in to pick up where you left off and continue
-                            <br />
-                            building your journey with us.
+                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3 ,lineHeight:1.2 ,   fontStyle: 'italic' }}>
+                           Register now to explore opportunities and unlock 
+                            
+                             your personalized experience.
                         </Typography>
 
                         {/* Login Method Toggle */}
-                        <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: 1 }}>
+                        <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: '8px'}}>
                             <Button
                                 variant={loginMethod === 'email' ? 'contained' : 'text'}
                                 onClick={() => handleLoginMethodChange('email')}
                                 sx={{
                                     flex: 1,
-                                    borderRadius: 0,
+                                    borderRadius: '8px',
                                     bgcolor: loginMethod === 'email' ? '#368ADD' : 'transparent',
                                     color: loginMethod === 'email' ? 'white' : '#666',
                                     '&:hover': {
@@ -243,7 +246,7 @@ const Login = () => {
                                 onClick={() => handleLoginMethodChange('phone')}
                                 sx={{
                                     flex: 1,
-                                    borderRadius: 0,
+                                    borderRadius: '8px',
                                     bgcolor: loginMethod === 'phone' ? '#368ADD' : 'transparent',
                                     color: loginMethod === 'phone' ? 'white' : '#666',
                                     '&:hover': {
@@ -380,12 +383,15 @@ const Login = () => {
                                 type="submit"
                                 variant="contained"
                                 disableElevation
-                                fullWidth
                                 disabled={loading}
                                 sx={{
                                     backgroundColor: "#368ADD",
                                     color: "white",
                                     mt: 1,
+                                    width: "200px",
+                                    mx: "auto",
+                                    borderRadius: "8px",
+                                    display: "block",
                                     '&:hover': {
                                         backgroundColor: "#2d76c4"
                                     }
@@ -401,23 +407,23 @@ const Login = () => {
                                         <Typography variant="body2" color="text.secondary">OR</Typography>
                                     </Divider>
 
-                                    <Button
-                                        type="button"
-                                        variant="outlined"
-                                        fullWidth
+                                    <Typography
+                                        
+                                        
+                                        
                                         onClick={() => navigate('/otp-login')}
                                         sx={{
                                             borderColor: "#368ADD",
                                             color: "#368ADD",
+                                            cursor: "pointer",
+                                            width: "100%",
+                                           textAlign:'center',
                                             mt: 1,
-                                            '&:hover': {
-                                                borderColor: "#2d76c4",
-                                                backgroundColor: "#f0f8ff"
-                                            }
+                                           
                                         }}
                                     >
                                         Sign In With OTP
-                                    </Button>
+                                    </Typography>
                                 </>
                             )}
 
@@ -450,9 +456,9 @@ const Login = () => {
             {/* Success/Error Snackbar */}
             <Snackbar
                 open={openSnackbar}
-                autoHideDuration={6000}
+                autoHideDuration={1500}
                 onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
                 <Alert onClose={handleCloseSnackbar} severity={error ? 'error' : 'success'} sx={{ width: '100%' }}>
                     {error || success}

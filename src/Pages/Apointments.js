@@ -16,15 +16,21 @@ import {
     Divider,
     Grid,
     Link,
-    
+    Dialog,
+    DialogContent,
+    IconButton,
 } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LinkIcon from '@mui/icons-material/Link'; // Used for Medications placeholder
-import DescriptionIcon from '@mui/icons-material/Description'; // Used for Documents placeholder
+import LinkIcon from '@mui/icons-material/Link';
+import DescriptionIcon from '@mui/icons-material/Description';
+import CloseIcon from '@mui/icons-material/Close';
+import WorkIcon from '@mui/icons-material/Work';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Navbar from '../Components/Navbar';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Footer from '../Components/Footer';
+import PopupModal from '../Components/Popupmodal';
 import { getUserAppointments } from '../Apis/ProfileApis';
 import { getmedications , getdocuments } from '../Apis/AppointmentsApis';
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -33,28 +39,46 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 // 1. Hook to set dynamic chip colors (from the previous suggestion, adapted)
 const getStatusChipProps = (status) => {
-    switch (status?.toLowerCase()) {
-        case 'completed':
-            return { label: status, sx: { backgroundColor: '#E8F5E9', color: '#4CAF50' } }; // Green tone
-        case 'scheduled':
-        case 'pending':
-            return { label: status, sx: { backgroundColor: '#FFF3E0', color: '#FF9800' } }; // Yellow/Orange tone
-        case 'cancelled':
-            return { label: status, sx: { backgroundColor: '#FFEBEE', color: '#F44336' } }; // Red tone
-        default:
-            return { label: status || 'Scheduled', sx: { backgroundColor: '#F0F4F7', color: '#78909C' } }; // Default tone
+    // Handle null, undefined, or empty status
+    if (!status) {
+        return { label: 'Scheduled', sx: { backgroundColor: '#FFF3E0', color: '#E65100', border: '1px solid #FF9800' } };
     }
+
+    const statusStr = status.toString().toLowerCase().trim();
+
+    // Check for completed status (various formats)
+    if (statusStr.includes('completed') || statusStr.includes('complete') || statusStr === 'done' || statusStr === 'finished') {
+        return { label: status, sx: { backgroundColor: '#E8F5E9', color: '#2E7D32', border: '1px solid #4CAF50' } };
+    }
+
+    // Check for scheduled status (various formats)
+    if (statusStr.includes('scheduled') || statusStr.includes('schedule') ||
+        statusStr.includes('pending') || statusStr.includes('upcoming') ||
+        statusStr.includes('booked') || statusStr.includes('confirmed') ||
+        statusStr === 'active' || statusStr === 'open') {
+        return { label: status, sx: { backgroundColor: '#FFF3E0', color: '#E65100', border: '1px solid #FF9800' } };
+    }
+
+    // Check for cancelled status (various formats)
+    if (statusStr.includes('cancelled') || statusStr.includes('canceled') ||
+        statusStr.includes('cancel') || statusStr.includes('rejected') ||
+        statusStr.includes('declined') || statusStr === 'no-show') {
+        return { label: status, sx: { backgroundColor: '#FFEBEE', color: '#C62828', border: '1px solid #F44336' } };
+    }
+
+    // Default case - treat as scheduled (orange)
+    return { label: status || 'Scheduled', sx: { backgroundColor: '#FFF3E0', color: '#E65100', border: '1px solid #FF9800' } };
 };
 
 // 2. Extracted component for the Appointment List Content
-const AppointmentsList = ({ appointments }) => (
+const AppointmentsList = ({ appointments, onAppointmentClick }) => (
 
 
     <Card sx={{ 
         borderRadius: '12px', 
         mb: 4, 
         boxShadow: 'none', 
-        border: '1px solid #d5d5d5' 
+        bgcolor:"transparent"
     }}>
         <CardContent sx={{ p: 3 }}>
             {/* Header */}
@@ -88,14 +112,24 @@ const AppointmentsList = ({ appointments }) => (
                     </Typography>
                 ) : (
                     appointments.map((appointment) => (
-                        <Card key={appointment.id} sx={{
-                            borderRadius: '8px',
-                            border: '1px solid #d5d5d5',
-                            boxShadow: 'none',
-                        }}>
-                            <CardContent sx={{ p: 2 }}>
+                        <Card
+                            key={appointment.id}
+                            sx={{
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                boxShadow: 'none',
+                                '&:hover': {
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    transform: 'translateY(-1px)',
+                                    transition: 'all 0.2s ease-in-out'
+                                }
+                            }}
+                            onClick={() => onAppointmentClick(appointment)}
+                        >
+                            <CardContent sx={{ p: 2 , border:'1px solid #e0e0e0' , borderRadius:'8px' }}>
                                 <Box sx={{ 
                                     display: 'flex', 
+                                    
                                     flexDirection: { xs: 'column', sm: 'row' },
                                     alignItems: { xs: 'flex-start', sm: 'center' },
                                     justifyContent: 'space-between', // Added to push status to the right
@@ -105,14 +139,22 @@ const AppointmentsList = ({ appointments }) => (
                                     <Box sx={{ 
                                         display: 'flex',
                                         alignItems: 'center',
+                                        
                                         gap: 2,
                                         flex: 1 // Takes up remaining space
                                     }}>
                                         {/* Avatar */}
-                                        <Avatar sx={{
-                                            width: 48, height: 48, backgroundColor: '#8B1538', 
-                                            color: '#fff', fontWeight: 'bold', fontSize: '1.2rem'
-                                        }}>
+                                        <Avatar
+                                            src={appointment.clinic?.image}
+                                            sx={{
+                                                width: 48,
+                                                height: 48,
+                                                backgroundColor: appointment.clinic?.image ? 'transparent' : '#8B1538',
+                                                color: '#fff',
+                                                fontWeight: 'bold',
+                                                fontSize: '1.2rem'
+                                            }}
+                                        >
                                             {appointment.clinic?.name?.charAt(0) || 'C'}
                                         </Avatar>
 
@@ -142,13 +184,40 @@ const AppointmentsList = ({ appointments }) => (
 
                                     {/* Status */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <Chip
-                                            size="small"
-                                            {...getStatusChipProps(appointment.bookingStatus)}
-                                            sx={{ height: '24px', fontSize: '0.75rem', fontWeight: 500 }}
-                                        />
+                                        {(() => {
+
+                                            // Simple hardcoded color logic for testing
+                                            let chipColor = '#E65100'; // Default orange
+                                            let chipBg = '#FFF3E0';
+                                            let chipBorder = '#FF9800';
+
+                                            if (appointment.bookingStatus && appointment.bookingStatus.toString().toLowerCase().includes('completed')) {
+                                                chipColor = '#2E7D32'; // Green
+                                                chipBg = '#E8F5E9';
+                                                chipBorder = '#4CAF50';
+                                            } else if (appointment.bookingStatus && appointment.bookingStatus.toString().toLowerCase().includes('cancel')) {
+                                                chipColor = '#C62828'; // Red
+                                                chipBg = '#FFEBEE';
+                                                chipBorder = '#F44336';
+                                            }
+
+                                            return (
+                                                <Chip
+                                                    size="small"
+                                                    label={appointment.bookingStatus || 'Scheduled'}
+                                                    sx={{
+                                                        height: '24px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: 500,
+                                                        backgroundColor: chipBg,
+                                                        color: chipColor,
+                                                        
+                                                    }}
+                                                />
+                                            );
+                                        })()}
                                         {/* IconButton for details/navigation (as seen in image) */}
-                                       
+
                                     </Box>
                                 </Box>
                             </CardContent>
@@ -198,13 +267,13 @@ const handleDownload = (fileUrl) => {
   
 
 // 3. Components for Medications and Documents tabs
-const MedicationsList = ({ medications }) => (
+const MedicationsList = ({ medications, setModalOpen, setModalImages, setModalTitle }) => (
     <Card
       sx={{
         borderRadius: "12px",
         mb: 4,
         boxShadow: "none",
-        border: "1px solid #d5d5d5",
+         bgcolor:"transparent"
       }}
     >
       <CardContent sx={{ p: 3 }}>
@@ -292,9 +361,15 @@ const MedicationsList = ({ medications }) => (
                   >
                     <Typography
                      
-                      onClick={() => handleView(medication.imageUrl)}
+                      onClick={() => {
+                        if (medication.imageUrl) {
+                          setModalImages([medication.imageUrl]);
+                          setModalTitle(`${medication.treatmentServiceName || 'Medication'} Image`);
+                          setModalOpen(true);
+                        }
+                      }}
                       sx={{
-                        color: "red",
+                        color: "black",
                         textDecoration: "none",
                         fontWeight: 500,
                         display: "flex",
@@ -327,14 +402,14 @@ const MedicationsList = ({ medications }) => (
   );
   
 
-  const DocumentsList = ({ documents }) => (
+  const DocumentsList = ({ documents, setModalOpen, setModalImages, setModalTitle }) => (
     <Box> {/* Use Box for overall container to manage layout */}
         <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, color: '#2c3e50' }}>
             Health Documents ({documents.length})
         </Typography>
 
         {documents.length === 0 ? (
-            <Box sx={{ textAlign: 'center', py: 6, border: '1px dashed #d5d5d5', borderRadius: '8px', mt: 2 }}>
+            <Box sx={{ textAlign: 'center', py: 6,  borderRadius: '8px', mt: 2 }}>
                 <DescriptionIcon sx={{ fontSize: 40, color: '#368ADD', mb: 2 }} />
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                     No Documents Found
@@ -362,7 +437,7 @@ const MedicationsList = ({ medications }) => (
                                 sx={{ 
                                     p: 2, 
                                     borderRadius: '12px', 
-                                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                    
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
@@ -407,11 +482,17 @@ const MedicationsList = ({ medications }) => (
                                     <Link
                                         component="button"
                                         variant="body2"
-                                        onClick={() => handleView(doc.documentUrl)}
+                                        onClick={() => {
+                                            if (doc.documentUrl) {
+                                                setModalImages([doc.documentUrl]);
+                                                setModalTitle(`${displayFileName} Document`);
+                                                setModalOpen(true);
+                                            }
+                                        }}
                                         sx={{ 
                                             display: 'flex', 
                                             alignItems: 'center', 
-                                            color: '#E91E63', // Red tone for View
+                                            color: '#000', // Red tone for View
                                             textDecoration: 'none', 
                                             fontWeight: 500,
                                             '&:hover': { textDecoration: 'underline' }
@@ -461,12 +542,27 @@ const Apointments = () => {
     });
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('appointments');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalImages, setModalImages] = useState([]);
+    const [modalTitle, setModalTitle] = useState('');
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
 
     const tabs = [
         { key: 'appointments', label: 'My Appointments', icon: CalendarTodayIcon },
         { key: 'medications', label: 'Medications', icon: LinkIcon },
         { key: 'documents', label: 'Documents', icon: DescriptionIcon },
     ];
+
+    const handleAppointmentClick = (appointment) => {
+        setSelectedAppointment(appointment);
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        setSelectedAppointment(null);
+    };
 
     const fetchData = async (tab) => {
         try {
@@ -485,7 +581,6 @@ const Apointments = () => {
                 case 'documents':
 
                     const documentsRes = await getdocuments();
-                    console.log('Documents API Response:', documentsRes);
                     setDocuments(documentsRes.documents || []);
                     break;
             }
@@ -517,11 +612,11 @@ const Apointments = () => {
 
         switch (activeTab) {
             case 'appointments':
-                return <AppointmentsList appointments={appointments} />;
+                return <AppointmentsList appointments={appointments} onAppointmentClick={handleAppointmentClick} />;
             case 'medications':
-                return <MedicationsList medications={medications} />;
+                return <MedicationsList medications={medications} setModalOpen={setModalOpen} setModalImages={setModalImages} setModalTitle={setModalTitle} />;
             case 'documents':
-                return <DocumentsList documents={documents} />;
+                return <DocumentsList documents={documents} setModalOpen={setModalOpen} setModalImages={setModalImages} setModalTitle={setModalTitle} />;
             default:
                 return <Alert severity="info">Select a section from the menu.</Alert>;
         }
@@ -530,7 +625,7 @@ const Apointments = () => {
     return (
         <>
             <Navbar />
-            <Box sx={{ pt: 16, pb: 3, backgroundColor: '#fafbfc', minHeight: '100vh' }}>
+            <Box sx={{ pt: 16, pb: 3, backgroundColor: '#fff', minHeight: '100vh' }}>
                 <Container maxWidth="xl">
                     <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
                         
@@ -543,8 +638,9 @@ const Apointments = () => {
                             height: 'fit-content', // Important for sticky look
                         }}>
                             <List component="nav">
-                                {tabs.map((tab) => {
+                                {tabs.map((tab, index) => {
                                     const isActive = activeTab === tab.key;
+                                    const isLast = index === tabs.length - 1;
                                     return (
                                         <React.Fragment key={tab.key}>
                                             <ListItem 
@@ -553,14 +649,16 @@ const Apointments = () => {
                                                     setActiveTab(tab.key);
                                                     // Reset error/loading when switching tabs
                                                     setError(null); 
+
                                                 }}
                                                 sx={{ 
                                                     py: 1.5,
                                                     px: 3,
-                                                    borderLeft: isActive ? '4px solid #368ADD' : '4px solid transparent',
-                                                    backgroundColor: isActive ? '#f0f7ff' : 'transparent',
+                                                    cursor: 'pointer',
+                                                    borderLeft: '4px solid transparent',
+                                                    backgroundColor: 'transparent',
                                                     '&:hover': {
-                                                        backgroundColor: isActive ? '#f0f7ff' : '#f5f5f5',
+                                                        backgroundColor: '#f5f5f5',
                                                     }
                                                 }}
                                             >
@@ -575,7 +673,7 @@ const Apointments = () => {
                                                     }}
                                                 />
                                             </ListItem>
-                                            <Divider component="li" light />
+                                            {!isLast && <Divider component="li" light />}
                                         </React.Fragment>
                                     );
                                 })}
@@ -591,6 +689,221 @@ const Apointments = () => {
                 </Container>
             </Box>
             <Footer />
+            <PopupModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                images={modalImages}
+                title={modalTitle}
+            />
+
+            {/* Appointment Details Dialog */}
+            <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                maxWidth="md"
+                fullWidth
+                sx={{
+                    "& .MuiDialog-paper": {
+                        borderRadius: "16px",
+                        p: { xs: 1, sm: 2, md: 2 },
+                        mx: { xs: 1, sm: 2, md: 3 }
+                    },
+                }}
+            >
+                <DialogContent sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+                    {selectedAppointment && (
+                        <>
+                            {/* Header */}
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                flexDirection={{ xs: 'column', sm: 'column', md: 'row' }}
+                                gap={{ xs: 2, sm: 2, md: 0 }}
+                                mb={{ xs: 2, sm: 2, md: 0 }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "bold",
+                                        color: "#246BFD",
+                                        textAlign: { xs: 'center', sm: 'center', md: 'left' },
+                                        width: { xs: '100%', sm: '100%', md: 'auto' }
+                                    }}
+                                >
+                                    Appointment Details
+                                </Typography>
+
+                                <Box display="flex" alignItems="center" gap={1}>
+                                   
+                                    <IconButton size="small" onClick={handleDialogClose}>
+                                        <CloseIcon sx={{ color: "red" }} />
+                                    </IconButton>
+                                </Box>
+                            </Box>
+
+                            {/* Doctor Info */}
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                mt={3}
+                                flexDirection={{ xs: 'column', sm: 'row', md: 'row' }}
+                                textAlign={{ xs: 'center', sm: 'left', md: 'left' }}
+                                gap={{ xs: 2, sm: 0, md: 0 }}
+                            >
+                                <Avatar
+                                    src={selectedAppointment.clinic?.image}
+                                    sx={{
+                                        width: { xs: 60, sm: 70, md: 80 },
+                                        height: { xs: 60, sm: 70, md: 80 },
+                                        mr: { xs: 0, sm: 2, md: 2 },
+                                        mb: { xs: 1, sm: 0, md: 0 },
+                                        backgroundColor: selectedAppointment.clinic?.image ? 'transparent' : '#8B1538'
+                                    }}
+                                >
+                                    {selectedAppointment.clinic?.name?.charAt(0) || 'D'}
+                                </Avatar>
+                                <Box sx={{ width: { xs: '100%', sm: 'auto', md: 'auto' } }}>
+                                    <Typography
+                                        variant="h6"
+                                        sx={{
+                                            color: "#246BFD",
+                                            fontWeight: 700,
+                                            fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.25rem' }
+                                        }}
+                                    >
+                                        {selectedAppointment.clinic?.name || 'Clinic Name'}
+                                    </Typography>
+                                    <Typography
+                                        color="gray"
+                                        sx={{ fontSize: { xs: '0.9rem', sm: '1rem', md: '1rem' } }}
+                                    >
+                                        {selectedAppointment.treatment_service?.name || 'Specialty'}
+                                    </Typography>
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        mt={1}
+                                        justifyContent={{ xs: 'center', sm: 'flex-start', md: 'flex-start' }}
+                                    >
+                                        <WorkIcon sx={{ fontSize: 20, mr: 1, color: "gray" }} />
+                                        <Typography sx={{ fontSize: { xs: '0.9rem', sm: '1rem', md: '1rem' } }}>
+                                            {selectedAppointment.doctor?.name || 'Doctor'}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Box>
+
+                            {/* Appointment Info */}
+                            <Box mt={4} display="flex" flexWrap="wrap" rowGap={2}>
+                                <Box flex={2} minWidth={{ xs: '100%', sm: '300px', md: '350px' }} sx={{ pr: 2 }}>
+                                    <Typography color="gray">Date</Typography>
+                                    <Box display="flex" alignItems="center" mt={0.5}>
+                                        <CalendarTodayIcon sx={{ fontSize: 18, mr: 1 }} />
+                                        <Typography fontWeight={500} fontSize={{ xs: '0.9rem', sm: '1rem', md: '1rem' }}>
+                                            {selectedAppointment.bookingDate
+                                                ? new Date(selectedAppointment.bookingDate).toLocaleDateString('en-US', {
+                                                    weekday: 'long',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    year: 'numeric'
+                                                })
+                                                : 'Date N/A'
+                                            }
+                                        </Typography>
+                                    </Box>
+                                </Box>
+
+                                <Box flex={1} minWidth={{ xs: '100%', sm: 'auto', md: 'auto' }}>
+                                    <Typography color="gray">Time</Typography>
+                                    <Box display="flex" alignItems="center" mt={0.5}>
+                                        <AccessTimeIcon sx={{ fontSize: 18, mr: 1 }} />
+                                        <Typography fontWeight={500} fontSize={{ xs: '0.9rem', sm: '1rem', md: '1rem' }}>
+                                            {selectedAppointment.bookingTime || 'Time N/A'}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+
+                                <Box flex={1} minWidth={{ xs: '100%', sm: 'auto', md: 'auto' }}>
+                                    <Typography color="gray">Type</Typography>
+                                    <Box display="flex" alignItems="center" mt={0.5}>
+                                        <LocationOnIcon sx={{ fontSize: 18, mr: 1 }} />
+                                        <Typography fontWeight={500} fontSize={{ xs: '0.9rem', sm: '1rem', md: '1rem' }}>
+                                            {selectedAppointment.bookingType || 'Offline'}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+
+                                <Box flex={1} minWidth={{ xs: '100%', sm: 'auto', md: 'auto' }}>
+                                    <Typography color="gray">Status</Typography>
+                                    <Box display="flex" alignItems="center" mt={0.5}>
+                                        <CalendarTodayIcon
+                                            sx={{
+                                                fontSize: 18,
+                                                mr: 1,
+                                                color: selectedAppointment.bookingStatus?.toLowerCase().includes('completed')
+                                                    ? '#4CAF50'  // Green for completed
+                                                    : selectedAppointment.bookingStatus?.toLowerCase().includes('scheduled')
+                                                    ? '#FF9800'  // Orange for scheduled
+                                                    : '#FF9800'  // Default orange
+                                            }}
+                                        />
+                                        <Typography
+                                            fontWeight={500}
+                                            fontSize={{ xs: '0.9rem', sm: '1rem', md: '1rem' }}
+                                            sx={{
+                                                color: selectedAppointment.bookingStatus?.toLowerCase().includes('completed')
+                                                    ? '#4CAF50'  // Green for completed
+                                                    : selectedAppointment.bookingStatus?.toLowerCase().includes('scheduled')
+                                                    ? '#FF9800'  // Orange for scheduled
+                                                    : '#FF9800'  // Default orange
+                                            }}
+                                        >
+                                            {selectedAppointment.bookingStatus || 'Scheduled'}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Box>
+
+                            {/* Divider */}
+                            <Divider sx={{ my: 3 }} />
+
+                            {/* Footer */}
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                flexDirection={{ xs: 'column', sm: 'row', md: 'row' }}
+                                gap={{ xs: 2, sm: 0, md: 0 }}
+                                textAlign={{ xs: 'center', sm: 'left', md: 'left' }}
+                            >
+                                <Box sx={{ order: { xs: 2, sm: 1, md: 1 } }}>
+                                    <Typography color="gray">Booking ID</Typography>
+                                    <Typography fontWeight={600} fontSize={{ xs: '0.9rem', sm: '1rem', md: '1rem' }}>
+                                        APT–{selectedAppointment.id || 'N/A'}
+                                    </Typography>
+                                </Box>
+
+                                <Box
+                                    textAlign={{ xs: 'center', sm: 'right', md: 'right' }}
+                                    sx={{ order: { xs: 1, sm: 2, md: 2 } }}
+                                >
+                                    <Typography color="gray">Total Paid</Typography>
+                                    <Typography
+                                        fontWeight={700}
+                                        sx={{
+                                            color:'#02D210'
+                                        }}
+                                        fontSize={{ xs: '1.1rem', sm: '1.25rem', md: '1.25rem' }}
+                                    >
+                                        ₹{selectedAppointment.consultingPrice || '0.00'}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
         </>
     );
 };

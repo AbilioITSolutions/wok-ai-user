@@ -34,7 +34,7 @@ export default function Cardsection() {
                   justifyContent: "space-between",
                   textAlign: "center",
                   borderRadius: 3,
-                  boxShadow: 3,
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)',
                   width: "400px",
                   height: "366p%",
                   background: "white",

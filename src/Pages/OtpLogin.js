@@ -160,12 +160,14 @@ const OtpLogin = () => {
                         backgroundColor: "#368ADD",
                         display: "flex",
                         justifyContent: "center",
+                        height: "100vh",
                         alignItems: "center",
                         p: 2,
                     }}
                 >
                     <img
                         src={img}
+                        style={{ width: '100%', height: '100%' }}
                         alt="Login Visual"
                     />
                 </Grid>
@@ -185,13 +187,13 @@ const OtpLogin = () => {
                         <Typography gutterBottom variant="h4" sx={{ color: "#000" }}>
                             OTP Login
                         </Typography>
-                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3 }}>
+                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3, fontStyle: 'italic'  }}>
                             Enter your {loginMethod === 'email' ? 'email address' : 'phone number'} to receive an OTP for login
                         </Typography>
 
                         {/* Login Method Toggle - Hide after OTP is sent */}
                         {!otpSent && (
-                            <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: 1 }}>
+                            <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: 1  , mb:7}}>
                                 <Button
                                     variant={loginMethod === 'email' ? 'contained' : 'text'}
                                     onClick={() => handleLoginMethodChange('email')}
@@ -200,8 +202,10 @@ const OtpLogin = () => {
                                         borderRadius: 0,
                                         bgcolor: loginMethod === 'email' ? '#368ADD' : 'transparent',
                                         color: loginMethod === 'email' ? 'white' : '#666',
+                                        
                                         '&:hover': {
                                             bgcolor: loginMethod === 'email' ? '#2d76c4' : '#f5f5f5'
+
                                         }
                                     }}
                                     startIcon={<EmailIcon />}
@@ -264,16 +268,26 @@ const OtpLogin = () => {
                             {!otpSent ? (
                                 <Button
                                     type="button"
-                                    variant="outlined"
+                                    variant="contained"
                                     onClick={handleSendOTP}
                                     disabled={loading}
                                     sx={{
-                                        color: "#368ADD",
+                                        color: "#fff",
                                         borderColor: "#368ADD",
+                                        backgroundColor: "#368ADD",
+                                        width: { xs: '180px', md: '200px' },
+                                        padding: { xs: '10px 16px', md: '12px 20px' },
+                                        fontSize: { xs: '14px', md: '16px' },
+                                        borderRadius: '8px',
+                                        height: { xs: '36px', md: '40px' },
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        mx: 'auto',
                                         '&:hover': {
-                                            borderColor: "#2d76c4",
-                                            backgroundColor: "#f0f8ff"
+                                            backgroundColor: '#2d76c4',
                                         }
+
                                     }}
                                 >
                                     {loading ? 'Sending...' : 'Send OTP'}

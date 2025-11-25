@@ -20,7 +20,15 @@ import EventIcon from "@mui/icons-material/Event";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "../ASSETS/logo.png"; 
+import logo from "../ASSETS/logo.png";
+import head1 from "../ASSETS/head1.png";
+import head2 from "../ASSETS/head2.png";
+import head3 from "../ASSETS/head3.png";
+import head4 from "../ASSETS/head4.png";
+import blackhead1 from "../ASSETS/blackhead1.png";
+import blackhead2 from "../ASSETS/blackhead2.png";
+import blackhead3 from "../ASSETS/blackhead3.png";
+import blackhead4 from "../ASSETS/blackhead4.png";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -28,30 +36,43 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const menuItems = [
-    { label: "My Dashboard", icon: <DashboardIcon />, key: "dashboard", path: "/dashboard" },
-    { label: "Find a Doctor", icon: <SearchIcon />, key: "doctor", path: "/doctorlist" },
-    { label: "My Appointments", icon: <EventIcon />, key: "appointments", path: "/apointments" },
-    { label: "Reminders", icon: <NotificationsIcon />, key: "reminders", path: "/remainder" },
+  // Define menu items data first (without active state logic)
+  const menuItemsData = [
+    { label: "My Dashboard", normalIcon: blackhead1, activeIcon: head1, key: "dashboard", path: "/dashboard" },
+    { label: "Find a Doctor", normalIcon: blackhead2, activeIcon: head2, key: "doctor", path: "/doctorlist" },
+    { label: "My Appointments", normalIcon: blackhead3, activeIcon: head3, key: "appointments", path: "/apointments" },
+    { label: "Reminders", normalIcon: blackhead4, activeIcon: head4, key: "reminders", path: "/remainder" },
   ];
-  
+
   // Initialize active state based on current location
   const getInitialActiveState = () => {
     const currentPath = window.location.pathname;
-    const matchingItem = menuItems.find(item => currentPath === item.path);
+    if (currentPath === '/profile') return 'profile';
+    const matchingItem = menuItemsData.find(item => currentPath === item.path);
     return matchingItem ? matchingItem.key : null;
   };
-  
+
   const [active, setActive] = useState(getInitialActiveState);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+
+  const menuItems = menuItemsData.map(item => ({
+    ...item,
+    icon: active === item.key ? <img src={item.activeIcon} alt={item.label} style={{ width: '16px', height: '16px' }} /> : <img src={item.normalIcon} alt={item.label} style={{ width: '16px', height: '16px' }} />
+  }));
 
   useEffect(() => {
     const currentPath = window.location.pathname;
 
     // Use exact path matching instead of includes
-    const matchingItem = menuItems.find(item => currentPath === item.path);
-    const newActiveKey = matchingItem ? matchingItem.key : null;
-    
+    let newActiveKey = null;
+    if (currentPath === '/profile') {
+      newActiveKey = 'profile';
+    } else {
+      const matchingItem = menuItemsData.find(item => currentPath === item.path);
+      newActiveKey = matchingItem ? matchingItem.key : null;
+    }
+
     // Only update if the active key has changed to trigger animation
     if (active !== newActiveKey) {
       setActive(newActiveKey);
@@ -149,7 +170,7 @@ function Navbar() {
                 sx={{
                   display: "flex",
                   alignItems: "flex-end",
-                  gap: 0.5,
+                  gap: 0.8,
                   fontSize: "1rem",
                   fontWeight: 500,
                   color: active === item.key ? "#007bff" : "#333",
@@ -170,17 +191,14 @@ function Navbar() {
                   },
                 }}
               >
-                <IconButton
-                  disableRipple
-                  sx={{
-                    p: 0,
-                    color: active === item.key ? "#007bff" : "#333",
-                    fontSize: "20px",
-                  }}
-                >
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                   {item.icon}
-                </IconButton>
-                <Typography>{item.label}</Typography>
+                </Box>
+                <Typography sx={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  lineHeight: 1
+                }}>{item.label}</Typography>
               </Box>
             ))}
           </Box>
@@ -193,18 +211,38 @@ function Navbar() {
               sx={{
                 display: { xs: "none", md: "flex" },
                 alignItems: "flex-end",
-                gap: 0.5,
+                gap: 0.8,
+                fontSize: "1rem",
+                fontWeight: 500,
+                color: active === 'profile' ? "#007bff" : "#333",
                 cursor: "pointer",
+                position: "relative",
                 height: "100%",
                 pb: 2.5,
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  height: "2px",
+                  width: active === 'profile' ? "100%" : 0,
+                  backgroundColor: "#007bff",
+                  transition: "width 0.5s ease",
+                  transformOrigin: "left center",
+                },
               }}
             >
-              <AccountCircleIcon sx={{ fontSize: 22, color: "#333" }} />
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <AccountCircleIcon sx={{ fontSize: 22,mb:-0.5, color: active === 'profile' ? "#007bff" : "#333" }} />
+              </Box>
               <Typography
                 sx={{
                   fontSize: "0.9rem",
                   fontWeight: 500,
-                  color: "#333",
+                  color: active === 'profile' ? "#007bff" : "#333",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  lineHeight: 1
                 }}
               >
                 Profile
@@ -274,16 +312,25 @@ function Navbar() {
             >
               <ListItemIcon
                 sx={{
-                  color: active === item.key ? "#007bff" : "#333",
+                  minWidth: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {item.icon}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {item.icon}
+                </Box>
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
                 sx={{
                   color: active === item.key ? "#007bff" : "#333",
                   fontWeight: active === item.key ? 600 : 400,
+                  "& .MuiListItemText-primary": {
+                    display: "flex",
+                    alignItems: "center",
+                  }
                 }}
               />
             </ListItem>
@@ -295,17 +342,32 @@ function Navbar() {
             }}
             sx={{
               cursor: "pointer",
+              backgroundColor: active === 'profile' ? "#f0f8ff" : "transparent",
               "&:hover": {
                 backgroundColor: "#f5f5f5",
               },
             }}
           >
-            <ListItemIcon sx={{ color: "#333" }}>
-              <AccountCircleIcon />
-            </ListItemIcon>
+              <ListItemIcon
+                sx={{
+                  minWidth: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <AccountCircleIcon sx={{ fontSize: 22, color: active === 'profile' ? "#007bff" : "#333" }} />
+              </ListItemIcon>
             <ListItemText
               primary="Profile"
-              sx={{ color: "#333" }}
+              sx={{
+                color: active === 'profile' ? "#007bff" : "#333",
+                fontWeight: active === 'profile' ? 600 : 400,
+                "& .MuiListItemText-primary": {
+                  display: "flex",
+                  alignItems: "center",
+                }
+              }}
             />
           </ListItem>
         </List>

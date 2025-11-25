@@ -9,7 +9,7 @@ const AboutHeropage = () => {
       {/* Background Section */}
       <Box
         sx={{
-          height: { xs: "50vh", md: "100vh" },
+          height: { xs: "50vh", md: "120vh" },
           width: "100%",
           backgroundImage: `url(${Bgimage})`,
           backgroundSize: "cover",
@@ -33,7 +33,7 @@ const AboutHeropage = () => {
           mx: "auto",
           mt: { xs: "-100px", md: "-300px" }, // overlap bottom of background
           width: { xs: "90%", md: "90%" },
-          height: {xs:'auto',md:"33vw"},
+          height: {xs:'auto',md:"39vw"},
         }}
       />
     </Box>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
 import phoneIcon from './sectionsassets/telephone.svg';
-
+import { useNavigate } from 'react-router-dom';
 function ContactSection() {
+    const navigate = useNavigate();
     return (
         <Box
             sx={{
@@ -59,6 +60,7 @@ function ContactSection() {
                 {/* Button */}
                 <Button
                     variant="contained"
+                    onClick={() => navigate("/contact-us")}
                     sx={{
                         backgroundColor: '#007bff',
                         color: '#fff',
@@ -66,13 +68,12 @@ function ContactSection() {
                         px: { xs: 3, sm: 4, md: 4 },
                         py: { xs: 1.2, sm: 1.5, md: 1.5 },
                         borderRadius: '8px',
-                        border: '1px solid #0b0b0bff',
+                        
                         fontSize: { xs: '0.9rem', sm: '1rem', md: '1rem' },
                         minWidth: { xs: '140px', sm: '160px', md: '180px' },
                         '&:hover': {
-                            backgroundColor: '#e6e6e6',
-                            color: '#000',
-                        },
+                            backgroundColor: '#0056b3',
+                        }, 
                     }}
                 >
                     Request Call Back

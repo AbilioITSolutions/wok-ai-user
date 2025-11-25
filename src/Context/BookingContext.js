@@ -14,16 +14,15 @@ export const BookingProvider = ({ children }) => {
     const [bookingData, setBookingData] = useState({
         // Doctor selection
         selectedDoctor: null,
-        
+
         // Schedule data
         selectedDate: null,
         selectedTime: null,
         consultingType: 'Offline',
-        
+
         // Patient information
         patientInfo: {
-            firstName: '',
-            lastName: '',
+            fullname: '',
             email: '',
             phone: '',
             dateOfBirth: '',
@@ -36,10 +35,7 @@ export const BookingProvider = ({ children }) => {
             hasInsurance: false,
             consentTreatment: false,
             agreePrivacy: false
-        },
-        
-        // Payment information
-        paymentMethod: 'credit-card'
+        }
     });
 
     // Load data from localStorage on mount
@@ -73,8 +69,7 @@ export const BookingProvider = ({ children }) => {
             selectedTime: null,
             consultingType: 'Offline',
             patientInfo: {
-                firstName: '',
-                lastName: '',
+                fullname: '',
                 email: '',
                 phone: '',
                 dateOfBirth: '',
@@ -87,8 +82,7 @@ export const BookingProvider = ({ children }) => {
                 hasInsurance: false,
                 consentTreatment: false,
                 agreePrivacy: false
-            },
-            paymentMethod: 'credit-card'
+            }
         });
         localStorage.removeItem('bookingData');
     };

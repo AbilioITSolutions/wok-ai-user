@@ -46,7 +46,6 @@ const Profile = () => {
   const handleDeleteConfirm = () => {
     setOpenDelete(false);
     // here add your delete logic
-    console.log("Account deleted!");
     navigate('/');
   };
 
