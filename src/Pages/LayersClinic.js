@@ -49,8 +49,6 @@ export default function LayersClinic() {
     const navigate = useNavigate();
     const location = useLocation();
     const clinicId = location.state?.Clinicid;
-    console.log("Initial clinicId from location.state:", location.state);
-    console.log("Extracted clinicId:", clinicId);
 
     // New state for clinic data
     const [clinicData, setClinicData] = useState(null);
@@ -73,15 +71,12 @@ export default function LayersClinic() {
     const tabs = ["Overview", "Services", "Doctors", "Pricing"];
 
     const handleOpen = async (doctorId) => {
-        console.log("handleOpen called with doctorId:", doctorId);
         setOpen(true);
         try {
             setReviewsLoading(true);
             setReviewsError(null);
-            console.log("Calling getReviews API with doctorId:", doctorId);
             const response = await getReviews({ doctorId });
             const data = response.data;
-            console.log("API response:", response);
             setReviews(Array.isArray(data?.reviews) ? data.reviews : []);
             setAverageRating(data?.averageRating || 0);
             setReviewsCount(data?.reviewsCount || 0);
@@ -101,11 +96,9 @@ export default function LayersClinic() {
     }
 
     useEffect(() => {
-        console.log("useEffect triggered, clinicId:", clinicId);
         const fetchClinicData = async () => {
             if (clinicId) {
                 try {
-                    console.log("Starting API calls for clinicId:", clinicId);
                     setLoading(true);
                     setError(null);
 
@@ -117,11 +110,7 @@ export default function LayersClinic() {
                         getServicePricesByClinic(clinicId)
                     ]);
 
-                    console.log("Clinic API response:", clinicResponse);
-                    console.log("Services API response:", servicesResponse);
-                    console.log("Doctors API response:", doctorsResponse);
-                    console.log("Pricing API response:", pricingResponse);
-
+                    
                     // Combine data from all responses
                     if (clinicResponse.status && servicesResponse.status && doctorsResponse.status && pricingResponse.status) {
                         const combinedData = {
@@ -133,14 +122,11 @@ export default function LayersClinic() {
                             // Use pricing API data
                             service_prices: pricingResponse.data || []
                         };
-                        console.log("Combined clinic data:", combinedData);
                         setClinicData(combinedData);
                     } else if (clinicResponse.status) {
                         // Fallback to clinic data only if other APIs fail
-                        console.log("Some APIs failed, using clinic data only");
                         setClinicData(clinicResponse.data);
                     } else {
-                        console.log("All APIs failed");
                         setError("Failed to load clinic data");
                     }
                 } catch (error) {
@@ -148,10 +134,8 @@ export default function LayersClinic() {
                     setError("Failed to load clinic data. Please try again.");
                 } finally {
                     setLoading(false);
-                    console.log("Loading set to false");
                 }
             } else {
-                console.log("No clinicId provided");
             }
         };
 

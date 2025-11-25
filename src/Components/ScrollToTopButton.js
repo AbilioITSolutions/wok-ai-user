@@ -14,7 +14,6 @@ const ScrollToTopButton = () => {
 
       // Debug log to verify scroll detection is working
       if (shouldShow !== isVisible) {
-        console.log('Scroll position:', scrollTop, 'Show button:', shouldShow);
       }
 
       setIsVisible(shouldShow);
@@ -35,27 +34,18 @@ const ScrollToTopButton = () => {
 
   // Scroll to top - handles all scrollable containers
   const scrollToTop = () => {
-    console.log('🚀 Scroll to top clicked'); // Debug log
-    console.log('📍 Current scroll positions:');
-    console.log('  - window.pageYOffset:', window.pageYOffset);
-    console.log('  - document.documentElement.scrollTop:', document.documentElement.scrollTop);
-    console.log('  - document.body.scrollTop:', document.body.scrollTop);
-
+   
     // Method 1: Scroll main window/document
-    console.log('📜 Method 1: Scrolling main containers...');
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    console.log('✅ Main containers scrolled to 0');
 
     // Method 2: Find and scroll ALL scrollable elements
     const scrollAllElements = () => {
       const allElements = document.querySelectorAll('*');
       const scrollableElements = [];
 
-      console.log('🔍 Method 2: Scanning for scrollable elements...');
-      console.log('  - Total elements to check:', allElements.length);
-
+  
       allElements.forEach(element => {
         // Check if element is scrollable and actually has scrollable content
         const computedStyle = window.getComputedStyle(element);
@@ -72,16 +62,14 @@ const ScrollToTopButton = () => {
         }
       });
 
-      console.log('✅ Found scrollable elements:', scrollableElements.length);
 
       // Scroll all scrollable elements to top
       scrollableElements.forEach((element, index) => {
         try {
           const oldScrollTop = element.scrollTop;
           element.scrollTop = 0;
-          console.log(`  📦 Element ${index + 1}: ${element.tagName}${element.className ? '.' + element.className : ''}${element.id ? '#' + element.id : ''} - Scrolled from ${oldScrollTop} to ${element.scrollTop}`);
+          
         } catch (e) {
-          console.log(`  ❌ Failed to scroll element ${index + 1}:`, e.message);
         }
       });
 
@@ -90,7 +78,6 @@ const ScrollToTopButton = () => {
 
     // Method 3: Target common scrollable containers by selector
     const targetCommonContainers = () => {
-      console.log('🎯 Method 3: Targeting common containers...');
       const selectors = [
         'main',
         '.App',
@@ -117,55 +104,42 @@ const ScrollToTopButton = () => {
         '[class*="outlet"]'
       ];
 
-      console.log('  - Selectors to check:', selectors.length);
 
       selectors.forEach((selector, index) => {
         try {
           const elements = document.querySelectorAll(selector);
-          console.log(`  🔎 Selector ${index + 1}: "${selector}" found ${elements.length} elements`);
 
           elements.forEach((element, elemIndex) => {
             if (element && element.scrollTop !== undefined && element.scrollHeight > element.clientHeight + 1) {
               const oldScrollTop = element.scrollTop;
               element.scrollTop = 0;
-              console.log(`    📦 Element ${elemIndex + 1}: ${element.tagName}${element.className ? '.' + element.className : ''}${element.id ? '#' + element.id : ''} - Scrolled from ${oldScrollTop} to ${element.scrollTop}`);
             }
           });
         } catch (e) {
-          console.log(`  ⚠️ Selector ${index + 1} "${selector}" failed:`, e.message);
         }
       });
     };
 
     // Execute all scroll methods
-    console.log('⚡ Executing all scroll methods...');
     scrollAllElements();
     targetCommonContainers();
 
-    // Method 4: Final verification and retry
-    console.log('🔄 Method 4: Final verification and retry...');
+    
     setTimeout(() => {
       const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      console.log('📊 Final scroll positions after delay:');
-      console.log('  - window.pageYOffset:', window.pageYOffset);
-      console.log('  - document.documentElement.scrollTop:', document.documentElement.scrollTop);
-      console.log('  - document.body.scrollTop:', document.body.scrollTop);
-      console.log('  - Max scroll value:', currentScroll);
+    
 
       if (currentScroll > 0) {
-        console.log('⚠️ Main scroll still > 0, forcing scroll again...');
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
       }
 
       // Re-scroll all scrollable elements as final check
-      console.log('🔄 Re-scanning for any remaining scrollable content...');
       scrollAllElements();
 
       // Additional check for any remaining scrollable content
       setTimeout(() => {
-        console.log('🔍 Final cleanup scan...');
         const elements = document.querySelectorAll('*');
         let remainingScrollCount = 0;
 
@@ -180,7 +154,6 @@ const ScrollToTopButton = () => {
                 const oldScrollTop = element.scrollTop;
                 element.scrollTop = 0;
                 remainingScrollCount++;
-                console.log(`  🧹 Found remaining scroll: ${element.tagName}${element.className ? '.' + element.className : ''}${element.id ? '#' + element.id : ''} - Scrolled from ${oldScrollTop} to ${element.scrollTop}`);
               }
             }
           } catch (e) {
@@ -188,8 +161,7 @@ const ScrollToTopButton = () => {
           }
         });
 
-        console.log(`✅ Cleanup complete. Fixed ${remainingScrollCount} remaining scrollable elements.`);
-        console.log('🎉 Scroll to top operation finished!');
+       
       }, 100);
     }, 50);
   };

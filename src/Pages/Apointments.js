@@ -185,9 +185,6 @@ const AppointmentsList = ({ appointments, onAppointmentClick }) => (
                                     {/* Status */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                         {(() => {
-                                            console.log('Appointment object:', appointment);
-                                            console.log('Status field:', appointment.bookingStatus);
-                                            console.log('Available fields:', Object.keys(appointment));
 
                                             // Simple hardcoded color logic for testing
                                             let chipColor = '#E65100'; // Default orange
@@ -584,7 +581,6 @@ const Apointments = () => {
                 case 'documents':
 
                     const documentsRes = await getdocuments();
-                    console.log('Documents API Response:', documentsRes);
                     setDocuments(documentsRes.documents || []);
                     break;
             }

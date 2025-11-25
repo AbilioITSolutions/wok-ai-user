@@ -366,7 +366,6 @@ const Payment = () => {
                             variant="contained"
                             startIcon={<CheckCircleIcon />}
                             onClick={() => {
-                                console.log('Appointment confirmed with payment method:', selectedPaymentMethod);
                                 // Here you would typically process the payment and confirm appointment
                                 alert('Appointment confirmed successfully!');
                             }}

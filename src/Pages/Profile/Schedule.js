@@ -38,15 +38,8 @@ const Schedule = () => {
 
     // Log the received doctor data when component mounts or bookingData changes
     useEffect(() => {
-        console.log('Schedule Component - Booking Data:', bookingData);
         if (bookingData.selectedDoctor) {
-            console.log('Selected Doctor Details:', {
-                id: bookingData.selectedDoctor.id,
-                name: bookingData.selectedDoctor.name,
-                specializations: bookingData.selectedDoctor.specializations,
-                experience: bookingData.selectedDoctor.experience,
-                rating: bookingData.selectedDoctor.rating
-            });
+           
         } else {
             console.warn('No doctor selected in booking context');
         }
@@ -78,9 +71,6 @@ const Schedule = () => {
                     setLoading(true);
                     setError(null);
                     const response = await getDoctorAvailableTimeSlots(selectedDoctor);
-                    console.log('Time slots API response:', response);
-
-                    console.log('Raw API response:', response);
                     
                     if (response && response.status && Array.isArray(response.slots)) {
                         // Map the slots array to the expected format
@@ -89,7 +79,6 @@ const Schedule = () => {
                             available: true
                         }));
                         
-                        console.log('Processed slots:', slots);
                         setTimeSlots(slots);
                     } else {
                         console.warn('No valid slots found in response');
