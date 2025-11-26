@@ -1,11 +1,4 @@
-// export async function Login() {
-//     try {
 
-//     } catch (error) {
-//         console.log(error)
-//     }
-
-// }
 
 import SJ from "../ASSETS/SJ.svg"
 import BR from "../ASSETS/BR.svg"
