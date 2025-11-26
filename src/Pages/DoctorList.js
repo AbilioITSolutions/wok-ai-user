@@ -17,9 +17,9 @@ import { Container } from "@mui/system";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import Cards from "../Common/Cards";
-import img1 from "../ASSETS/one.png";
-import img2 from "../ASSETS/two.png";
-import img3 from "../ASSETS/three.png";
+import img1 from "../assets/one.png";
+import img2 from "../assets/two.png";
+import img3 from "../assets/three.png";
 import { getAllClinics } from "../Apis/TreatmentsApis";
 import { getReviews } from "../Apis/RatingApi";
 

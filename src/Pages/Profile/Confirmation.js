@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../Context/BookingContext';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
-import tick from '../../ASSETS/tick.png';
+import tick from '../../assets/tick.png';
 import { createBooking } from '../../Apis/ConformationApis';
 
 const Confirmation = () => {

@@ -27,10 +27,10 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import layersImg from '../../ASSETS/DasboardImages/layersImg.png';
-import amayaClinicImg from '../../ASSETS/DasboardImages/amayaClinic.png';
-import upCominglogo from '../../ASSETS/DasboardImages/upcominglogo.svg';
-import cancelledlogo from '../../ASSETS/DasboardImages/cancelledlogo.svg';
+import layersImg from '../../assets/DasboardImages/layersImg.png';
+import amayaClinicImg from '../../assets/DasboardImages/amayaClinic.png';
+import upCominglogo from '../../assets/DasboardImages/upcominglogo.svg';
+import cancelledlogo from '../../assets/DasboardImages/cancelledlogo.svg';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
@@ -45,8 +45,8 @@ import { getmedications } from "../../Apis/AppointmentsApis";
 import { getUserAppointments } from "../../Apis/ProfileApis";
 import { getMyReminders } from "../../Apis/RemainderApis";
 import { useNavigate } from "react-router-dom";
-import bell from '../../ASSETS/bell.png';
-import timer from '../../ASSETS/timer.png';
+import bell from '../../assets/bell.png';
+import timer from '../../assets/timer.png';
 
 const Dashboard = () => {
     const [appointmentsData, setAppointmentsData] = useState([]);

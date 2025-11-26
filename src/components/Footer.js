@@ -14,7 +14,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import logo from '../ASSETS/logo1.svg';
+import logo from '../assets/logo1.svg';
 
 function Footer() {
     const theme = useTheme();

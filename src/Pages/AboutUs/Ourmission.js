@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography, Container } from "@mui/material";
-import Mission from "../../ASSETS/Aboutusimages/Mission.png";
+import Mission from "../../assets/Aboutusimages/Mission.png";
 export default function Ourmission() {
   return (
     <Box sx={{ py: 8, bgcolor: "background.paper"  }}>

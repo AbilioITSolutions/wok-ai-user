@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Grid, Container, Typography, TextField, Button, Alert, Snackbar, InputAdornment, IconButton, Backdrop, CircularProgress, Divider } from "@mui/material";
-import img from '../ASSETS/doctorlogo.png';
+import img from '../assets/doctorlogo.png';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from "react-router";
 import { login, sendOTP, verifyOTP } from "../Apis/LoginApis";

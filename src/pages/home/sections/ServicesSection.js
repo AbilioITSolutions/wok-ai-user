@@ -19,7 +19,7 @@ import serviceIcon from './sectionsassets/hair-icon.png';
 import headerBg from './sectionsassets/header-bg.png';
 import { getAllTreatments } from '../../../Apis/TreatmentsApis';
 import { useNavigate } from 'react-router-dom';
-import colordesign from '../../../ASSETS/colordesign.png'
+import colordesign from '../../../assets/colordesign.png'
 function ServicesSection() {
     const navigate = useNavigate();
     const [treatments, setTreatments] = useState([]);

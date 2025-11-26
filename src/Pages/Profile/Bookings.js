@@ -22,10 +22,10 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { getUserAppointments } from "../../Apis/ProfileApis";
-import bookingclinic from "../../ASSETS/bookingclinic.png"
-import bookingdoctor from "../../ASSETS/bookingdoctor.png"
-import star from "../../ASSETS/star.png"
-import selectedstar from "../../ASSETS/selectedstar.png"
+import bookingclinic from "../../assets/bookingclinic.png"
+import bookingdoctor from "../../assets/bookingdoctor.png"
+import star from "../../assets/star.png"
+import selectedstar from "../../assets/selectedstar.png"
 import { submitClinicReview, submitDoctorReview } from "../../Apis/RatingApi";
 
 const Bookings = () => {

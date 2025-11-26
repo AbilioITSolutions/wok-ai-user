@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import img1 from '../ASSETS/logo2.png';
+import img1 from '../assets/logo2.png';
 
 
 const Footer = () => {

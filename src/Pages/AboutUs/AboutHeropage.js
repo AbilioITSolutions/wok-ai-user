@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import React from "react";
-import Bgimage from "../../ASSETS/Aboutusimages/Bgimage.png";
-import Dcotorimg from "../../ASSETS/Aboutusimages/Doctorsimage.png";
+import Bgimage from "../../assets/Aboutusimages/Bgimage.png";
+import Dcotorimg from "../../assets/Aboutusimages/Doctorsimage.png";
 
 const AboutHeropage = () => {
   return (
