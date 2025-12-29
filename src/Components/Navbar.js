@@ -20,15 +20,15 @@ import EventIcon from "@mui/icons-material/Event";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "../assets/logo.png";
-import head1 from "../assets/head1.png";
-import head2 from "../assets/head2.png";
-import head3 from "../assets/head3.png";
-import head4 from "../assets/head4.png";
-import blackhead1 from "../assets/blackhead1.png";
-import blackhead2 from "../assets/blackhead2.png";
-import blackhead3 from "../assets/blackhead3.png";
-import blackhead4 from "../assets/blackhead4.png";
+import logo from "../ASSETS/logo.png";
+import head1 from "../ASSETS/head1.png";
+import head2 from "../ASSETS/head2.png";
+import head3 from "../ASSETS/head3.png";
+import head4 from "../ASSETS/head4.png";
+import blackhead1 from "../ASSETS/blackhead1.png";
+import blackhead2 from "../ASSETS/blackhead2.png";
+import blackhead3 from "../ASSETS/blackhead3.png";
+import blackhead4 from "../ASSETS/blackhead4.png";
 
 import { useNavigate, useLocation } from "react-router-dom";
 

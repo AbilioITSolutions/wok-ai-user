@@ -12,7 +12,7 @@ import {
     ListItemText,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import logo from '../assets/logo.svg';
+import logo from '../ASSETS/logo.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const navItems = [

@@ -14,7 +14,7 @@ import {
   Alert,
   Snackbar,
 } from "@mui/material";
-import Backgroundimg from "../../assets/contactusimages/Backgroundimg.png";
+import Backgroundimg from "../../ASSETS/contactusimages/Backgroundimg.png";
 import Cardsection from "./Cardsection";
 import useResponsive from "../../Hooks/useResponsive";
 import { createEnquiry } from "../../Apis/EnqueryApis";

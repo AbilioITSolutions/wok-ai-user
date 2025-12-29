@@ -10,8 +10,8 @@ import {
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import amayaClinicImg from  "../assets/ProfileImages/amayaClinic.png";
-import layersImg from "../assets/ProfileImages/layersImg.png";
+import amayaClinicImg from  "../ASSETS/ProfileImages/amayaClinic.png";
+import layersImg from "../ASSETS/ProfileImages/layersImg.png";
 
 const Bookings = () => {
   const data = {

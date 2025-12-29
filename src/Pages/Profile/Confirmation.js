@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../Context/BookingContext';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
-import tick from '../../assets/tick.png';
+import tick from '../../ASSETS/tick.png';
 import { createBooking } from '../../Apis/ConformationApis';
 
 const Confirmation = () => {
@@ -60,9 +60,9 @@ const Confirmation = () => {
             time: bookingData.selectedTime || "N/A"
         },
         patient: {
-            fullName: bookingData.patientInfo ? bookingData.patientInfo.fullname || "John Doe" : "John Doe",
-            email: bookingData.patientInfo?.email || "johndoe@gmail.com",
-            mobile: bookingData.patientInfo?.phone || "+1 (555) 123-4567",
+            fullName: bookingData.patientInfo ? bookingData.patientInfo.fullname || "-" : "-",
+            email: bookingData.patientInfo?.email || "-",
+            mobile: bookingData.patientInfo?.phone || "-",
             symptoms: bookingData.patientInfo?.currentSymptoms || "-",
             medications: bookingData.patientInfo?.currentMedications || "-",
             allergies: bookingData.patientInfo?.allergies || "-",

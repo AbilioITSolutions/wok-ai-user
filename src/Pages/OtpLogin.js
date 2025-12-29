@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Box, Grid, Container, Typography, TextField, Button, Alert, Snackbar, InputAdornment, IconButton, Backdrop, CircularProgress } from "@mui/material";
-import img from '../assets/doctorlogo.png';
+import img from '../ASSETS/doctorlogo.png';
 import { useNavigate } from "react-router";
 import { sendOTP, verifyOTP } from "../Apis/LoginApis";
 import { Phone as PhoneIcon, Email as EmailIcon } from '@mui/icons-material';
@@ -235,7 +235,7 @@ const OtpLogin = () => {
                             <TextField
                                 type={loginMethod === 'email' ? 'email' : 'tel'}
                                 label={loginMethod === 'email' ? "Email Address" : "Phone Number"}
-                                placeholder={loginMethod === 'email' ? "sahasra.a@gmail.com" : "9876543210"}
+                                placeholder={loginMethod === 'email' ? "gmail.com" : "9876543210"}
                                 name="userName"
                                 value={formData.userName}
                                 onChange={(e) => {

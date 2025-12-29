@@ -12,6 +12,11 @@ import MyBilling from '../Pages/Profile/MyBilling'
 import Services from '../Pages/Services/Services'
 import AboutUs from '../Pages/AboutUs/AboutUs'
 import ContactUS from '../Pages/ContactUs/ContactUS'
+import TermsAndConditions from '../Pages/Terms&conditions'
+import PrivacyPolicy from '../Pages/PrivacyPolicy'
+
+
+
 import Apointments from '../Pages/Apointments'
 import Bookings from '../Pages/Profile/Bookings'
 import Remainder from '../Pages/Remainder'
@@ -30,12 +35,16 @@ import BookingGuide from '../Pages/BookingGuide'
 const PageRoutes = () => {
     return (
         <div>
-            
+
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/services' element={<Services />} />
                 <Route path='/about-us' element={<AboutUs />} />
                 <Route path='/contact-us' element={<ContactUS />} />
+                <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
+                <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+
+
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/otp-login' element={<OtpLogin />} />
@@ -54,11 +63,11 @@ const PageRoutes = () => {
                         <Profile />
                     </ProtectedRoute>
                 }>
-                  <Route index element={ <ProtectedRoute><ProfileContent /></ProtectedRoute>} />
-                  <Route path='billing' element={<ProtectedRoute><MyBilling /></ProtectedRoute>} />
-                  <Route path='bookings' element={<ProtectedRoute><Bookings /></ProtectedRoute>} />
-                  <Route path='settings' element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-                  <Route path='support' element={<ProtectedRoute><SupportGrid /></ProtectedRoute>} />
+                    <Route index element={<ProtectedRoute><ProfileContent /></ProtectedRoute>} />
+                    <Route path='billing' element={<ProtectedRoute><MyBilling /></ProtectedRoute>} />
+                    <Route path='bookings' element={<ProtectedRoute><Bookings /></ProtectedRoute>} />
+                    <Route path='settings' element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                    <Route path='support' element={<ProtectedRoute><SupportGrid /></ProtectedRoute>} />
                 </Route>
                 <Route path='/booking-guide' element={<ProtectedRoute><BookingGuide /></ProtectedRoute>} />
 

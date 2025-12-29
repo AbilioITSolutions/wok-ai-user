@@ -14,7 +14,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import logo from '../assets/logo1.svg';
+import { Link as RouterLink } from 'react-router-dom';
+import logo from '../ASSETS/logo1.svg';
 
 function Footer() {
     const theme = useTheme();
@@ -36,7 +37,7 @@ function Footer() {
                 {/* Top Grid */}
                 <Grid container spacing={{ xs: 3, sm: 4, md: 8 }}>
                     {/* Logo + Social */}
-                    <Grid item size={{xs:12,sm:6,md:3}}>
+                    <Grid item size={{ xs: 12, sm: 6, md: 3 }}>
                         <Box
                             component="img"
                             src={logo}
@@ -49,29 +50,29 @@ function Footer() {
                             }}
                         />
                         <Stack direction="row" spacing={{ xs: 1, sm: 1.5 }}>
-                            <IconButton sx={{ 
-                                color: '#fff', 
+                            <IconButton sx={{
+                                color: '#fff',
                                 fontSize: { xs: 22, sm: 26, md: 30 },
                                 p: { xs: 0.5, sm: 1 }
                             }}>
                                 <FacebookIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ 
-                                color: '#fff', 
+                            <IconButton sx={{
+                                color: '#fff',
                                 fontSize: { xs: 22, sm: 26, md: 30 },
                                 p: { xs: 0.5, sm: 1 }
                             }}>
                                 <InstagramIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ 
-                                color: '#fff', 
+                            <IconButton sx={{
+                                color: '#fff',
                                 fontSize: { xs: 22, sm: 26, md: 30 },
                                 p: { xs: 0.5, sm: 1 }
                             }}>
                                 <LinkedInIcon fontSize="inherit" />
                             </IconButton>
-                            <IconButton sx={{ 
-                                color: '#fff', 
+                            <IconButton sx={{
+                                color: '#fff',
                                 fontSize: { xs: 22, sm: 26, md: 30 },
                                 p: { xs: 0.5, sm: 1 }
                             }}>
@@ -81,7 +82,7 @@ function Footer() {
                     </Grid>
 
                     {/* Useful Links */}
-                    <Grid item size={{xs:12,sm:6,md:3}}>
+                    <Grid item size={{ xs: 12, sm: 6, md: 3 }}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
                             mb: { xs: 2, sm: 3 },
@@ -91,7 +92,7 @@ function Footer() {
                         </Typography>
                         <Stack spacing={{ xs: 1, sm: 1.5 }}>
                             {['Home', 'Services', 'About us', 'Contact', 'Find a doctor'].map((text, i) => (
-                                <Link key={i} href="#" underline="none" color="inherit" sx={{ 
+                                <Link key={i} href="#" underline="none" color="inherit" sx={{
                                     fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                                     '&:hover': { opacity: 0.8 }
                                 }}>
@@ -102,7 +103,7 @@ function Footer() {
                     </Grid>
 
                     {/* Categories */}
-                    <Grid item size={{xs:12,sm:6,md:2}}>
+                    <Grid item size={{ xs: 12, sm: 6, md: 2 }}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
                             mb: { xs: 2, sm: 3 },
@@ -112,7 +113,7 @@ function Footer() {
                         </Typography>
                         <Stack spacing={{ xs: 1, sm: 1.5 }}>
                             {['Hair', 'Skin', 'Dental', 'Eye Care', 'Surgery'].map((text, i) => (
-                                <Link key={i} href="#" underline="none" color="inherit" sx={{ 
+                                <Link key={i} href="#" underline="none" color="inherit" sx={{
                                     fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                                     '&:hover': { opacity: 0.8 }
                                 }}>
@@ -123,7 +124,7 @@ function Footer() {
                     </Grid>
 
                     {/* Contact Info */}
-                    <Grid item size={{xs:12,sm:6,md:4}}>
+                    <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
                             mb: { xs: 2, sm: 3 },
@@ -132,23 +133,23 @@ function Footer() {
                             Contact Us
                         </Typography>
                         <Stack spacing={{ xs: 1, sm: 1.5 }}>
-                            <Typography sx={{ 
+                            <Typography sx={{
                                 fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                                 lineHeight: { xs: 1.4, md: 1.5 }
                             }}>
-                                +91-743-561-0842
+                                +91 9010210735
                             </Typography>
-                            <Typography sx={{ 
+                            <Typography sx={{
                                 fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                                 lineHeight: { xs: 1.4, md: 1.5 }
                             }}>
-                                help@wokai.com
+                                wokaihealthcare@gmail.com
                             </Typography>
-                            <Typography sx={{ 
+                            <Typography sx={{
                                 fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.05rem' },
                                 lineHeight: { xs: 1.3, md: 1.4 }
                             }}>
-                                Capital PK Rd, VIP Hills, Madhapur, Hyderabad, Telangana 500081
+                                3-51/A , first floor brundhavan colony , bandlaguda jagir ,RR dist ,500086
                             </Typography>
                         </Stack>
                     </Grid>
@@ -165,7 +166,7 @@ function Footer() {
                     alignItems="center"
                 >
                     {/* Copyright */}
-                    <Grid item size={{xs:12 , md:"auto"}} >
+                    <Grid item size={{ xs: 12, md: "auto" }} >
                         <Typography sx={{
                             fontSize: { xs: '0.95rem', md: '1rem' },
                             textAlign: { xs: 'center', md: 'left' },
@@ -176,17 +177,17 @@ function Footer() {
                     </Grid>
 
                     {/* Legal Links */}
-                    <Grid item size={{xs:12, md:"auto"}} >
+                    <Grid item size={{ xs: 12, md: "auto" }} >
                         <Stack
                             direction="row"
                             spacing={3}
                             justifyContent={isMobile ? 'center' : 'flex-end'}
                             sx={{ mt: { xs: 1, md: 0 } }}
                         >
-                            <Link href="#" underline="none" color="inherit" sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
+                            <Link component={RouterLink} to="/privacy-policy" underline="none" color="inherit" sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
                                 Privacy Policy
                             </Link>
-                            <Link href="#" underline="none" color="inherit" sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
+                            <Link component={RouterLink} to="/terms-and-conditions" underline="none" color="inherit" sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
                                 Terms & Conditions
                             </Link>
                         </Stack>

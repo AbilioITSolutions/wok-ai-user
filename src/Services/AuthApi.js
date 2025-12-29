@@ -1,8 +1,8 @@
 
 
-import SJ from "../assets/SJ.svg"
-import BR from "../assets/BR.svg"
-import RR from "../assets/RR.svg"
+import SJ from "../ASSETS/SJ.svg"
+import BR from "../ASSETS/BR.svg"
+import RR from "../ASSETS/RR.svg"
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AppleIcon from "@mui/icons-material/Apple";

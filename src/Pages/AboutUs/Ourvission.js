@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography, Container } from "@mui/material";
-import Vission from "../../assets/Aboutusimages/Vission.png";
+import Vission from "../../ASSETS/Aboutusimages/Vission.png";
 export default function Ourvission() {
   return (
     <Box sx={{ py: 8, bgcolor: "background.paper" }

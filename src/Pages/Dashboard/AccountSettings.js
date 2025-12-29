@@ -43,7 +43,7 @@ const AccountSettings = () => {
             title: "Call Support",
             description: "Speak with our booking specialists",
             icon: <CallIcon sx={{ fontSize: 30, color: "primary.main" }} />,
-            button: <Button variant="contained">+91 8765766724</Button>,
+            button: <Button variant="contained">+91 9010210735</Button>,
         },
         {
             title: "Booking Guide",

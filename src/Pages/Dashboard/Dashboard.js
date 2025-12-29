@@ -27,10 +27,10 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import layersImg from '../../assets/DasboardImages/layersImg.png';
-import amayaClinicImg from '../../assets/DasboardImages/amayaClinic.png';
-import upCominglogo from '../../assets/DasboardImages/upcominglogo.svg';
-import cancelledlogo from '../../assets/DasboardImages/cancelledlogo.svg';
+import layersImg from '../../ASSETS/DasboardImages/layersImg.png';
+import amayaClinicImg from '../../ASSETS/DasboardImages/amayaClinic.png';
+import upCominglogo from '../../ASSETS/DasboardImages/upcominglogo.svg';
+import cancelledlogo from '../../ASSETS/DasboardImages/cancelledlogo.svg';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
@@ -45,8 +45,9 @@ import { getmedications } from "../../Apis/AppointmentsApis";
 import { getUserAppointments } from "../../Apis/ProfileApis";
 import { getMyReminders } from "../../Apis/RemainderApis";
 import { useNavigate } from "react-router-dom";
-import bell from '../../assets/bell.png';
-import timer from '../../assets/timer.png';
+import bell from '../../ASSETS/bell.png';
+import timer from '../../ASSETS/timer.png';
+import Loader from '../../Components/Loader';
 
 const Dashboard = () => {
     const [appointmentsData, setAppointmentsData] = useState([]);
@@ -64,7 +65,7 @@ const Dashboard = () => {
             try {
                 setLoading(true);
                 setError(null);
-                
+
                 // Fetch all data (appointments, reminders, health summary, medications)
                 const [appointmentsResponse, remindersResponse, healthResponse, medicationsResponse] = await Promise.all([
                     getUserAppointments(),
@@ -72,7 +73,7 @@ const Dashboard = () => {
                     getUserHealthSummary(),
                     getmedications()
                 ]);
-                
+
                 setAppointmentsData(appointmentsResponse?.data || []);
                 setRemindersData(remindersResponse?.reminders || remindersResponse?.data?.reminders || []);
                 setHealthData(healthResponse);
@@ -87,10 +88,11 @@ const Dashboard = () => {
 
         fetchData();
     }, []);
-   
+
     return (
         <Box sx={{ mt: '100px', pb: 4 }}>
             <Navbar />
+            <Loader open={loading} />
             <Container maxWidth="lg" sx={{ py: 4 }}>
                 {/* Greeting */}
                 <Box mb={3}>
@@ -102,35 +104,33 @@ const Dashboard = () => {
                     </Typography>
                 </Box>
 
-                {loading ? (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 8 }}>
-                        <CircularProgress />
-                    </Box>
-                ) : error ? (
+                {error ? (
                     <Alert severity="error" sx={{ mb: 2 }}>
                         {error}
                     </Alert>
                 ) : (
-                    <>
-                        <QuickInfo 
-                            appointmentsData={appointmentsData} 
-                            remindersData={remindersData} 
-                            loading={loading} 
-                            error={error}
-                            navigate={navigate}
-                        />
-                        <HealthSummary 
-                            healthData={healthData}
-                            medicationsData={medicationsData}
-                            loading={loading}
-                            error={error}
-                            setModalOpen={setModalOpen}
-                            setModalImages={setModalImages}
-                            setModalTitle={setModalTitle}
-                        />
-                    </>
+                    !loading && (
+                        <>
+                            <QuickInfo
+                                appointmentsData={appointmentsData}
+                                remindersData={remindersData}
+                                loading={loading}
+                                error={error}
+                                navigate={navigate}
+                            />
+                            <HealthSummary
+                                healthData={healthData}
+                                medicationsData={medicationsData}
+                                loading={loading}
+                                error={error}
+                                setModalOpen={setModalOpen}
+                                setModalImages={setModalImages}
+                                setModalTitle={setModalTitle}
+                            />
+                        </>
+                    )
                 )}
-               
+
             </Container>
             <PopupModal
                 open={modalOpen}
@@ -151,12 +151,12 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
         appointments: appointmentsData,
         reminders: Array.isArray(remindersData) ? remindersData : []
     };
-    
+
     // Debug: Log the processed data
 
     return (
         <Box sx={{ py: 0 }}>
-            
+
             <Grid container spacing={2}>
                 {/* Left - Appointments */}
                 <Grid item size={{ xs: 12, md: 6 }}>
@@ -166,7 +166,7 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                 <Box display="flex" alignItems="center" gap={1}>
                                     <CalendarMonthIcon sx={{ color: '#368ADD' }} />
                                     <Box>
-                                        <Typography variant="h6" fontWeight="bold" sx={{lineHeight: '1.2'}}>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ lineHeight: '1.2' }}>
                                             Appointments History
                                         </Typography>
                                         <Typography variant="body2" color='#A9A9A9'>
@@ -223,10 +223,10 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                             >
                                                 <CalendarMonthIcon fontSize="small" color="action" />
                                                 <Typography variant="caption" sx={{ mr: { xs: 1, sm: 0 } }}>
-                                                    {appt.bookingDate ? new Date(appt.bookingDate).toLocaleDateString('en-US', { 
-                                                        weekday: 'long', 
-                                                        month: 'long', 
-                                                        day: 'numeric' 
+                                                    {appt.bookingDate ? new Date(appt.bookingDate).toLocaleDateString('en-US', {
+                                                        weekday: 'long',
+                                                        month: 'long',
+                                                        day: 'numeric'
                                                     }) : 'Date N/A'}
                                                 </Typography>
                                                 <AccessTimeIcon fontSize="small" color="action" />
@@ -246,12 +246,12 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                         <Button
                                             variant="outlined"
                                             sx={{
-                                                color: appt.bookingStatus === 'completed' ? '#02D210' : 
-                                                       appt.bookingStatus === 'cancelled' ? '#F44336' : '#FFB600',
-                                                backgroundColor: appt.bookingStatus === 'completed' ? '#DCFFDE' : 
-                                                                appt.bookingStatus === 'cancelled' ? '#FFEBEE' : '#FFEEC3',
-                                                border: appt.bookingStatus === 'completed' ? '1px solid #02D210' : 
-                                                       appt.bookingStatus === 'cancelled' ? '1px solid #F44336' : '1px solid #FFB600',
+                                                color: appt.bookingStatus === 'completed' ? '#02D210' :
+                                                    appt.bookingStatus === 'cancelled' ? '#F44336' : '#FFB600',
+                                                backgroundColor: appt.bookingStatus === 'completed' ? '#DCFFDE' :
+                                                    appt.bookingStatus === 'cancelled' ? '#FFEBEE' : '#FFEEC3',
+                                                border: appt.bookingStatus === 'completed' ? '1px solid #02D210' :
+                                                    appt.bookingStatus === 'cancelled' ? '1px solid #F44336' : '1px solid #FFB600',
                                                 borderRadius: '50px',
                                                 fontSize: '12px',
                                                 width: '120px',
@@ -262,7 +262,7 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                         >
                                             {appt.bookingStatus || 'Scheduled'}
                                         </Button>
-                                        
+
                                         <ChevronRightIcon onClick={() => navigate('/apointments')} />
                                     </Box>
                                 </Box>
@@ -283,9 +283,9 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                 mb={2}
                             >
                                 <Box display="flex" alignItems="center" gap={1} mb={{ xs: 1, sm: 0 }}>
-                                    <img src={bell} alt="" style={{ width: '24px', height: '24px' }}/>
+                                    <img src={bell} alt="" style={{ width: '24px', height: '24px' }} />
                                     <Box>
-                                        <Typography variant="h6" fontWeight="bold" sx={{lineHeight: '1.2'}}>Reminders</Typography>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ lineHeight: '1.2' }}>Reminders</Typography>
                                         <Typography variant="body2" color='#A9A9A9'>
                                             You have {data.reminders.length} Reminders
                                         </Typography>
@@ -297,7 +297,7 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                 </Box>
                             </Box>
 
-                            {data.reminders.slice(0,3).map((rem, index) => (
+                            {data.reminders.slice(0, 3).map((rem, index) => (
                                 <Box key={rem.id}>
                                     <Box
                                         display="flex"
@@ -313,10 +313,10 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                             mb={{ xs: 1, sm: 0 }}
                                             width={{ xs: '100%', sm: 'auto' }}
                                         >
-                                            <Box sx={{ 
-                                                width: 50, 
-                                                height: 50, 
-                                                backgroundColor: '#FFEEC3', 
+                                            <Box sx={{
+                                                width: 50,
+                                                height: 50,
+                                                backgroundColor: '#FFEEC3',
                                                 borderRadius: '50%',
                                                 display: 'flex',
                                                 alignItems: 'center',
@@ -325,7 +325,7 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                                 <img src={timer} alt="" style={{ width: '24px', height: '24px' }} />
                                             </Box>
                                             <Box sx={{ maxWidth: { xs: '100%', sm: 200 }, flex: 1 }}>
-                                                <Typography 
+                                                <Typography
                                                     fontWeight="600"
                                                     sx={{
                                                         whiteSpace: 'nowrap',
@@ -340,7 +340,7 @@ export const QuickInfo = ({ appointmentsData = [], remindersData = [], loading =
                                                     variant="body2"
                                                     fontSize="13px"
                                                     color='#A9A9A9'
-                                                    sx={{ 
+                                                    sx={{
                                                         maxWidth: '100%',
                                                         whiteSpace: 'nowrap',
                                                         overflow: 'hidden',
@@ -429,7 +429,7 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
     // Map API data to vitals format
     const mapApiDataToVitals = (healthSummary) => {
         if (!healthSummary) return defaultVitals;
-        
+
         return [
             {
                 icon: <FavoriteBorderIcon color="primary" />,
@@ -471,11 +471,11 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
     const medicationsCount = 3; // Default value since not provided in API response
 
     return (
-        <Grid container spacing={2} sx={{ height: '100%' , mt:2 }}>
+        <Grid container spacing={2} sx={{ height: '100%', mt: 2 }}>
             {/* Left big box */}
             <Grid item size={{ xs: 12, md: 8 }}>
                 <Box
-                    
+
                     p={2}
                     borderRadius={2}
                     border="1px solid #e0e0e0"
@@ -492,12 +492,12 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                                 <Typography fontWeight={600}>Health Summary
                                     <br></br>
                                     <Typography variant="body2" sx={{ fontSize: "small", color: '#A9A9A9' }}>
-                                    Latest vitals & medications
+                                        Latest vitals & medications
                                     </Typography>
                                 </Typography>
-                                 
+
                             </Box>
-                           
+
                         </Box>
                         <Box display="flex" alignItems="center" gap={1} sx={{ cursor: "pointer" }}>
                             <AutorenewIcon fontSize="small" color="primary" />
@@ -548,9 +548,9 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
 
             {/* Right side - Single card with two sections */}
             <Grid item size={{ xs: 12, md: 4 }}>
-                <Card sx={{ 
-                    borderRadius: 2, 
-                    border: '1px solid #e0e0e0', 
+                <Card sx={{
+                    borderRadius: 2,
+                    border: '1px solid #e0e0e0',
                     boxShadow: 'none',
                     height: '100%'
                 }}>
@@ -558,16 +558,16 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                             {/* Medications Section */}
                             <Box sx={{ p: 1.5, borderBottom: '1px solid #f0f0f0' }}>
-                                <Box sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                <Box sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     justifyContent: 'space-between'
                                 }}>
                                     {/* Left side - Icon and text */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        
-                                            <MedicationIcon sx={{ fontSize: 30, color: '#FFB600' }} />
-                                        
+
+                                        <MedicationIcon sx={{ fontSize: 30, color: '#FFB600' }} />
+
                                         <Box>
                                             <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
                                                 Medications
@@ -579,15 +579,15 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                                     </Box>
 
                                     {/* Right side - Action link */}
-                                    
+
                                 </Box>
                             </Box>
 
                             {/* Treatment Section */}
                             <Box sx={{ p: 1.5 }}>
-                                <Box sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                <Box sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     justifyContent: 'space-between',
                                     height: '100%'
                                 }}>
@@ -617,7 +617,7 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                                             </Box>
 
                                             {/* Right side - Action link */}
-                                            <Box 
+                                            <Box
                                                 sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
                                                 onClick={() => {
                                                     if (medicationsData[0]?.imageUrl) {
@@ -630,7 +630,7 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                                                 <Typography variant="body2" sx={{ color: '#368ADD', fontWeight: 500 }}>
                                                     View Details
                                                 </Typography>
-                                                
+
                                             </Box>
                                         </>
                                     ) : (
@@ -642,16 +642,11 @@ export const HealthSummary = ({ healthData, medicationsData, loading, error, set
                                     )}
                                 </Box>
                             </Box>
-                </Box>
+                        </Box>
                     </CardContent>
                 </Card>
             </Grid>
         </Grid>
     );
-    
+
 };
-
-
-
-
-

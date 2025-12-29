@@ -17,7 +17,7 @@ export default function Cardsection() {
       icon: <CallIcon sx={{ fontSize: 40, color: "#368ADD", mb: 1 }} />,
       title: "Call Support",
       description: "Speak with our booking specialists",
-      buttonText: "+91 8765766724",
+      buttonText: "+91 9010210735",
     },
   ];
 

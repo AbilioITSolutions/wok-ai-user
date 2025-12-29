@@ -8,8 +8,7 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import bgImage from './sectionsassets/background.jpg';
-import homeabout from '../../../assets/homeabout.png';
+import homeabout from '../../../ASSETS/homeabout.png';
 import { useNavigate } from 'react-router-dom';
 
 function AboutSection() {

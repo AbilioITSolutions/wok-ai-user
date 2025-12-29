@@ -17,9 +17,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import StarIcon from "@mui/icons-material/Star";
 import WorkIcon from "@mui/icons-material/Work";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import sarahImg from "../assets/sarah.png";
-import rajendharImg from "../assets/rajendhar.png";
-import bharathImg from "../assets/bharath.png";
+import sarahImg from "../ASSETS/sarah.png";
+import rajendharImg from "../ASSETS/rajendhar.png";
+import bharathImg from "../ASSETS/bharath.png";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import AddIcon from "@mui/icons-material/Add";
 
