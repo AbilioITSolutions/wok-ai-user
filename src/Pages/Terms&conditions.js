@@ -176,7 +176,7 @@ const TermsAndConditions = () => {
                 <Divider sx={{ my: 4 }} />
 
                 {/* 12. Governing Law */}
-                <Box sx={{ mb: 4 }}>
+                <Box sx={{ mb: 4.1 }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
                         12. Governing Law
                     </Typography>

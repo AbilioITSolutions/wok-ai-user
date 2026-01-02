@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import {
-    AppBar,
-    Toolbar,
-    Button,
-    Box,
-    IconButton,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
+    AppBar, Toolbar, Button, Box, IconButton, Drawer, List,
+    ListItem, ListItemButton, ListItemText,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../ASSETS/logo.svg';
@@ -31,7 +23,7 @@ function FloatingNavBar() {
     // Function to handle navigation with scroll to top
     const handleNavigation = (path) => {
         navigate(path);
-        
+
         // Robust scroll to top function
         const scrollToTop = () => {
             window.scrollTo(0, 0);
@@ -212,7 +204,7 @@ function FloatingNavBar() {
                                 sx={{
                                     ml: 1,
                                     padding: '12px',
-                                  
+
                                 }}
                             >
                                 <MenuIcon sx={{ fontSize: '28px' }} />
@@ -233,7 +225,7 @@ function FloatingNavBar() {
                         backgroundColor: 'rgba(240,240,240,0.98)',
                         borderRadius: '0 20px 20px 0',
                         mt: '80px',
-                        
+
                         height: 'fit-content',
                         boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
                         zIndex: 5300,
@@ -267,7 +259,7 @@ function FloatingNavBar() {
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <ListItem disablePadding  sx={{ mt: 2, mb: 3 , width: "100%" }}>
+                    <ListItem disablePadding sx={{ mt: 2, mb: 3, width: "100%" }}>
                         <ListItemButton sx={{ justifyContent: 'center' }}>
                             <Button
                                 variant="contained"
@@ -284,7 +276,7 @@ function FloatingNavBar() {
                                     fontWeight: 'bold',
                                     '&:hover': {
                                         backgroundColor: '#0056b3',
-                                        
+
                                     },
 
                                 }}
