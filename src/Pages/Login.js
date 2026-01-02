@@ -109,9 +109,7 @@ const Login = () => {
                 setOpenSnackbar(true);
 
                 // Navigate to dashboard after successful login
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 1500);
+                navigate('/dashboard');
             } else {
                 // OTP-based login using verifyOTP API
                 const response = await verifyOTP({
@@ -128,9 +126,7 @@ const Login = () => {
                 setOpenSnackbar(true);
 
                 // Navigate to dashboard after successful OTP login
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 1500);
+                navigate('/dashboard');
             }
 
         } catch (error) {
@@ -217,14 +213,14 @@ const Login = () => {
                         <Typography gutterBottom variant="h4" sx={{ color: "#000" }}>
                             Signing Your Account
                         </Typography>
-                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3 ,lineHeight:1.2 ,   fontStyle: 'italic' }}>
-                           Register now to explore opportunities and unlock 
-                            
-                             your personalized experience.
+                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3, lineHeight: 1.2, fontStyle: 'italic' }}>
+                            Register now to explore opportunities and unlock
+
+                            your personalized experience.
                         </Typography>
 
                         {/* Login Method Toggle */}
-                        <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: '8px'}}>
+                        <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: '8px' }}>
                             <Button
                                 variant={loginMethod === 'email' ? 'contained' : 'text'}
                                 onClick={() => handleLoginMethodChange('email')}
@@ -408,18 +404,18 @@ const Login = () => {
                                     </Divider>
 
                                     <Typography
-                                        
-                                        
-                                        
+
+
+
                                         onClick={() => navigate('/otp-login')}
                                         sx={{
                                             borderColor: "#368ADD",
                                             color: "#368ADD",
                                             cursor: "pointer",
                                             width: "100%",
-                                           textAlign:'center',
+                                            textAlign: 'center',
                                             mt: 1,
-                                           
+
                                         }}
                                     >
                                         Sign In With OTP

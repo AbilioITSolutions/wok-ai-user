@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
-import { Box, Container, Typography, Divider } from '@mui/material';
+import React, { useEffect } from "react";
+import { Box, Container, Typography, Divider } from "@mui/material";
 
 const TermsAndConditions = () => {
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     return (
-        <Box sx={{ py: 8, minHeight: '80vh' }}>
+        <Box sx={{ py: 8, minHeight: "80vh" }}>
             <Container maxWidth="md">
-                <Box sx={{ mb: 6, textAlign: 'center' }}>
-                    <Typography variant="h2" component="h1" gutterBottom sx={{ color: 'primary.main', fontWeight: 600 }}>
+                {/* Header */}
+                <Box sx={{ mb: 6, textAlign: "center" }}>
+                    <Typography
+                        variant="h2"
+                        component="h1"
+                        gutterBottom
+                        sx={{ color: "primary.main", fontWeight: 600 }}
+                    >
                         Terms & Conditions
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
@@ -19,73 +24,167 @@ const TermsAndConditions = () => {
                     </Typography>
                 </Box>
 
+                {/* 1. Platform Role */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        1. Introduction
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        1. Platform Role
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        Welcome to WokAI. These Terms and Conditions govern your use of our website and services. By accessing or using our service, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.
+                    <Typography variant="body1" color="text.secondary">
+                        WokAI Healthcare is a digital healthcare discovery and facilitation
+                        platform. We do not provide medical advice, diagnosis, or treatment.
+                        Our role is limited to enabling patients to discover hospitals,
+                        compare indicative surgery pricing, and connect with healthcare
+                        providers.
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
 
+                {/* 2. No Medical Liability */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        2. Intellectual Property
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        2. No Medical Liability
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        The Service and its original content, features, and functionality are and will remain the exclusive property of WokAI and its licensors. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of WokAI.
+                    <Typography variant="body1" color="text.secondary">
+                        All medical decisions, treatments, surgeries, and outcomes are solely
+                        the responsibility of the hospital or doctor. WokAI Healthcare shall
+                        not be liable for any medical negligence, complications, or outcomes.
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
 
+                {/* 3. Pricing Disclaimer */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        3. User Responsibilities
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        3. Pricing Disclaimer
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.
-                    </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        You agree not to use the Service for any unlawful purpose or in any way that interrupts, damages, or impairs the service.
+                    <Typography variant="body1" color="text.secondary">
+                        Prices displayed on the platform are indicative estimates shared by
+                        hospitals. Final pricing may vary depending on medical condition,
+                        required investigations, and hospital policies.
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
 
+                {/* 4. Hospital Partnerships */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        4. Limitation of Liability
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        4. Hospital Partnerships
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        In no event shall WokAI, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose.
+                    <Typography variant="body1" color="text.secondary">
+                        Listing of hospitals on WokAI Healthcare does not constitute an
+                        endorsement or guarantee of quality, treatment, or outcomes.
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
 
+                {/* 5. Second Opinion */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        5. Changes to Terms
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        5. Second Opinion
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+                    <Typography variant="body1" color="text.secondary">
+                        Second opinions provided through the platform are advisory in nature.
+                        Patients must exercise independent judgment before making medical
+                        decisions.
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
 
+                {/* 6. User Responsibilities */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 500 }}>
-                        6. Contact Us
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        6. User Responsibilities
                     </Typography>
-                    <Typography variant="body1" paragraph sx={{ color: 'text.secondary' }}>
-                        If you have any questions about these Terms, please contact us.
+                    <Typography variant="body1" color="text.secondary">
+                        Users are responsible for providing accurate and truthful
+                        information. Any misuse of the platform may result in suspension or
+                        termination of access.
                     </Typography>
                 </Box>
 
+                <Divider sx={{ my: 4 }} />
+
+                {/* 7. Data Privacy */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        7. Data Privacy
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        User data is shared only with explicit user consent and solely for
+                        the purpose of healthcare facilitation.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ my: 4 }} />
+
+                {/* 8. Payments & Refunds */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        8. Payments & Refunds
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        Payments and refunds are subject to the respective hospital or
+                        service provider’s policies. WokAI Healthcare does not guarantee
+                        refunds.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ my: 4 }} />
+
+                {/* 9. Third-Party Services */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        9. Third-Party Services
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        WokAI Healthcare is not responsible for disruptions, failures, or
+                        issues arising from third-party services.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ my: 4 }} />
+
+                {/* 10. Limitation of Liability */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        10. Limitation of Liability
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        WokAI Healthcare shall not be liable for any indirect, incidental, or
+                        consequential damages arising from use of the platform.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ my: 4 }} />
+
+                {/* 11. Modification of Terms */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        11. Modification of Terms
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        WokAI Healthcare reserves the right to update or modify these terms
+                        at any time without prior notice.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ my: 4 }} />
+
+                {/* 12. Governing Law */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 500 }}>
+                        12. Governing Law
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        These terms shall be governed by and interpreted in accordance with
+                        the laws of India. Jurisdiction shall be Hyderabad.
+                    </Typography>
+                </Box>
             </Container>
         </Box>
     );

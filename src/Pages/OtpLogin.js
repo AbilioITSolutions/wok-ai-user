@@ -132,9 +132,7 @@ const OtpLogin = () => {
             setOpenSnackbar(true);
 
             // Navigate to dashboard after successful login
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 1500);
+            navigate('/dashboard');
 
         } catch (error) {
             console.error('Login error:', error);
@@ -158,7 +156,7 @@ const OtpLogin = () => {
                     size={{ xs: 12, md: 6 }}
                     sx={{
                         backgroundColor: "#368ADD",
-                        display: "flex",
+                        display: { xs: "none", md: "flex" },
                         justifyContent: "center",
                         height: "100vh",
                         alignItems: "center",
@@ -187,13 +185,13 @@ const OtpLogin = () => {
                         <Typography gutterBottom variant="h4" sx={{ color: "#000" }}>
                             OTP Login
                         </Typography>
-                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3, fontStyle: 'italic'  }}>
+                        <Typography gutterBottom variant="body1" sx={{ color: "#8E92B7", mb: 3, fontStyle: 'italic' }}>
                             Enter your {loginMethod === 'email' ? 'email address' : 'phone number'} to receive an OTP for login
                         </Typography>
 
                         {/* Login Method Toggle - Hide after OTP is sent */}
                         {!otpSent && (
-                            <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: 1  , mb:7}}>
+                            <Box sx={{ display: 'flex', mb: 3, border: '1px solid #e0e0e0', borderRadius: 1, mb: 7 }}>
                                 <Button
                                     variant={loginMethod === 'email' ? 'contained' : 'text'}
                                     onClick={() => handleLoginMethodChange('email')}
@@ -202,7 +200,7 @@ const OtpLogin = () => {
                                         borderRadius: 0,
                                         bgcolor: loginMethod === 'email' ? '#368ADD' : 'transparent',
                                         color: loginMethod === 'email' ? 'white' : '#666',
-                                        
+
                                         '&:hover': {
                                             bgcolor: loginMethod === 'email' ? '#2d76c4' : '#f5f5f5'
 
@@ -312,7 +310,7 @@ const OtpLogin = () => {
                                                 variant="outlined"
                                                 sx={{
                                                     width: 70,
-                                                    height: {md:130, xs:80},
+                                                    height: { md: 130, xs: 80 },
                                                     '& .MuiInputBase-input': {
                                                         textAlign: 'center',
                                                         fontSize: '2.5rem',
